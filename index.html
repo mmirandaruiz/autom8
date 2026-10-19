@@ -4,20 +4,25 @@
 <meta charset="utf-8">
 <script>(function(){var s=null;try{s=localStorage.getItem('autom8-theme');}catch(e){}document.documentElement.setAttribute('data-theme',s||'light');})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Autom8 — Encontramos dónde pierde tiempo tu empresa</title>
-<meta name="description" content="Encontramos dónde pierde tiempo tu empresa y lo automatizamos: procesos manuales, ERP, CRM y los puntos donde aparecen errores. IA solo donde aporta.">
+<title>Autom8 — Automatización de procesos para empresas</title>
+<meta name="description" content="Automatizamos los procesos de tu empresa: detectamos dónde se pierde el tiempo y conectamos tu ERP, tu CRM y tus hojas de cálculo. IA solo donde aporta.">
 <link rel="canonical" href="https://autom8.es/">
 <meta name="theme-color" content="#F4F6F9">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Autom8">
-<meta property="og:title" content="Autom8 — Encontramos dónde pierde tiempo tu empresa">
-<meta property="og:description" content="Automatización, integración con el ERP y el CRM, y soluciones a medida. La IA entra solo donde aporta.">
+<meta property="og:title" content="Autom8 — Automatización de procesos para empresas">
+<meta property="og:description" content="Detectamos dónde se pierde el tiempo y lo automatizamos: procesos, ERP y CRM conectados. IA solo donde aporta.">
 <meta property="og:url" content="https://autom8.es/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Autom8 — Encontramos dónde pierde tiempo tu empresa">
-<meta name="twitter:description" content="Automatización, integración con el ERP y el CRM, y soluciones a medida. La IA entra solo donde aporta.">
+<meta property="og:image" content="https://autom8.es/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Autom8: automatizamos los procesos de tu empresa.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://autom8.es/og-image.png">
+<meta name="twitter:title" content="Autom8 — Automatización de procesos para empresas">
+<meta name="twitter:description" content="Detectamos dónde se pierde el tiempo y lo automatizamos: procesos, ERP y CRM conectados. IA solo donde aporta.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -25,7 +30,10 @@
 <link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Autom8","url":"https://autom8.es/","email":"marcos@autom8.es","description":"Detección de procesos manuales y automatización para empresas. Integración con ERP y CRM. IA solo donde aporta.","areaServed":"ES","inLanguage":"es"}
+{"@context":"https://schema.org","@graph":[
+{"@type":"ProfessionalService","@id":"https://autom8.es/#org","name":"Autom8","url":"https://autom8.es/","logo":"https://autom8.es/icon-512.png","image":"https://autom8.es/og-image.png","email":"marcos@autom8.es","description":"Consultoría de automatización de procesos para empresas: detección de trabajo manual, integración con ERP y CRM, soluciones a medida e IA solo donde aporta.","areaServed":{"@type":"Country","name":"España"},"knowsLanguage":"es","serviceType":["Automatización de procesos","Integración de ERP y CRM","Desarrollo de software a medida","Diagnóstico de procesos"]},
+{"@type":"WebSite","@id":"https://autom8.es/#web","url":"https://autom8.es/","name":"Autom8","inLanguage":"es-ES","publisher":{"@id":"https://autom8.es/#org"}}
+]}
 </script>
 <style>
 @font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:400 800;font-display:swap;src:url("fonts/bricolage-grotesque-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -108,6 +116,7 @@ header.solid{background:rgba(var(--bg-rgb),.92)}
 .eight.full{background:none; color:var(--accent); -webkit-text-fill-color:var(--accent)}
 .links{display:flex; gap:28px; flex-wrap:wrap}
 .links a{color:var(--text); text-decoration:none; font-weight:600; font-size:15px}
+.links .menu-cta{display:none}
 .links a:hover{opacity:1; color:var(--accent)}
 .btn{display:inline-flex; align-items:center; justify-content:center; min-height:50px; padding:0 24px; border-radius:999px; font-weight:600; font-size:16px; text-decoration:none; border:1px solid transparent; cursor:pointer; transition:transform .25s, background .25s, color .25s, border-color .25s; font-family:inherit}
 .btn-lime{background:var(--fill); color:var(--fill-ink)}
@@ -153,11 +162,14 @@ main{position:relative; z-index:2}
 .beat .tag{display:inline-flex; gap:10px; align-items:center; color:var(--accent); font-weight:700; margin-bottom:22px; font-size:16px; background:rgba(var(--bg-rgb),.85); border:1px solid currentColor; padding:8px 16px; border-radius:999px}
 .beat .tag i{width:10px; height:10px; border-radius:50%; background:currentColor}
 .beat .tag.hot{color:var(--signal)}
-.beat h1{font-size:clamp(52px,7.6vw,132px); letter-spacing:-.05em; text-shadow:0 2px 30px rgba(var(--bg-rgb),.9)}
+.beat h1,.beat .hl{font-size:clamp(44px,min(7.6vw,9.5vh),132px); letter-spacing:-.05em; text-shadow:0 2px 30px rgba(var(--bg-rgb),.9)}
 .beat .ctas{display:flex; gap:12px; flex-wrap:wrap; margin-top:32px}
-.hint{position:absolute; left:50%; bottom:130px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:14px}
-.hint span{background:rgba(var(--bg-rgb),.88); color:var(--text); border:1px solid rgba(var(--lime-rgb),.6); padding:14px 26px; border-radius:999px; font-size:clamp(17px,1.4vw,20px); font-weight:600; white-space:nowrap; box-shadow:0 8px 40px rgba(var(--bg-rgb),.8)}
-.hint i{width:2px; height:56px; background:var(--fill); transform-origin:top; animation:drip 2s infinite}
+/* opening: light touch so the papers stay the hero; a soft glow only behind the words */
+.beat.intro .inner{max-width:880px; position:relative; isolation:isolate}
+.beat.intro .inner::before{content:""; position:absolute; inset:-18% -14%; z-index:-1; background:radial-gradient(closest-side, rgba(var(--bg-rgb),.86), rgba(var(--bg-rgb),.62) 55%, rgba(var(--bg-rgb),0)); pointer-events:none}
+.beat.intro h1{font-size:clamp(40px,5.4vw,88px)}
+.cue{display:flex; flex-direction:column; align-items:center; gap:10px; margin:40px 0 0; color:var(--muted); font-size:15px; font-weight:600}
+.cue i{width:2px; height:40px; background:var(--fill); transform-origin:top; animation:drip 2s infinite}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1); transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0); transform-origin:bottom}}
 
 .hud{transition:opacity .2s; position:absolute; left:clamp(24px,6vw,96px); right:clamp(24px,6vw,96px); bottom:28px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; background:rgba(var(--bg-rgb),.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(var(--fg-rgb),.08); border-radius:16px; padding:14px 18px}
@@ -254,7 +266,7 @@ input[type=range]{width:100%; accent-color:var(--accent); height:28px}
 .res form{display:flex; gap:10px; flex-wrap:wrap}
 .res input[type=email]{flex:1 1 220px; min-height:50px; border-radius:999px; border:1px solid var(--res-input-line); padding:0 18px; font:inherit; background:var(--res-input-bg); color:var(--res-fg)}
 .res .btn{background:var(--res-btn-bg); color:var(--res-btn-fg)}
-@media (max-width: 900px){ .calc{grid-template-columns:1fr} }
+@media (max-width: 900px){ .calc{grid-template-columns:minmax(0,1fr)} }
 
 .pgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:48px}
 .pgrid article{padding:34px; display:flex; flex-direction:column; gap:14px; background:var(--ink); border:1px solid var(--line); border-radius:20px; transition:border-color .3s}
@@ -283,7 +295,7 @@ details p{padding:0 0 26px; color:var(--soft); max-width:760px}
 .form{padding:clamp(24px,3vw,40px); display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; background:var(--ink); border:1px solid var(--line); border-radius:22px}
 .form label{display:flex; flex-direction:column; gap:6px; font-size:15px; color:var(--soft)}
 .form .full{grid-column:1/-1}
-.form input,.form textarea{min-height:52px; padding:0 16px; border-radius:12px; border:1px solid var(--input-line); background:var(--input-bg); color:var(--text); font:inherit}
+.form input,.form textarea{min-height:52px; padding:0 16px; border-radius:12px; border:1px solid var(--input-line); background:var(--input-bg); color:var(--text); font:inherit; font-size:16px}
 .form input::placeholder,.form textarea::placeholder{color:var(--placeholder)}
 .form textarea{padding:14px 16px; resize:vertical}
 .form .btn{grid-column:1/-1; min-height:58px}
@@ -300,7 +312,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
 .fbot a{color:var(--soft); text-decoration:none}
 .fbot a:hover{color:var(--accent)}
 
-@media (prefers-reduced-motion: reduce){ .rv{transition:none; opacity:1; transform:none} .hint i{animation:none} }
+@media (prefers-reduced-motion: reduce){ .rv{transition:none; opacity:1; transform:none} .cue i{animation:none} }
 
 /* theme toggle */
 .nav-right{display:flex; align-items:center; gap:10px}
@@ -316,7 +328,6 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
 :root[data-theme="light"] .beat .big, :root[data-theme="light"] .beat h1{text-shadow:none; color:#0B0F14}
 :root[data-theme="light"] .beat .sub{text-shadow:none; color:#2B3440}
 :root[data-theme="light"] .beat .tag{background:#FFFFFF}
-:root[data-theme="light"] .hint span{box-shadow:0 8px 30px rgba(11,15,20,.12)}
 :root[data-theme="light"] .rail, :root[data-theme="light"] .hud, :root[data-theme="light"] .mtitle, :root[data-theme="light"] .mcard{box-shadow:0 10px 40px rgba(11,15,20,.08)}
 :root[data-theme="light"] .btn-line{background:#FFFFFF; border-color:#7A8494}
 
@@ -345,13 +356,98 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
 :root[data-theme="light"] .uc .after b{background:var(--lime); color:#0B0F14}
 :root[data-theme="light"] .rail a.on i{background:var(--lime); height:4px; box-shadow:0 0 0 1px #0B0F14}
 :root[data-theme="light"] .theme-btn:hover{border-color:#0B0F14; background:var(--lime)}
+/* ---------- phones ---------- */
+.nav{padding-left:max(clamp(20px,4vw,48px), env(safe-area-inset-left,0px)); padding-right:max(clamp(20px,4vw,48px), env(safe-area-inset-right,0px)); flex-wrap:nowrap}
+.logo{flex:0 0 auto}
+@media (max-width: 1000px){
+  .links .menu-cta{color:var(--fill-ink); margin-top:10px; justify-content:center}
+  .links{max-height:calc(100svh - 80px); overflow-y:auto}
+}
+@media (max-width: 800px){
+  #inicio{height:640vh!important}
+  #metodo{height:420vh!important}
+  .beat .hl{font-size:clamp(34px,9.4vw,64px)}
+  .beat.intro h1{font-size:clamp(34px,9.6vw,56px)}
+  .beat .tag{font-size:14px; padding:6px 12px; margin-bottom:16px}
+  .cue{margin-top:18px}
+  .fgrid a{display:flex; align-items:center; min-height:44px; margin-top:0}
+  .fbot a{display:inline-flex; align-items:center; min-height:44px}
+  .pgrid a{display:inline-flex; align-items:center; min-height:44px}
+  input[type=range]{height:44px}
+  .sec{padding-left:max(20px, env(safe-area-inset-left,0px)); padding-right:max(20px, env(safe-area-inset-right,0px))}
+}
+@media (max-width: 560px){
+  .nav{padding-top:12px; padding-bottom:12px; gap:10px}
+  .logo{font-size:26px}
+  .nav-cta{display:none}
+  .links .menu-cta{display:flex}
+  .theme-btn{width:44px; height:44px}
+  .beat{padding:84px 16px 112px}
+  .beat .ctas .btn{width:100%}
+  .hud{padding:8px 10px; gap:6px}
+  .hud div{font-size:11px}
+  .mprog{top:80px}
+}
+@media (max-width: 560px){
+  .tabs{display:flex; width:100%; border-radius:24px}
+  .tabs button{flex:1 1 auto; padding:0 12px; font-size:15px}
+}
+/* short phones (iPhone SE, small Android): keep each story screen between header and progress bar */
+@media (max-width: 800px) and (max-height: 720px){
+  .beat{padding-top:80px; padding-bottom:92px}
+  .beat.intro h1,.beat .hl{font-size:clamp(28px,8.6vw,40px)}
+  .beat .big{font-size:clamp(28px,8.4vw,38px)}
+  .beat .sub{font-size:15px; line-height:1.45; margin-top:10px}
+  .beat .tag{margin-bottom:10px}
+  .beat .ctas{margin-top:14px; gap:8px}
+  .beat .ctas .btn{min-height:46px}
+  .cue{display:none}
+  .hud{bottom:8px}
+  .mcard{bottom:8px; padding:16px}
+  .mcard .num{font-size:40px; margin-bottom:6px}
+  .mcard h3{font-size:24px; margin-bottom:6px}
+  .mcard p{font-size:15px}
+  .mcard ul{font-size:14px; margin-top:8px; gap:4px}
+}
+@media (max-width: 360px){
+  .beat .big{font-size:30px}
+  .beat.intro h1,.beat .hl{font-size:32px}
+  .beat .sub{font-size:16px}
+  .mcard{padding:18px}
+  .mcard h3{font-size:26px}
+}
+/* short laptop screens: keep the method card clear of the step pills */
+@media (min-width: 801px) and (max-height: 820px){
+  .mcard{top:calc(50% + 34px); max-height:calc(100vh - 190px); overflow-y:auto}
+  .mcard .num{font-size:72px; margin-bottom:10px}
+  .mcard h3{font-size:clamp(28px,3vw,40px)}
+}
+/* phones in landscape: very little height */
+@media (max-height: 500px) and (orientation: landscape){
+  .nav{padding-top:10px; padding-bottom:10px}
+  .beat{padding:84px max(24px, env(safe-area-inset-right,0px)) 16px max(24px, env(safe-area-inset-left,0px)); align-items:center!important}
+  .beat .inner{max-width:min(560px, 62vw)}
+  .beat.center .inner{max-width:80vw}
+  .beat .big{font-size:clamp(26px,6.4vh,40px)}
+  .beat.intro h1,.beat .hl{font-size:clamp(28px,7.5vh,44px)}
+  .beat .sub{font-size:15px; margin-top:10px; line-height:1.4}
+  .beat .tag{margin-bottom:10px; font-size:13px; padding:5px 10px}
+  .beat .ctas{margin-top:14px}
+  .beat .ctas .btn{width:auto; min-height:44px}
+  .cue,.hud,.mprog{display:none}
+  .mcard{top:80px; bottom:12px; transform:none; overflow-y:auto; width:min(520px, 60vw); padding:18px}
+  .mcard .num{font-size:40px; margin-bottom:6px}
+  .mcard h3{font-size:24px; margin-bottom:6px}
+  .scrim.l{background:linear-gradient(90deg, rgba(var(--bg-rgb),.95) 0%, rgba(var(--bg-rgb),.88) 50%, rgba(var(--bg-rgb),0) 80%)!important}
+  .scrim.r{background:linear-gradient(270deg, rgba(var(--bg-rgb),.95) 0%, rgba(var(--bg-rgb),.88) 50%, rgba(var(--bg-rgb),0) 80%)!important}
+}
 </style>
 <noscript><style>
 #loader,#gl{display:none!important}
 .pin{height:auto!important}
 .pin .stick{position:relative;height:auto;overflow:visible}
 .beat,.mcard .step{opacity:1!important;position:relative;transform:none!important;pointer-events:auto}
-.hint,.hud{display:none!important}
+.cue,.hud{display:none!important}
 </style></noscript>
 </head>
 <body>
@@ -370,6 +466,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
     <a class="logo" href="#inicio" aria-label="Autom8, inicio">Autom<span class="eight">8</span></a>
     <div class="links" id="site-links">
       <a href="#problema">El problema</a><a href="#automatizamos">Qué automatizamos</a><a href="#metodo">Método</a><a href="#calculadora">Calculadora</a><a href="#faq">Preguntas</a>
+      <a class="btn btn-lime menu-cta" href="#contacto">Reservar diagnóstico</a>
     </div>
     <div class="nav-right">
       <button class="theme-btn" id="theme-btn" type="button" aria-label="Cambiar a modo claro">
@@ -377,7 +474,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
       </button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links">Menú</button>
-      <a class="btn btn-lime" href="#contacto">Reservar diagnóstico</a>
+      <a class="btn btn-lime nav-cta" href="#contacto">Reservar diagnóstico</a>
     </div>
   </nav>
 </header>
@@ -400,13 +497,18 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
       <div class="scrim r" data-scrim="r"></div>
       <div class="scrim c" data-scrim="c"></div>
 
-      <div class="hint" data-beat="0,.05"><span>Desliza para ordenar el caos</span><i></i></div>
-
-      <div class="beat center" data-beat=".07,.21" data-scrim-use="c">
-        <div class="inner"><p class="big">Papeles que van de mano en mano.<br><span class="dim">Datos copiados entre sistemas.</span></p></div>
+      <div class="beat center intro" data-beat="0,.1">
+        <div class="inner">
+          <h1>Automatizamos los procesos de tu empresa.</h1>
+          <p class="cue" aria-hidden="true"><i></i>Desliza para ordenar el caos</p>
+        </div>
       </div>
 
-      <div class="beat left" data-beat=".25,.39" data-scrim-use="l">
+      <div class="beat center" data-beat=".13,.24" data-scrim-use="c">
+        <div class="inner"><p class="big">El mismo dato, tecleado tres veces.<br><span class="dim">Y en cada copia, un error esperando.</span></p></div>
+      </div>
+
+      <div class="beat left" data-beat=".27,.40" data-scrim-use="l">
         <div class="inner">
           <div class="tag hot"><i></i>Así trabajan muchas empresas hoy</div>
           <p class="big">Errores que se descubren tarde.</p>
@@ -433,7 +535,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
       <div class="beat left" data-beat=".82,1.1" data-scrim-use="l">
         <div class="inner">
           <div class="tag"><i></i>Autom8</div>
-          <h1>Encontramos dónde pierde tiempo tu empresa. Y lo automatizamos.</h1>
+          <h2 class="hl">Encontramos dónde pierde tiempo tu empresa. Y lo automatizamos.</h2>
           <p class="sub">Con automatización, soluciones a medida e IA allí donde tiene sentido. Sin papel, sin doble tecleo, sin errores.</p>
           <div class="ctas">
             <a class="btn btn-lime" href="#contacto">Reservar un diagnóstico</a>

@@ -9,7 +9,10 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - `aviso-legal.html`, `privacidad.html`, `cookies.html` — páginas legales enlazadas desde el pie.
 - `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`.
 - `robots.txt`, `sitemap.xml`; metadatos SEO, Open Graph y JSON-LD en el `<head>` de `index.html`.
-- `vercel.json` — `cleanUrls` y cabeceras de seguridad/caché.
+- `vercel.json` — `cleanUrls` y cabeceras de seguridad/caché, incluida una Content-Security-Policy. **Si se añade un servicio externo (script, fuente, API, iframe), hay que añadir su dominio a la CSP** o el navegador lo bloqueará.
+- URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
+- `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.
+- `404.html` — página de error que Vercel sirve automáticamente.
 - Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
 
 ## Formulario de contacto
@@ -45,9 +48,13 @@ Un único `InstancedMesh` de 720 bloques redondeados que cambia entre estados se
 - El tema se aplica al 3D en `TH` / `applyTheme()`; en claro cada escena tiene su exposición (`ex`).
 - Fuera de los pins el canvas se oculta y no renderiza (rendimiento).
 
+## Inicio
+- La primera pantalla solo lleva el titular "Automatizamos los procesos de tu empresa." y "Desliza para ordenar el caos". Sin más texto: los papeles son el protagonista.
+
 ## Reglas a respetar
 - Accesibilidad WCAG 2.1 AA: texto ≥ 4.5:1, bordes de campos ≥ 3:1, foco visible, `prefers-reduced-motion`, enlace "Saltar al contenido".
 - Los textos sobre el 3D llevan un velo (`.scrim`) detrás; si se mueve un texto, comprobar el contraste.
-- Tiene que funcionar en móvil (texto abajo, 3D arriba, tarjeta del método a todo el ancho).
+- Tiene que funcionar en móvil (texto abajo, 3D arriba, tarjeta del método a todo el ancho). Probar al menos 320×568, 375×667, 390×844, 430×932 y horizontal 667×375 / 844×390: sin scroll lateral y ningún texto tapado por la cabecera o la barra de progreso.
+- Campos de formulario con texto ≥ 16px (si no, iOS hace zoom) y zonas táctiles ≥ 44px.
 - No inventar cifras ni testimonios; usar marcadores tipo [LOGO CLIENTE].
 - En la animación inicial no usar ejemplos concretos (facturas, etc.); esos van en la sección "Qué automatizamos".
