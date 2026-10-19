@@ -127,11 +127,13 @@ header.solid{background:rgba(var(--bg-rgb),.92)}
 .hp{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
 
 /* rail */
-.rail{position:fixed; right:clamp(12px,2vw,28px); top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; gap:6px; background:rgba(var(--bg-rgb),.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(var(--fg-rgb),.08); border-radius:16px; padding:12px 14px}
-.rail a{display:flex; align-items:center; justify-content:flex-end; gap:12px; color:var(--muted); text-decoration:none; font-size:14px; font-weight:600; min-height:32px}
-.rail a span{transition:color .3s}
-.rail a i{width:18px; height:2px; background:currentColor; transition:width .3s}
-.rail a.on{color:var(--accent)} .rail a.on i{width:30px} .rail a:hover{color:var(--text)}
+.rail{position:fixed; right:14px; top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; align-items:center; gap:2px}
+.rail a{position:relative; display:flex; align-items:center; justify-content:center; width:24px; height:24px; color:var(--muted); text-decoration:none}
+.rail a i{width:6px; height:6px; border-radius:999px; background:currentColor; opacity:.55; transition:height .3s, opacity .3s, background-color .3s}
+.rail a.on i{height:20px; background:var(--fill); opacity:1}
+.rail a:hover i,.rail a:focus-visible i{opacity:1}
+.rail a span{position:absolute; right:30px; top:50%; transform:translate(6px,-50%); white-space:nowrap; font-size:13px; font-weight:600; color:var(--text); background:rgba(var(--bg-rgb),.94); border:1px solid var(--line); padding:6px 12px; border-radius:999px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s}
+.rail a:hover span,.rail a:focus-visible span{opacity:1; transform:translate(0,-50%)}
 @media (max-width: 1180px){ .rail{display:none} }
 @media (max-width: 1000px){
   .nav-toggle{display:inline-flex}
@@ -329,7 +331,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
 :root[data-theme="light"] .beat .big, :root[data-theme="light"] .beat h1{text-shadow:none; color:#0B0F14}
 :root[data-theme="light"] .beat .sub{text-shadow:none; color:#2B3440}
 :root[data-theme="light"] .beat .tag{background:#FFFFFF}
-:root[data-theme="light"] .rail, :root[data-theme="light"] .hud, :root[data-theme="light"] .mtitle, :root[data-theme="light"] .mcard{box-shadow:0 10px 40px rgba(11,15,20,.08)}
+:root[data-theme="light"] .hud, :root[data-theme="light"] .mtitle, :root[data-theme="light"] .mcard{box-shadow:0 10px 40px rgba(11,15,20,.08)}
 :root[data-theme="light"] .btn-line{background:#FFFFFF; border-color:#7A8494}
 
 /* light mode: lighter, narrower veils so the 3D keeps its contrast (dark text stays AA on mid-tones) */
@@ -355,7 +357,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
 :root[data-theme="light"] a:not(.btn):not(.logo):not(.nl){text-decoration-color:var(--lime); text-decoration-thickness:3px; text-underline-offset:4px}
 :root[data-theme="light"] .pgrid a, :root[data-theme="light"] .fgrid a{text-decoration:underline; text-decoration-color:var(--lime); text-decoration-thickness:3px}
 :root[data-theme="light"] .uc .after b{background:var(--lime); color:#0B0F14}
-:root[data-theme="light"] .rail a.on i{background:var(--lime); height:4px; box-shadow:0 0 0 1px #0B0F14}
+:root[data-theme="light"] .rail a.on i{background:var(--lime); box-shadow:0 0 0 1px #0B0F14}
 :root[data-theme="light"] .theme-btn:hover{border-color:#0B0F14; background:var(--lime)}
 /* ---------- phones ---------- */
 .nav{padding-left:max(clamp(20px,4vw,48px), env(safe-area-inset-left,0px)); padding-right:max(clamp(20px,4vw,48px), env(safe-area-inset-right,0px)); flex-wrap:nowrap}
@@ -365,8 +367,6 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
   .links{max-height:calc(100svh - 80px); overflow-y:auto}
 }
 @media (max-width: 800px){
-  #inicio{height:640vh!important}
-  #metodo{height:420vh!important}
   .beat .hl{font-size:clamp(34px,9.4vw,64px)}
   .beat.intro h1{font-size:clamp(34px,9.6vw,56px)}
   .beat .tag{font-size:14px; padding:6px 12px; margin-bottom:16px}
@@ -506,7 +506,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
       </div>
 
       <div class="beat center" data-beat=".13,.24" data-scrim-use="c">
-        <div class="inner"><p class="big">El mismo dato, tecleado tres veces.<br><span class="dim">Y en cada copia, un error esperando.</span></p></div>
+        <div class="inner"><p class="big">Cada dato tecleado a mano es un error en potencia.<br><span class="dim">Solo es cuestión de tiempo.</span></p></div>
       </div>
 
       <div class="beat left" data-beat=".27,.40" data-scrim-use="l">
