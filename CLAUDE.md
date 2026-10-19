@@ -13,6 +13,8 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
 - `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.
 - `404.html` — página de error que Vercel sirve automáticamente.
+- Páginas de servicio para SEO (una por búsqueda objetivo): `automatizacion-de-procesos.html`. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (`/automatizacion-de-procesos`).
+- El titular es autónomo (no hay sociedad): el aviso legal necesita nombre completo, NIF y domicilio.
 - Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
 
 ## Formulario de contacto
