@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<script>(function(){var s=null;try{s=localStorage.getItem('autom8-theme');}catch(e){}document.documentElement.setAttribute('data-theme',s||'light');})();</script>
+<script>(function(){var s=null;try{s=localStorage.getItem('autom8-theme');}catch(e){}document.documentElement.setAttribute('data-theme',s||'dark');})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Autom8 — Automatización de procesos para empresas</title>
 <meta name="description" content="Automatizamos los procesos de tu empresa: detectamos dónde se pierde el tiempo y conectamos tu ERP, tu CRM y tus hojas de cálculo. IA solo donde aporta.">
 <link rel="canonical" href="https://autom8.es/">
-<meta name="theme-color" content="#F4F6F9">
+<meta name="theme-color" content="#07090C">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
@@ -168,7 +168,8 @@ main{position:relative; z-index:2}
 .beat.intro .inner{max-width:880px; position:relative; isolation:isolate}
 .beat.intro .inner::before{content:""; position:absolute; inset:-18% -14%; z-index:-1; background:radial-gradient(closest-side, rgba(var(--bg-rgb),.86), rgba(var(--bg-rgb),.62) 55%, rgba(var(--bg-rgb),0)); pointer-events:none}
 .beat.intro h1{font-size:clamp(40px,5.4vw,88px)}
-.cue{display:flex; flex-direction:column; align-items:center; gap:10px; margin:40px 0 0; color:var(--muted); font-size:15px; font-weight:600}
+.cue{display:flex; flex-direction:column; align-items:center; gap:12px; margin:40px 0 0; font-weight:600}
+.cue span{background:rgba(var(--bg-rgb),.92); color:var(--text); border:1px solid rgba(var(--lime-rgb),.7); padding:12px 22px; border-radius:999px; font-size:clamp(15px,1.3vw,18px); white-space:nowrap; box-shadow:0 8px 30px rgba(var(--bg-rgb),.8)}
 .cue i{width:2px; height:40px; background:var(--fill); transform-origin:top; animation:drip 2s infinite}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1); transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0); transform-origin:bottom}}
 
@@ -500,7 +501,7 @@ footer{position:relative; z-index:2; background:var(--ink); border-top:1px solid
       <div class="beat center intro" data-beat="0,.1">
         <div class="inner">
           <h1>Automatizamos los procesos de tu empresa.</h1>
-          <p class="cue" aria-hidden="true"><i></i>Desliza para ordenar el caos</p>
+          <p class="cue" aria-hidden="true"><i></i><span>Desliza para ordenar el caos</span></p>
         </div>
       </div>
 

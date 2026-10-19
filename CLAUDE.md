@@ -34,7 +34,7 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - Botones primarios: lima con texto oscuro (modo oscuro) / negro con texto lima (modo claro).
 - Logo: texto "Autom8" en Bricolage Grotesque 800; el 8 mitad lima arriba (oscuro) o con rotulador lima (claro). Sin icono.
 - Tipografías: Bricolage Grotesque (titulares) + Instrument Sans (texto).
-- Tema: claro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
+- Tema: oscuro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
 
 ## La historia 3D (scroll)
 Un único `InstancedMesh` de 720 bloques redondeados que cambia entre estados según el scroll:
