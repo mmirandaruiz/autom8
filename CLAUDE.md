@@ -33,7 +33,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 | Fondo | #07090C | #F4F6F9 | |
 | Texto | #F5F7FA | #0B0F14 | |
 | Secundario | #AEB8C4 | #4F5A68 | |
-- Regla en modo claro: **el lima nunca es texto**. Se usa como relleno, subrayado, punto o "rotulador" detrás (logo y números de paso). El texto va en negro.
+- Regla en modo claro: **el lima nunca es texto**. Barras y líneas de progreso usan `--meter` sobre `--track` (lima/oscuro en modo oscuro; negro sobre #DDE3EA en claro, ≥3:1). En los dibujos, el lima en modo claro siempre lleva contorno negro; nada de tintes `--lime-rgb` (en claro es verde oliva y ensucia). Se usa como relleno, subrayado, punto o "rotulador" detrás (logo y números de paso). El texto va en negro.
 - Botones primarios: lima con texto oscuro (modo oscuro) / negro con texto lima (modo claro).
 - Logo: texto "Autom8" en Bricolage Grotesque 800; el 8 mitad lima arriba (oscuro) o con rotulador lima (claro). Sin icono.
 - Tipografías: Bricolage Grotesque (titulares) + Instrument Sans (texto).
