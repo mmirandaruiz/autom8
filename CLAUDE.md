@@ -42,8 +42,8 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 ## Hero 3D (una ventana de navegador que monta una web)
 - `#stage` con `<canvas id="gl">` dentro del hero (no es fijo ni ocupa toda la página). Three.js r128.
 - Una sola ventana de navegador flotante (`site`, 12×8 unidades), inclinada, con barra superior, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
-- Piezas con esquinas redondeadas (`piece(rol, izquierda, arriba, ancho, alto, z, fondo, radio)`): menú, titulares, botón lima (`cta`), foto de un interior moderno pintada en código (`interiorTex()`, sin imágenes externas) y tres tarjetas blancas.
-- Bucle: `build()` (vuelan y encajan) → 5 s quietas → `scatter()` → vuelta a empezar. El botón lima se ilumina al encajar.
+- Piezas con volumen y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie` es la cara sobre la que se apoya: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), imagen genérica abstracta pintada en código (`imageTex()`: degradado lima-lavanda con ondas, sin fotos ni imágenes externas) y tres tarjetas blancas.
+- Bucle: `build()` (vuelan y encajan) → 5 s quietas → `scatter()` → vuelta a empezar. El botón lima se ilumina al encajar y cada pieza que llega empuja la página, que se hunde, se inclina hacia el impacto y rebota con un muelle (`kick()` / `spring()`).
 - Detrás: brillo lima y lavanda, puntos desenfocados (`bokeh`) y sombra o reflejo debajo. Cámara con acercamiento y órbita lentos; el ratón y el scroll inclinan la escena.
 - Colores por tema en `paint()`. Solo renderiza con el hero en pantalla. `prefers-reduced-motion`: montaje instantáneo y sin bucle. Sin WebGL, `.nogl` oculta el escenario.
 - No mostrar texto legible dentro del 3D: titulares y textos son barras.
