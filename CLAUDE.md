@@ -40,7 +40,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Tema: oscuro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
 
 ## Hero 3D (una ventana de navegador que se monta con el scroll)
-- El hero es a pantalla completa y queda fijo (`.hero` 320vh con `.stick` sticky). El canvas `#gl` ocupa todo el fondo; el texto va encima a la izquierda con un velo (`.veil`). En móvil: ventana arriba y texto abajo (`setViewOffset` en `resize()`).
+- El hero es a pantalla completa y queda fijo (`.hero` 320vh con `.stick` sticky). El canvas `#gl` ocupa todo el fondo; el texto va encima a la izquierda con un velo (`.veil`). En móvil: ventana arriba y texto abajo; móvil en horizontal: lado a lado. `resize()` mide el hueco libre (a la derecha del texto, o entre la cabecera y el texto en móvil) y encaja la ventana dentro con margen para el rebote (`region()`, `bounds()`, `setViewOffset`). Las piezas llegan desde el lado contrario al texto.
 - Una ventana de navegador flotante (`site`, 12×8) con volumen: marco, barra, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
 - Piezas con relieve y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie`: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), panel de cristal (`MAT.glass`, MeshPhysicalMaterial translúcido con reflejos de un entorno propio `envTex`, color interior `glassTex()` y bordes de luz) en lugar de foto y tres tarjetas.
 - **El scroll monta la web**: cada pieza tiene su tramo (`s0`, `SPAN`) dentro del progreso del hero (`heroP()`, suavizado en `sp`); al subir, las piezas se van.

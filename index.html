@@ -144,6 +144,15 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .trust{display:none}
 }
 @media (max-width: 900px) and (max-height: 700px){ .hero .sub{display:none} }
+@media (max-width: 360px){ .hero .ctas .btn-line{display:none} .hero .ctas .btn{flex:1 1 100%} }
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 520px){
+  .hero .veil{background:linear-gradient(90deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 40%, rgba(var(--bg-rgb),0) 60%)}
+  .hero .copy{left:max(20px, env(safe-area-inset-left,0px)); right:auto; width:44vw; top:50%; bottom:auto; transform:translateY(-38%)}
+  .hero h1{font-size:clamp(26px,5vw,40px)}
+  .eyebrow,.hero .sub,.trust{display:none}
+  .ctas{margin-top:14px}
+  .ctas .btn{flex:0 0 auto; min-height:44px; padding:0 16px; font-size:15px}
+}
 
 /* sections */
 .sec{background:var(--ink); padding:clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); transition:background-color .4s}
@@ -523,7 +532,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function easeOutBack(k){ var c=1.35; k-=1; return 1+(c+1)*k*k*k+c*k*k; }
   var N=pieces.length, S0=.04, S1=.88, SPAN=.12;
   pieces.forEach(function(it,i){
-    var ang=Math.random()*Math.PI*2, rad=rnd(13,19);
+    var wide=window.innerWidth>900||(window.innerWidth>window.innerHeight&&window.innerHeight<=520), ang=wide?rnd(-1.35,1.35):rnd(.3,Math.PI-.3), rad=rnd(13,19);
     it.from=[Math.cos(ang)*rad, Math.sin(ang)*rad*.7, rnd(-4,12)];
     it.fr=[rnd(-2.5,2.5),rnd(-2.5,2.5),rnd(-2.5,2.5)];
     it.s0=S0+(S1-S0-SPAN)*(i/(N-1)); it.landed=false;
@@ -555,17 +564,36 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var hero=$('inicio');
   function heroP(){ var r=hero.getBoundingClientRect(), span=r.height-window.innerHeight; return span>1?Math.min(Math.max(-r.top/span,0),1):1; }
 
-  var base=30, W=1, H=1;
+  // frame the window inside the free area: right of the headline on wide screens, between header and text on phones
+  var base=30, W=1, H=1, narrow=false, tmpBox=new THREE.Box3(), tmpV=new THREE.Vector3();
+  function isNarrow(){ return W<=900 && !(W>H && H<=520); }
+  function project(dist,rotY){
+    root.rotation.set(0,0,0); root.position.set(0,0,0);
+    site.position.set(0,.2,0); site.rotation.set(.12,rotY,0); site.scale.set(1,1,1); fixed[0].scale.set(1,1,1);
+    camera.clearViewOffset(); camera.position.set(0,.4,dist); camera.lookAt(0,0,0); camera.updateProjectionMatrix();
+    scene.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+    tmpBox.setFromObject(fixed[0]);
+    var l=1e9,r=-1e9,t=1e9,b=-1e9;
+    for(var i=0;i<8;i++){ tmpV.set(i&1?tmpBox.max.x:tmpBox.min.x, i&2?tmpBox.max.y:tmpBox.min.y, i&4?tmpBox.max.z:tmpBox.min.z).project(camera); var x=(tmpV.x+1)/2*W, y=(1-tmpV.y)/2*H; l=Math.min(l,x); r=Math.max(r,x); t=Math.min(t,y); b=Math.max(b,y); }
+    return {l:l,r:r,t:t,b:b};
+  }
+  function bounds(dist){ var a=project(dist,-.44), c=project(dist,-.24); return {l:Math.min(a.l,c.l), r:Math.max(a.r,c.r), t:Math.min(a.t,c.t), b:Math.max(a.b,c.b)}; }
+  function region(){
+    var hb=$('hdr').getBoundingClientRect().bottom, c=document.querySelector('.copy').getBoundingClientRect(), g=Math.max(16,W*.025);
+    if(narrow) return {l:g, r:W-g, t:hb+g*.5, b:Math.max(hb+140, c.top-g)};
+    return {l:c.right+g*1.5, r:W-g, t:hb+g, b:H-g};
+  }
   function resize(){
-    W=Math.max(stage.clientWidth,1); H=Math.max(stage.clientHeight,1);
+    W=Math.max(stage.clientWidth,1); H=Math.max(stage.clientHeight,1); narrow=isNarrow();
     renderer.setSize(W,H,false); camera.aspect=W/H;
-    var narrow=W<900, t=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    var visW=narrow?14.5:24, visH=narrow?(H<700?15:17):11.5;
-    base=Math.max(visH/(2*t), visW/(2*t*camera.aspect));
-    if(narrow) camera.setViewOffset(W,H,0,H*.2,W,H); else camera.setViewOffset(W,H,-W*.2,0,W,H);
+    var R=region(), d=40, bb=bounds(d);
+    var sc=Math.min((R.r-R.l)/(bb.r-bb.l), (R.b-R.t)/(bb.b-bb.t))*.86;
+    base=d/Math.max(sc,.05); bb=bounds(base);
+    camera.setViewOffset(W,H,(bb.l+bb.r)/2-(R.l+R.r)/2,(bb.t+bb.b)/2-(R.t+R.b)/2,W,H);
     camera.updateProjectionMatrix();
   }
   if('ResizeObserver' in window) new ResizeObserver(resize).observe(stage); else window.addEventListener('resize',resize);
+  window.addEventListener('load',resize); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(resize);
   resize();
 
   var mx=0,my=0,smx=0,smy=0, v=new THREE.Vector3();
