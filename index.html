@@ -516,13 +516,19 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function build(now){ phase='build'; ctaLanded=false; pieces.forEach(function(it,i){ it.landed=false; anim(it, now+i*.075, reduce?0:1.15, scatterPos(), it.p, .25, 1, rrot(), ZERO, false); }); phaseEnd=now+(reduce?0:pieces.length*.075+1.15); }
   function scatter(now){ phase='scatter'; var n=pieces.length; pieces.forEach(function(it,i){ anim(it, now+(n-1-i)*.03, .8, it.p, scatterPos(), 1, .25, ZERO, rrot(), true); }); phaseEnd=now+(n-1)*.03+.8; }
   // the page reacts to each part landing: it sinks a little, tilts towards the impact and springs back
-  var bz=0,bvz=0,bx=0,bvx=0,by=0,bvy=0, last=0;
-  function kick(it){ var f=.35+.65*it.w; bvz-=1.1*f; bvx+=(it.p[1]/4)*.06*f; bvy+=(-it.p[0]/6)*.06*f; }
+  var bz=0,bvz=0,bdy=0,bvdy=0,bx=0,bvx=0,by=0,bvy=0,bsq=0,bvsq=0, last=0;
+  function kick(it){
+    var f=.45+.55*it.w;
+    bvz-=7*f; bvdy-=4.2*f; bvsq+=1.6*f;
+    bvx+=(it.p[1]/4)*.9*f; bvy+=(-it.p[0]/6)*.9*f;
+  }
   function spring(dt){
-    var k=70,c=8;
+    var k=60,c=6.5;
     bvz+=(-k*bz-c*bvz)*dt; bz+=bvz*dt;
+    bvdy+=(-k*bdy-c*bvdy)*dt; bdy+=bvdy*dt;
     bvx+=(-k*bx-c*bvx)*dt; bx+=bvx*dt;
     bvy+=(-k*by-c*bvy)*dt; by+=bvy*dt;
+    bvsq+=(-90*bsq-9*bvsq)*dt; bsq+=bvsq*dt;
   }
   var T0=performance.now()/1000;
   build(T0+(reduce?0:.7));
@@ -565,7 +571,8 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     cta.m.getWorldPosition(v); btnLight.position.set(v.x,v.y,v.z+1.2); btnLight.intensity=pulse*2.2;
     // gentle float, slow dolly and orbit, pointer and scroll parallax
     var fl=reduce?0:Math.sin(now*.8);
-    site.position.y=.2+fl*.14; site.position.z=bz; site.rotation.set(.12+bx, -.32+by, reduce?0:Math.sin(now*.5)*.015);
+    site.position.y=.2+fl*.14+bdy; site.position.z=bz; site.rotation.set(.12+bx, -.32+by, reduce?0:Math.sin(now*.5)*.015);
+    var sq=Math.max(-.06,Math.min(.06,bsq*.04)); site.scale.set(1+sq,1-sq,1);
     shadow.material.opacity=shadowBase*(1-.18*fl); shadow.scale.set(15-fl*.8,5-fl*.3,1);
     bokeh.forEach(function(g){ g.position.y=g.userData.y+(reduce?0:Math.sin(now*g.userData.sp+g.userData.ph)*.6); });
     smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
