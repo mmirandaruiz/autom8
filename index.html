@@ -192,6 +192,90 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .types .card{display:flex; flex-direction:column}
 .types .card .more{margin-top:auto; padding-top:12px}
 
+/* problems read like errors on a page */
+.signs h3{text-decoration:underline wavy var(--signal); text-decoration-thickness:1.5px; text-underline-offset:7px; text-decoration-skip-ink:none}
+
+/* what's included: bento cards, each with a small picture of what it means */
+.bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+.bento .card:first-child{grid-column:1/-1; display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:0 28px; align-items:center}
+.bento .card:first-child .viz{grid-row:1/3; grid-column:2; height:170px; margin:0}
+@media (max-width: 600px){ .bento{grid-template-columns:minmax(0,1fr)} .bento .card:first-child{display:block} .bento .card:first-child .viz{height:130px; margin-bottom:20px} }
+.viz{position:relative; height:104px; margin-bottom:22px; border-radius:14px; border:1px solid var(--line); background:rgba(var(--fg-rgb),.03); overflow:hidden}
+.viz i,.viz b,.wire i{display:block; border-radius:6px; background:rgba(var(--fg-rgb),.13)}
+.viz *,.wire *{transition:transform .9s cubic-bezier(.16,1,.3,1) .25s, opacity .9s ease .25s}
+.v-site{padding:10px}
+.v-site .bar{display:flex; gap:4px; height:auto; background:none; margin-bottom:10px}
+.v-site .bar b{width:7px; height:7px; border-radius:50%}
+.v-site .bar b:first-child{background:var(--lime)}
+.v-site .hb{height:38%; width:62%; background:var(--lime); border-radius:8px; transform-origin:left; transform:scaleX(.2)}
+.v-site .ln{height:8px; width:46%; margin-top:10px}
+.v-site .ln.s{width:30%; margin-top:6px}
+.v-site .gl{position:absolute; right:10px; top:27px; bottom:10px; width:30%; border-radius:10px; background:linear-gradient(135deg, rgba(var(--lime-rgb),.35), rgba(155,140,255,.35)); opacity:0}
+.card.in .v-site .hb{transform:none} .card.in .v-site .gl{opacity:1}
+.v-dev{display:flex; align-items:flex-end; justify-content:center; gap:12px; padding:14px}
+.v-dev i{background:none; border:2px solid var(--muted); transform:translateY(24px); opacity:0}
+.v-dev .d1{width:110px; height:66px; border-radius:6px} .v-dev .d2{width:52px; height:70px; border-radius:7px; transition-delay:.35s} .v-dev .d3{width:30px; height:56px; border-radius:7px; border-color:var(--accent); transition-delay:.45s}
+.card.in .v-dev i{transform:none; opacity:1}
+.v-speed{display:flex; flex-direction:column; justify-content:center; gap:12px; padding:0 18px}
+.v-speed span{display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--soft)}
+.v-speed span::before{content:""; width:10px; height:10px; border-radius:3px; background:var(--lime); box-shadow:0 0 0 3px rgba(var(--lime-rgb),.2)}
+.v-speed i{height:8px} .v-speed b{height:100%; width:100%; background:var(--lime); transform-origin:left; transform:scaleX(0); transition-duration:1.4s}
+.card.in .v-speed b{transform:none}
+.v-serp{padding:14px 16px}
+.v-serp span{display:block; font-size:13px; color:var(--muted); line-height:1.2}
+.v-serp .t{height:11px; width:72%; margin:8px 0 9px; background:var(--accent); opacity:.85}
+.v-serp i{height:7px; width:90%; margin-top:6px} .v-serp i.s{width:60%}
+.v-serp::after{content:""; position:absolute; right:14px; top:14px; width:28px; height:28px; border-radius:50%; border:2px solid var(--accent); box-shadow:12px 12px 0 -10px var(--accent)}
+.v-launch{display:flex; align-items:center; justify-content:space-between; padding:0 22px}
+.v-launch::before{content:""; position:absolute; left:30px; right:30px; top:50%; height:2px; background:var(--line)}
+.v-launch::after{content:""; position:absolute; left:30px; right:30px; top:50%; height:2px; background:var(--lime); transform-origin:left; transform:scaleX(0); transition:transform 1.4s cubic-bezier(.16,1,.3,1) .3s}
+.card.in .v-launch::after{transform:none}
+.v-launch i{position:relative; z-index:1; width:16px; height:16px; border-radius:50%; background:var(--panel); border:2px solid var(--muted)}
+.v-launch i.ok{width:30px; height:30px; background:var(--lime); border-color:var(--lime)}
+.v-launch i.ok::after{content:""; position:absolute; left:9px; top:5px; width:6px; height:11px; border:solid #0B0F14; border-width:0 2.5px 2.5px 0; transform:rotate(45deg)}
+.v-legal{display:flex; flex-wrap:wrap; align-content:center; gap:8px; padding:0 14px}
+.v-legal span{display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border-radius:99px; border:1px solid var(--line); font-size:13px; font-weight:600; color:var(--soft); transform:translateY(10px); opacity:0; transition:transform .7s cubic-bezier(.16,1,.3,1), opacity .7s}
+.v-legal span:nth-child(2){transition-delay:.12s} .v-legal span:nth-child(3){transition-delay:.24s}
+.v-legal span::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--lime)}
+.card.in .v-legal span{transform:none; opacity:1}
+
+/* types of website: a wireframe of each one */
+.wire{position:relative; height:150px; margin:-6px -6px 22px; padding:12px; border-radius:14px; border:1px solid var(--line); background:rgba(var(--fg-rgb),.03); overflow:hidden}
+.wire .nav{height:8px; width:100%; margin-bottom:10px; background:rgba(var(--fg-rgb),.1)}
+.w-corp .hero{height:46px; background:linear-gradient(90deg, rgba(var(--lime-rgb),.55), rgba(var(--lime-rgb),.15))}
+.w-corp .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px}
+.w-corp .cols i{height:46px}
+.w-land .big{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; height:calc(100% - 18px); border-radius:10px; background:radial-gradient(circle at 50% 120%, rgba(var(--lime-rgb),.35), transparent 70%)}
+.w-land .t{height:10px; width:62%} .w-land .t.s{width:40%; height:7px}
+.w-land .cta{width:84px; height:22px; margin-top:6px; border-radius:99px; background:var(--lime); box-shadow:0 0 22px rgba(var(--lime-rgb),.6)}
+.w-redo{display:grid; grid-template-columns:1fr 26px 1fr; gap:8px; align-items:center}
+.w-redo .old,.w-redo .new{height:100%; border-radius:8px; padding:8px; display:flex; flex-direction:column; gap:6px}
+.w-redo .old{border:1px dashed var(--signal); opacity:.75}
+.w-redo .old i{height:12px; background:rgba(155,140,255,.35)} .w-redo .old i:nth-child(1){width:80%; transform:rotate(-3deg)} .w-redo .old i:nth-child(2){width:55%; margin-left:20%} .w-redo .old i:nth-child(3){width:90%; height:30px; transform:rotate(2deg)}
+.w-redo .new{border:1px solid var(--line); background:rgba(var(--fg-rgb),.03)}
+.w-redo .new .nav{margin:0}
+.w-redo .new .hero{height:34px; background:rgba(var(--lime-rgb),.45)}
+.w-redo .new .cta{width:52%; height:14px; border-radius:99px; background:var(--lime)}
+.w-redo .arr{height:2px; background:var(--accent); position:relative}
+.w-redo .arr::after{content:""; position:absolute; right:-1px; top:-4px; width:8px; height:8px; border:solid var(--accent); border-width:2px 2px 0 0; transform:rotate(45deg)}
+.wire i{transform:translateY(12px); opacity:0}
+.card.in .wire i{transform:none; opacity:1}
+.w-redo .old i{opacity:1}
+.card.in .w-redo .old i:nth-child(1){transform:rotate(-3deg)} .card.in .w-redo .old i:nth-child(3){transform:rotate(2deg)}
+.types .card:hover .wire{border-color:var(--accent)}
+
+/* how we work: a timeline that fills in as you scroll */
+.steps.tl{display:block; position:relative; --p:0}
+.steps.tl::before,.steps.tl::after{content:""; position:absolute; left:27px; top:46px; width:2px; height:calc(100% - 92px); background:var(--line)}
+.steps.tl::after{background:var(--lime); transform-origin:top; transform:scaleY(var(--p))}
+.steps.tl li{margin:0 0 14px 80px; z-index:1}
+.steps.tl li::before{position:absolute; left:-80px; top:18px; width:56px; height:56px; margin:0; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; letter-spacing:-.02em; color:var(--muted); background:var(--ink); border:1.5px solid var(--line); transition:background-color .4s, color .4s, border-color .4s}
+.steps.tl li.lit::before{background:var(--lime); border-color:var(--lime); color:#0B0F14}
+:root[data-theme="light"] .steps.tl li::before{background:var(--panel)}
+:root[data-theme="light"] .steps.tl li.lit::before{background:var(--lime)}
+.steps.tl li.lit{border-color:rgba(var(--lime-rgb),.45)}
+@media (prefers-reduced-motion: reduce){ .viz *,.wire *,.v-launch::after{transition:none} }
+
 .steps{list-style:none; padding:0; margin:48px 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:16px; counter-reset:s}
 .steps li{counter-increment:s; position:relative; padding:28px; border-radius:20px; border:1px solid var(--line); background:var(--ink)}
 .steps li::before{content:"0" counter(s); display:inline-block; font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:56px; line-height:.9; letter-spacing:-.05em; color:var(--accent); margin-bottom:18px}
@@ -305,13 +389,13 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <div class="label">Qué incluye</div>
         <h2 class="h2">Todo lo que tu web necesita, sin complicaciones.</h2>
       </div>
-      <div class="grid">
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6L20 9.3l-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.4-.7z"/></svg></div><h3>Diseño moderno e innovador</h3><p>Hecho a medida para tu marca y tu cliente, no una plantilla genérica.</p></article>
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div><h3>Adaptada a cualquier pantalla</h3><p>Se ve y funciona perfecta en el móvil, la tablet, el portátil y las pantallas grandes.</p></article>
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><h3>Rápida y segura</h3><p>Carga al instante, con alojamiento profesional y certificado de seguridad.</p></article>
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20.5 20.5l-4.8-4.8"/></svg></div><h3>Preparada para Google</h3><p>Títulos, descripciones, datos estructurados y alta en Google desde el primer día.</p></article>
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg></div><h3>Puesta en marcha rápida</h3><p>Nos encargamos de todo para que tengas tu web en poco tiempo y sin apenas esfuerzo por tu parte.</p></article>
-        <article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l7.5 3v6c0 4.5-3.2 8.3-7.5 10-4.3-1.7-7.5-5.5-7.5-10v-6z"/><path d="M8.5 12l2.4 2.4 4.6-4.8"/></svg></div><h3>Legal y RGPD</h3><p>Aviso legal, privacidad y cookies en regla, sin banners innecesarios.</p></article>
+      <div class="grid bento">
+        <article class="card rv"><div class="viz v-site" aria-hidden="true"><i class="bar"><b></b><b></b><b></b></i><i class="hb"></i><i class="ln"></i><i class="ln s"></i><i class="gl"></i></div><h3>Diseño moderno e innovador</h3><p>Hecho a medida para tu marca y tu cliente, no una plantilla genérica.</p></article>
+        <article class="card rv"><div class="viz v-dev" aria-hidden="true"><i class="d1"></i><i class="d2"></i><i class="d3"></i></div><h3>Adaptada a cualquier pantalla</h3><p>Se ve y funciona perfecta en el móvil, la tablet, el portátil y las pantallas grandes.</p></article>
+        <article class="card rv"><div class="viz v-speed" aria-hidden="true"><span>https://</span><i><b></b></i></div><h3>Rápida y segura</h3><p>Carga al instante, con alojamiento profesional y certificado de seguridad.</p></article>
+        <article class="card rv"><div class="viz v-serp" aria-hidden="true"><span>tuempresa.es</span><i class="t"></i><i></i><i class="s"></i></div><h3>Preparada para Google</h3><p>Títulos, descripciones, datos estructurados y alta en Google desde el primer día.</p></article>
+        <article class="card rv"><div class="viz v-launch" aria-hidden="true"><i></i><i></i><i></i><i class="ok"></i></div><h3>Puesta en marcha rápida</h3><p>Nos encargamos de todo para que tengas tu web en poco tiempo y sin apenas esfuerzo por tu parte.</p></article>
+        <article class="card rv"><div class="viz v-legal" aria-hidden="true"><span>Aviso legal</span><span>Privacidad</span><span>Cookies</span></div><h3>Legal y RGPD</h3><p>Aviso legal, privacidad y cookies en regla, sin banners innecesarios.</p></article>
       </div>
     </div>
   </section>
@@ -323,9 +407,9 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h2 class="h2">La web que tu negocio necesita.</h2>
       </div>
       <div class="grid">
-        <article class="card rv"><span class="tag">Web corporativa</span><h3>Quién eres y qué haces</h3><p>Tu negocio, tus servicios y cómo contactarte, explicado con claridad y con una imagen que transmite confianza.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
-        <article class="card rv"><span class="tag">Landing page</span><h3>Una página, un objetivo</h3><p>Para un servicio, un lanzamiento o una campaña: una sola página pensada para que el visitante dé el paso.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
-        <article class="card rv"><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
+        <article class="card rv"><div class="wire w-corp" aria-hidden="true"><i class="nav"></i><i class="hero"></i><div class="cols"><i></i><i></i><i></i></div></div><span class="tag">Web corporativa</span><h3>Quién eres y qué haces</h3><p>Tu negocio, tus servicios y cómo contactarte, explicado con claridad y con una imagen que transmite confianza.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
+        <article class="card rv"><div class="wire w-land" aria-hidden="true"><i class="nav"></i><div class="big"><i class="t"></i><i class="t s"></i><i class="cta"></i></div></div><span class="tag">Landing page</span><h3>Una página, un objetivo</h3><p>Para un servicio, un lanzamiento o una campaña: una sola página pensada para que el visitante dé el paso.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
+        <article class="card rv"><div class="wire w-redo" aria-hidden="true"><div class="old"><i></i><i></i><i></i></div><span class="arr"></span><div class="new"><i class="nav"></i><i class="hero"></i><i class="cta"></i></div></div><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
       </div>
     </div>
   </section>
@@ -337,7 +421,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h2 class="h2">De la idea a tu web publicada.</h2>
         <p class="lead">Un proceso claro, con un presupuesto cerrado y sin tecnicismos.</p>
       </div>
-      <ol class="steps">
+      <ol class="steps tl" id="steps">
         <li class="rv"><h3>Hablamos</h3><p>Nos cuentas tu negocio, tus clientes y qué quieres conseguir con la web.</p></li>
         <li class="rv"><h3>Diseñamos</h3><p>Te proponemos estructura, textos y diseño, y lo ajustamos contigo antes de construir.</p></li>
         <li class="rv"><h3>Construimos</h3><p>Desarrollamos la web, la probamos en móvil y ordenador y la dejamos lista para Google.</p></li>
@@ -433,6 +517,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.12});
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   } else document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  // the process timeline fills in as you scroll
+  var steps=document.getElementById('steps'), stepLis=[].slice.call(steps.children), stTick=false;
+  function fillSteps(){ stTick=false; var r=steps.getBoundingClientRect(), line=window.innerHeight*.6, p=Math.min(Math.max((line-r.top-46)/(r.height-92),0),1);
+    steps.style.setProperty('--p',p.toFixed(3)); stepLis.forEach(function(li){ li.classList.toggle('lit', li.getBoundingClientRect().top+46<=line); }); }
+  window.addEventListener('scroll',function(){ if(!stTick){ stTick=true; requestAnimationFrame(fillSteps); } },{passive:true}); fillSteps();
 
   /* ---------- 3D hero: a floating browser window that assembles a website ---------- */
   var stage=$('stage'), canvas=$('gl');
@@ -619,11 +708,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     bb=bounds(b); return {base:b, ox:(bb.l+bb.r)/2-(R.l+R.r)/2, oy:(bb.t+bb.b)/2-(R.t+R.b)/2};
   }
   // after the hero the window shrinks and sits beside the text, on whichever side the section leaves free; on phones it docks small in a bottom corner
-  var sideEls=[].slice.call(document.querySelectorAll('.sec.side-l,.sec.side-r')), phone=false;
+  var laneCy=0, cross=0, seam=0, sideEls=[].slice.call(document.querySelectorAll('.sec.side-l,.sec.side-r')), phone=false;
   function sideRegion(right){
     var hb=$('hdr').getBoundingClientRect().bottom, g=Math.max(16,W*.025);
     if(phone){ var dw=Math.min(Math.max(W*.36,110),170), dh=dw*.72; g=12; return right ? {l:W-g-dw, r:W-g, t:H-g-dh, b:H-g} : {l:g, r:g+dw, t:H-g-dh, b:H-g}; }
-    var w=sideEls[0].querySelector('.wrap').getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2;
+    var w=sideEls[0].querySelector('.wrap').getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2; laneCy=cy;
     var l=right ? w.right+g*1.5+(free-g*2.5-lw)/2 : g+(free-g*2.5-lw)/2;
     return {l:l, r:l+lw, t:cy-lh/2, b:cy+lh/2};
   }
@@ -653,8 +742,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     sp=inited?sp+(target-sp)*Math.min(1,dt*7):target;
     var dk=clamp01((y-M.heroEnd)/(M.vh*.5)); dk=dk*dk*(3-2*dk); dock+=(dk-dock)*(inited?Math.min(1,dt*8):1);
     // side: 1 = window on the right (text left), -1 = window on the left
-    var mid=y+M.vh*.5, st=1; for(var si=0;si<M.sides.length;si++){ st=M.sides[si].s; if(mid<M.sides[si].b) break; }
-    side+=(st-side)*(inited?Math.min(1,dt*3):1);
+    // it crosses over at the seam between two sections, tied to the scroll: it rides the empty band between them, shrinking a little on the way
+    var st=M.sides.length?M.sides[0].s:1, cr=0, seamY=0;
+    for(var si=0;si<M.sides.length-1;si++){ var yb=M.sides[si].b-y, u=clamp01((M.vh*.85-yb)/(M.vh*.7)); u=u*u*(3-2*u); st+=(M.sides[si+1].s-M.sides[si].s)*u; var c=Math.sin(Math.PI*u); if(c>cr){ cr=c; seamY=yb; } }
+    side+=(st-side)*(inited?Math.min(1,dt*10):1); cross+=(cr-cross)*(inited?Math.min(1,dt*10):1); if(cr>.02) seam=seamY;
     var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=(1-fade).toFixed(3);
     if(fade>=1){ last=now; return; }
     // the empty window appears first
@@ -695,8 +786,8 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     bokeh.forEach(function(g){ g.position.y=g.userData.y+(reduce?0:Math.sin(now*g.userData.sp+g.userData.ph)*.6); });
     smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
     root.rotation.y=reduce?0:smx*.18*keep; root.rotation.x=reduce?0:smy*.1*keep;
-    var heroBuilt=Math.min(sp/.45,1), sk=(side+1)/2, sb=lf.base+(rf.base-lf.base)*sk, sox=lf.ox+(rf.ox-lf.ox)*sk, soy=lf.oy+(rf.oy-lf.oy)*sk;
-    var b=hf.base+(sb-hf.base)*dock, mult=(1.12-.08*heroBuilt)*keep+1.08*dock;
+    var heroBuilt=Math.min(sp/.45,1), sk=(side+1)/2, sb=lf.base+(rf.base-lf.base)*sk, sox=lf.ox+(rf.ox-lf.ox)*sk, soy=lf.oy+(rf.oy-lf.oy)*sk+(phone?0:(laneCy-seam)*cross);
+    var b=hf.base+(sb-hf.base)*dock, mult=(1.12-.08*heroBuilt)*keep+1.08*dock*(1+.55*cross);
     camera.position.set(reduce?0:Math.sin(now*.13)*1.2*(1-.7*dock), reduce?.4:.4+Math.sin(now*.09)*.3*keep, b*(mult+(reduce?0:Math.cos(now*.1)*.02)));
     camera.lookAt(0,0,0);
     camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
