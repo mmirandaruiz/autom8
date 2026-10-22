@@ -46,7 +46,6 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - **El scroll monta la web**: cada pieza tiene su tramo (`s0`, `SPAN`) dentro del progreso del hero (`heroP()`, suavizado en `sp`); al subir, las piezas se van.
 - Cada pieza que encaja golpea la página: retroceso con muelle (`kick()` / `spring()`: se hunde, baja, se inclina hacia el impacto y se aplasta) y una onda lima (`ripple()`). El botón lima se ilumina al encajar y luego respira.
 - Vida: flotación, brillos que laten, puntos desenfocados (`bokeh`), cámara que se acerca con el scroll y órbita lenta; la ventana gira hacia el usuario al completarse.
-- Indicador `.meter` (escritorio: abajo, centrado bajo la ventana; móvil: entre la ventana y el texto, arriba en pantallas bajas): "Desliza para construir tu web" → "Construyendo tu web · %" → "Tu web está lista".
 - Sin JS, sin WebGL (`.nogl`) o con `prefers-reduced-motion`: el hero no queda fijo y la web aparece montada.
 - No mostrar texto legible dentro del 3D: titulares y textos son barras.
 
