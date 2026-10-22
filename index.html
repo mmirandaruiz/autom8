@@ -114,6 +114,19 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .hero{position:relative; height:240vh}
 .hero .stick{position:sticky; top:0; height:100vh; height:100svh; overflow:hidden}
 .hero .stick::before{content:""; position:absolute; inset:0; background:radial-gradient(55% 60% at 68% 50%, rgba(var(--lime-rgb),.10), transparent 70%), radial-gradient(40% 40% at 88% 85%, rgba(var(--signal-rgb),.12), transparent 70%); pointer-events:none}
+/* progress rail beside the docked window: a line above and below it with how complete the website is */
+#rail{position:fixed; inset:0; z-index:3; pointer-events:none; opacity:0; visibility:hidden}
+#rail .seg{position:absolute; left:0; top:0; width:2px; margin-left:-1px; border-radius:2px; background:rgba(var(--fg-rgb),.12); overflow:hidden}
+#rail .seg b{display:block; height:100%; background:var(--lime); transform-origin:top; transform:scaleY(0)}
+#rail .tag{position:absolute; left:0; top:0; transform:translate(-50%,-50%); min-width:132px; padding:10px 14px 12px; border-radius:14px; border:1px solid var(--line); background:rgba(var(--bg-rgb),.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); display:flex; flex-direction:column; gap:2px; font-size:13px; color:var(--muted); line-height:1.3}
+#rail strong{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:22px; letter-spacing:-.02em; color:var(--text)}
+#rail em{display:block; height:4px; margin-top:6px; border-radius:4px; background:rgba(var(--fg-rgb),.12); overflow:hidden}
+#rail em b{display:block; height:100%; background:var(--lime); transform-origin:left; transform:scaleX(0)}
+#rail .dots{display:flex; gap:3px; height:auto; background:none; border-radius:0}
+#rail .dots i{flex:1; height:4px; border-radius:2px; background:rgba(var(--fg-rgb),.14)}
+#rail .dots i.on{background:var(--lime)}
+@media (max-width: 600px){ #rail{display:none} }
+:root:not(.js) #rail,.nogl #rail{display:none}
 #gl{position:fixed; inset:0; width:100%; height:100%; display:block; z-index:3; pointer-events:none; transition:opacity .4s}
 .hero .veil{position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(var(--bg-rgb),.9) 0%, rgba(var(--bg-rgb),.6) 36%, rgba(var(--bg-rgb),0) 58%)}
 .hero .copy{position:absolute; z-index:2; left:max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); top:50%; transform:translateY(-44%); width:min(600px,44vw)}
@@ -330,6 +343,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
 <canvas id="gl" aria-hidden="true"></canvas>
+<div id="rail" aria-hidden="true"><i class="seg st"><b></b></i><i class="seg sb"><b></b></i><div class="tag tt"><span>Tu web</span><strong id="rail-pct">0 %</strong><em><b id="rail-bar"></b></em></div><div class="tag tb"><span>Piezas</span><strong id="rail-n">0</strong><em class="dots" id="rail-dots"></em></div></div>
 <header id="hdr">
   <nav class="nav" aria-label="Principal">
     <a class="logo" href="#inicio" aria-label="Autom8, inicio">Autom<span class="eight">8</span></a>
@@ -750,7 +764,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     for(var si=0;si<M.sides.length-1;si++){ var yb=M.sides[si].b-y, u=clamp01((M.vh*.85-yb)/(M.vh*.7)); u=u*u*(3-2*u); st+=(M.sides[si+1].s-M.sides[si].s)*u; var c=Math.sin(Math.PI*u); if(c>cr){ cr=c; seamY=yb; } }
     side+=(st-side)*(inited?Math.min(1,dt*10):1); cross+=(cr-cross)*(inited?Math.min(1,dt*10):1); if(cr>.02) seam=seamY;
     var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=(1-fade).toFixed(3);
-    if(fade>=1){ last=now; return; }
+    if(fade>=1){ last=now; rail.style.visibility='hidden'; return; }
     // the empty window appears first
     var k0=reduce?1:Math.min(Math.max((now-T0)/.6,0),1), s0=1-Math.pow(1-k0,3);
     fixed.forEach(function(m){ m.scale.setScalar(Math.max(s0,.001)); });
@@ -795,6 +809,24 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     camera.lookAt(0,0,0);
     camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
     renderer.render(scene,camera);
+    railUpdate(n);
+  }
+  // the rail follows the window on screen: a line above and below it, each with a box showing the progress
+  var rail=$('rail'), railPct=$('rail-pct'), railBar=$('rail-bar'), railN=$('rail-n'), railDots=$('rail-dots'), segT=rail.querySelector('.st'), segB=rail.querySelector('.sb'), tagT=rail.querySelector('.tt'), tagB=rail.querySelector('.tb'), railShown=-1, dotEls=[];
+  for(var q=0;q<N;q++){ var di=document.createElement('i'); railDots.appendChild(di); dotEls.push(di); }
+  function railUpdate(n){
+    var op=phone?0:clamp01((dock-.5)*2)*(1-cross*1.6)*parseFloat(canvas.style.opacity||1);
+    rail.style.opacity=op.toFixed(3); rail.style.visibility=op>.01?'visible':'hidden'; if(op<=.01) return;
+    tmpBox.setFromObject(fixed[0]); var l=1e9,r=-1e9,t=1e9,b=-1e9;
+    for(var i=0;i<8;i++){ tmpV.set(i&1?tmpBox.max.x:tmpBox.min.x, i&2?tmpBox.max.y:tmpBox.min.y, i&4?tmpBox.max.z:tmpBox.min.z).project(camera); var x=(tmpV.x+1)/2*W, y=(1-tmpV.y)/2*H; l=Math.min(l,x); r=Math.max(r,x); t=Math.min(t,y); b=Math.max(b,y); }
+    var cx=(l+r)/2, hb=$('hdr').getBoundingClientRect().bottom, gap=26, t0=hb+24, t1=t-gap, b0=b+gap, b1=H-24;
+    segT.style.transform='translate('+cx+'px,'+t0+'px)'; segT.style.height=Math.max(t1-t0,0)+'px';
+    segB.style.transform='translate('+cx+'px,'+b0+'px)'; segB.style.height=Math.max(b1-b0,0)+'px';
+    segT.firstChild.style.transform='scaleY('+Math.min(loadP*2,1).toFixed(3)+')'; segB.firstChild.style.transform='scaleY('+clamp01(loadP*2-1).toFixed(3)+')';
+    tagT.style.transform='translate('+cx+'px,'+(t0+t1)/2+'px) translate(-50%,-50%)'; tagB.style.transform='translate('+cx+'px,'+(b0+b1)/2+'px) translate(-50%,-50%)';
+    tagT.style.display=t1-t0>90?'':'none'; tagB.style.display=b1-b0>90?'':'none';
+    railBar.style.transform='scaleX('+loadP.toFixed(3)+')';
+    if(n!==railShown){ railShown=n; railPct.textContent=Math.round(n/N*100)+' %'; railN.textContent=n+' de '+N; dotEls.forEach(function(d,i){ d.className=i<n?'on':''; }); }
   }
   frame();
 })();
