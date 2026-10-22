@@ -523,9 +523,9 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   paint(); window.addEventListener('themechange',paint);
 
   // impact ripples that spread from where each part hits the page
-  var ringGeo=new THREE.RingGeometry(.42,.5,48), rings=[], ringIdx=0;
+  var ringGeo=new THREE.RingGeometry(.45,.49,48), rings=[], ringIdx=0;
   for(var q=0;q<8;q++){ var rm=new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:0xd4f57a, transparent:true, opacity:0, depthWrite:false, side:THREE.DoubleSide})); rm.visible=false; site.add(rm); rings.push({m:rm,t:-9,s:1}); }
-  function ripple(it,now){ var r=rings[ringIdx++%rings.length]; r.m.position.set(it.p[0],it.p[1],it.p[2]+it.d/2+.03); r.t=now; r.s=1.4+it.w*5; }
+  function ripple(it,now){ var r=rings[ringIdx++%rings.length]; r.m.position.set(it.p[0],it.p[1],it.p[2]+it.d/2+.03); r.t=now; r.s=.7+it.w*2; }
 
   // each part has its own slot in the scroll; scrolling back sends it out again
   function rnd(a,b){ return a+Math.random()*(b-a); }
@@ -549,16 +549,16 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var bz=0,bvz=0,bdy=0,bvdy=0,bx=0,bvx=0,by=0,bvy=0,bsq=0,bvsq=0;
   function kick(it){
     var f=.5+.5*it.w;
-    bvz-=8*f; bvdy-=4.6*f; bvsq+=1.8*f;
-    bvx+=(it.p[1]/4)*1.1*f; bvy+=(-it.p[0]/6)*1.1*f;
+    bvz-=3.6*f; bvdy-=2*f; bvsq+=.8*f;
+    bvx+=(it.p[1]/4)*.5*f; bvy+=(-it.p[0]/6)*.5*f;
   }
   function spring(dt){
-    var k=60,c=6;
+    var k=60,c=8.5;
     bvz+=(-k*bz-c*bvz)*dt; bz+=bvz*dt;
     bvdy+=(-k*bdy-c*bvdy)*dt; bdy+=bvdy*dt;
     bvx+=(-k*bx-c*bvx)*dt; bx+=bvx*dt;
     bvy+=(-k*by-c*bvy)*dt; by+=bvy*dt;
-    bvsq+=(-90*bsq-8*bvsq)*dt; bsq+=bvsq*dt;
+    bvsq+=(-90*bsq-11*bvsq)*dt; bsq+=bvsq*dt;
   }
 
   var hero=$('inicio');
@@ -621,7 +621,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     }
     inited=true;
     for(var st=0; st<3; st++) spring(dt/3);
-    rings.forEach(function(r){ var age=(now-r.t)/.6; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.85*(1-age); } else r.m.visible=false; });
+    rings.forEach(function(r){ var age=(now-r.t)/.45; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.3*(1-age); } else r.m.visible=false; });
     // the lime button lights up when it lands and keeps breathing
     var gk=Math.max(0,1-(now-glowT)/1.6), pulse=gk*gk;
     MAT.cta.emissiveIntensity=(cta.landed?.14+.08*Math.sin(now*2.4):0)+pulse*.9;
