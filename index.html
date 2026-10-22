@@ -125,6 +125,9 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 #rail .dots{display:flex; gap:3px; height:auto; background:none; border-radius:0}
 #rail .dots i{flex:1; height:4px; border-radius:2px; background:rgba(var(--fg-rgb),.14)}
 #rail .dots i.on{background:var(--lime)}
+#rail .dots i{transition:background-color .35s}
+#rail .tag{transition:border-color .4s}
+#rail .tag.done{border-color:var(--accent)}
 @media (max-width: 600px){ #rail{display:none} }
 :root:not(.js) #rail,.nogl #rail{display:none}
 #gl{position:fixed; inset:0; width:100%; height:100%; display:block; z-index:3; pointer-events:none; transition:opacity .4s}
@@ -659,7 +662,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 
   // each part has its own slot in the scroll; scrolling back sends it out again
   function rnd(a,b){ return a+Math.random()*(b-a); }
-  var N=pieces.length, S0=.04, S1=.88, SPAN=.12;
+  var N=pieces.length, S0=.04, S1=.995, SPAN=.12;
   pieces.forEach(function(it,i){
     var wide=window.innerWidth>900||(window.innerWidth>window.innerHeight&&window.innerHeight<=520), ang=wide?rnd(-1.35,1.35):rnd(.3,Math.PI-.3), rad=rnd(22,30);
     it.from=[Math.cos(ang)*rad, Math.sin(ang)*rad*.7, rnd(5,12)];
@@ -698,7 +701,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   // the website keeps building while people read: almost half in the hero, the rest across the page, finished at "Contacto"
   var hero=$('inicio'), contact=$('contacto');
   function clamp01(x){ return Math.min(Math.max(x,0),1); }
-  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.55, fade1:contact.offsetTop-vh*.15}; }
+  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh*.85,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.4, fade1:contact.offsetTop-vh*.05}; }
   function pageP(y,m){ return y<=m.heroEnd ? .45*y/m.heroEnd : .45+.55*clamp01((y-m.heroEnd)/(m.done-m.heroEnd)); }
 
   // frame the window inside the free area: right of the headline on wide screens, between header and text on phones
@@ -756,7 +759,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var now=performance.now()/1000, dt=Math.min(Math.max(now-(last||now),0),.05); last=now;
     if(!M) M=marks();
     var y=window.scrollY, target=reduce?1:pageP(y,M);
-    sp=inited?sp+(target-sp)*Math.min(1,dt*7):target;
+    sp=inited?sp+(target-sp)*Math.min(1,dt*7):target; if(Math.abs(target-sp)<.002) sp=target;
     var dk=clamp01((y-M.heroEnd)/(M.vh*.5)); dk=dk*dk*(3-2*dk); dock+=(dk-dock)*(inited?Math.min(1,dt*8):1);
     // side: 1 = window on the right (text left), -1 = window on the left
     // it crosses over at the seam between two sections, tied to the scroll: it rides the empty band between them, shrinking a little on the way
@@ -809,24 +812,27 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     camera.lookAt(0,0,0);
     camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
     renderer.render(scene,camera);
-    railUpdate(n);
+    railUpdate(n,dt);
   }
   // the rail follows the window on screen: a line above and below it, each with a box showing the progress
-  var rail=$('rail'), railPct=$('rail-pct'), railBar=$('rail-bar'), railN=$('rail-n'), railDots=$('rail-dots'), segT=rail.querySelector('.st'), segB=rail.querySelector('.sb'), tagT=rail.querySelector('.tt'), tagB=rail.querySelector('.tb'), railShown=-1, dotEls=[];
+  var rail=$('rail'), railPct=$('rail-pct'), railBar=$('rail-bar'), railN=$('rail-n'), railDots=$('rail-dots'), segT=rail.querySelector('.st'), segB=rail.querySelector('.sb'), tagT=rail.querySelector('.tt'), tagB=rail.querySelector('.tb'), railShown=-1, dotEls=[], fillP=0, railLbl=rail.querySelector('.tt span');
   for(var q=0;q<N;q++){ var di=document.createElement('i'); railDots.appendChild(di); dotEls.push(di); }
-  function railUpdate(n){
-    var op=phone?0:clamp01((dock-.5)*2)*(1-cross*1.6)*parseFloat(canvas.style.opacity||1);
+  function railUpdate(n,dt){
+    var op=phone?0:clamp01((dock-.5)*2)*clamp01(1-cross*1.4)*parseFloat(canvas.style.opacity||1);
+    // the lines fill continuously with the scroll, not in steps
+    fillP+=(clamp01((sp-S0)/(S1-S0))-fillP)*Math.min(1,dt*6);
     rail.style.opacity=op.toFixed(3); rail.style.visibility=op>.01?'visible':'hidden'; if(op<=.01) return;
     tmpBox.setFromObject(fixed[0]); var l=1e9,r=-1e9,t=1e9,b=-1e9;
     for(var i=0;i<8;i++){ tmpV.set(i&1?tmpBox.max.x:tmpBox.min.x, i&2?tmpBox.max.y:tmpBox.min.y, i&4?tmpBox.max.z:tmpBox.min.z).project(camera); var x=(tmpV.x+1)/2*W, y=(1-tmpV.y)/2*H; l=Math.min(l,x); r=Math.max(r,x); t=Math.min(t,y); b=Math.max(b,y); }
     var cx=(l+r)/2, hb=$('hdr').getBoundingClientRect().bottom, gap=26, t0=hb+24, t1=t-gap, b0=b+gap, b1=H-24;
     segT.style.transform='translate('+cx+'px,'+t0+'px)'; segT.style.height=Math.max(t1-t0,0)+'px';
     segB.style.transform='translate('+cx+'px,'+b0+'px)'; segB.style.height=Math.max(b1-b0,0)+'px';
-    segT.firstChild.style.transform='scaleY('+Math.min(loadP*2,1).toFixed(3)+')'; segB.firstChild.style.transform='scaleY('+clamp01(loadP*2-1).toFixed(3)+')';
+    var fp=n===N?1:fillP; segT.firstChild.style.transform='scaleY('+Math.min(fp*2,1).toFixed(4)+')'; segB.firstChild.style.transform='scaleY('+clamp01(fp*2-1).toFixed(4)+')';
     tagT.style.transform='translate('+cx+'px,'+(t0+t1)/2+'px) translate(-50%,-50%)'; tagB.style.transform='translate('+cx+'px,'+(b0+b1)/2+'px) translate(-50%,-50%)';
-    tagT.style.display=t1-t0>90?'':'none'; tagB.style.display=b1-b0>90?'':'none';
-    railBar.style.transform='scaleX('+loadP.toFixed(3)+')';
-    if(n!==railShown){ railShown=n; railPct.textContent=Math.round(n/N*100)+' %'; railN.textContent=n+' de '+N; dotEls.forEach(function(d,i){ d.className=i<n?'on':''; }); }
+    tagT.style.opacity=clamp01((t1-t0-70)/60).toFixed(3); tagB.style.opacity=clamp01((b1-b0-70)/60).toFixed(3);
+    railBar.style.transform='scaleX('+fp.toFixed(4)+')';
+    var pc=n===N?100:Math.min(99,Math.round(fp*100)); if(pc!==railShown){ railShown=pc; railPct.textContent=pc+' %'; railLbl.textContent=pc===100?'Tu web está lista':'Tu web'; tagT.classList.toggle('done',pc===100); }
+    if(n!==railN._n){ railN._n=n; railN.textContent=n+' de '+N; dotEls.forEach(function(d,i){ d.className=i<n?'on':''; }); }
   }
   frame();
 })();
