@@ -699,7 +699,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   // the website keeps building while people read: almost half in the hero, the rest across the page, finished at "Contacto"
   var hero=$('inicio'), contact=$('contacto');
   function clamp01(x){ return Math.min(Math.max(x,0),1); }
-  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh*.85,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.4, fade1:contact.offsetTop-vh*.05}; }
+  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh*1.05,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.95, fade1:contact.offsetTop-vh*.6}; }
   function pageP(y,m){ return y<=m.heroEnd ? .45*y/m.heroEnd : .45+.55*clamp01((y-m.heroEnd)/(m.done-m.heroEnd)); }
 
   // frame the window inside the free area: right of the headline on wide screens, between header and text on phones
@@ -822,7 +822,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     rail.style.opacity=op.toFixed(3); rail.style.visibility=op>.01?'visible':'hidden'; if(op<=.01) return;
     tmpBox.setFromObject(fixed[0]); var l=1e9,r=-1e9,t=1e9,b=-1e9;
     for(var i=0;i<8;i++){ tmpV.set(i&1?tmpBox.max.x:tmpBox.min.x, i&2?tmpBox.max.y:tmpBox.min.y, i&4?tmpBox.max.z:tmpBox.min.z).project(camera); var x=(tmpV.x+1)/2*W, y=(1-tmpV.y)/2*H; l=Math.min(l,x); r=Math.max(r,x); t=Math.min(t,y); b=Math.max(b,y); }
-    var cx=(l+r)/2, hb=$('hdr').getBoundingClientRect().bottom, gap=26, t0=hb+24, t1=t-gap, b0=b+gap, b1=H-24;
+    var cx=(l+r)/2, hb=$('hdr').getBoundingClientRect().bottom, gap=26, t0=hb+24, t1=t-gap, b0=b+gap, b1=Math.min(H-24, contact.getBoundingClientRect().top-24);
     segT.style.transform='translate('+cx+'px,'+t0+'px)'; segT.style.height=Math.max(t1-t0,0)+'px';
     segB.style.transform='translate('+cx+'px,'+b0+'px)'; segB.style.height=Math.max(b1-b0,0)+'px';
     var fp=n===N?1:fillP; segT.firstChild.style.transform='scaleY('+Math.min(fp*2,1).toFixed(4)+')'; segB.firstChild.style.transform='scaleY('+clamp01(fp*2-1).toFixed(4)+')';
