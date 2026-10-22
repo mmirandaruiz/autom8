@@ -645,19 +645,22 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 
   // each part has its own slot in the scroll; scrolling back sends it out again
   function rnd(a,b){ return a+Math.random()*(b-a); }
-  function easeOutBack(k){ var c=1.35; k-=1; return 1+(c+1)*k*k*k+c*k*k; }
   var N=pieces.length, S0=.04, S1=.88, SPAN=.12;
   pieces.forEach(function(it,i){
     var wide=window.innerWidth>900||(window.innerWidth>window.innerHeight&&window.innerHeight<=520), ang=wide?rnd(-1.35,1.35):rnd(.3,Math.PI-.3), rad=rnd(22,30);
-    it.from=[Math.cos(ang)*rad, Math.sin(ang)*rad*.7, rnd(-4,12)];
+    it.from=[Math.cos(ang)*rad, Math.sin(ang)*rad*.7, rnd(5,12)];
     it.fr=[rnd(-2.5,2.5),rnd(-2.5,2.5),rnd(-2.5,2.5)];
     it.s0=S0+(S1-S0-SPAN)*(i/(N-1)); it.landed=false;
   });
   function place(it,prog){
-    var k=Math.min(Math.max((prog-it.s0)/SPAN,0),1), e=k<1?easeOutBack(k):1, m=it.m, u=1-e;
-    m.position.set(it.from[0]+(it.p[0]-it.from[0])*e, it.from[1]+(it.p[1]-it.from[1])*e, it.from[2]+(it.p[2]-it.from[2])*e);
+    // solid parts: they fly in above the page, line up over their slot and then drop straight down onto it, so they never pass through the window or other parts
+    var k=Math.min(Math.max((prog-it.s0)/SPAN,0),1), m=it.m, HOV=2.6;
+    var a=Math.min(k/.7,1), ea=1-Math.pow(1-a,3), u=1-ea, hz=it.p[2]+HOV;
+    var b=Math.max((k-.7)/.3,0), eb=b*b, z=hz+(it.p[2]-hz)*eb;
+    if(a<1) z=it.from[2]+(hz-it.from[2])*ea;
+    m.position.set(it.from[0]+(it.p[0]-it.from[0])*ea, it.from[1]+(it.p[1]-it.from[1])*ea, z);
     m.rotation.set(it.fr[0]*u, it.fr[1]*u, it.fr[2]*u);
-    m.scale.setScalar(Math.max(.2+.8*e,.001));
+    m.scale.setScalar(Math.max(.2+.8*ea,.001));
     m.visible=k>0;
     return k;
   }
