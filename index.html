@@ -155,8 +155,14 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 }
 
 /* sections */
-.sec{background:var(--ink); padding:clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); transition:background-color .4s}
-.sec.alt{background:var(--panel)}
+.sec{position:relative; z-index:2; background:transparent; padding:clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); transition:background-color .4s}
+.sec.alt{background:var(--panel); background:color-mix(in srgb, var(--panel) 62%, transparent)}
+/* the 3D website stays in view: content alternates sides and the window moves to the free side */
+@media (min-width: 901px){
+  .sec.side-l .wrap,.sec.side-r .wrap{max-width:min(820px,60%); margin-left:0; margin-right:auto}
+  .sec.side-r .wrap{margin-left:auto; margin-right:0}
+  .sec.side-l .bridge,.sec.side-r .bridge{grid-template-columns:minmax(0,1fr)}
+}
 .wrap{max-width:1320px; margin:0 auto}
 .label{display:inline-flex; align-items:center; gap:10px; color:var(--accent); font-weight:600; margin-bottom:18px; font-size:16px}
 .label::before{content:""; width:10px; height:10px; border-radius:50%; background:var(--lime)}
@@ -275,7 +281,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="problema" class="sec alt">
+  <section id="problema" class="sec side-l alt">
     <div class="wrap">
       <div class="rv">
         <div class="label">Tu primera impresión</div>
@@ -293,7 +299,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="incluye" class="sec">
+  <section id="incluye" class="sec side-r">
     <div class="wrap">
       <div class="rv">
         <div class="label">Qué incluye</div>
@@ -310,7 +316,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="webs" class="sec alt types">
+  <section id="webs" class="sec side-l alt types">
     <div class="wrap">
       <div class="rv">
         <div class="label">Tipos de web</div>
@@ -324,7 +330,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="proceso" class="sec">
+  <section id="proceso" class="sec side-r">
     <div class="wrap">
       <div class="rv">
         <div class="label">Cómo trabajamos</div>
@@ -340,7 +346,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="conectada" class="sec alt">
+  <section id="conectada" class="sec side-l alt">
     <div class="wrap bridge">
       <div class="rv">
         <div class="label">Más que una web</div>
@@ -356,7 +362,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="faq" class="sec faq">
+  <section id="faq" class="sec side-r faq">
     <div class="wrap">
       <div class="rv">
         <div class="label">Preguntas frecuentes</div>
@@ -566,7 +572,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   // the website keeps building while people read: almost half in the hero, the rest across the page, finished at "Contacto"
   var hero=$('inicio'), contact=$('contacto');
   function clamp01(x){ return Math.min(Math.max(x,0),1); }
-  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, fade0:contact.offsetTop-vh*.55, fade1:contact.offsetTop-vh*.15}; }
+  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.55, fade1:contact.offsetTop-vh*.15}; }
   function pageP(y,m){ return y<=m.heroEnd ? .45*y/m.heroEnd : .45+.55*clamp01((y-m.heroEnd)/(m.done-m.heroEnd)); }
 
   // frame the window inside the free area: right of the headline on wide screens, between header and text on phones
@@ -592,13 +598,19 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var d=40, bb=bounds(d), sc=Math.min((R.r-R.l)/(bb.r-bb.l), (R.b-R.t)/(bb.b-bb.t))*.86, b=d/Math.max(sc,.05);
     bb=bounds(b); return {base:b, ox:(bb.l+bb.r)/2-(R.l+R.r)/2, oy:(bb.t+bb.b)/2-(R.t+R.b)/2};
   }
-  // docked: a small browser in the bottom-right corner that keeps building
-  function dockRegion(){ var g=narrow?12:20, dw=narrow?Math.min(Math.max(W*.32,104),150):Math.min(Math.max(W*.2,190),300), dh=dw*.72; return {l:W-g-dw, r:W-g, t:H-g-dh, b:H-g}; }
-  var hf={base:30,ox:0,oy:0}, df=hf, M=null;
+  // after the hero the window sits beside the text, on whichever side the section leaves free; on phones it stays faint behind the text
+  var sideEls=[].slice.call(document.querySelectorAll('.sec.side-l,.sec.side-r')), phone=false;
+  function sideRegion(right){
+    var hb=$('hdr').getBoundingClientRect().bottom, g=Math.max(16,W*.025);
+    if(phone) return {l:g, r:W-g, t:hb+g, b:H-g};
+    var w=sideEls[0].querySelector('.wrap').getBoundingClientRect(), free=W-w.right;
+    return right ? {l:w.right+g*1.5, r:W-g, t:hb+g, b:H-g} : {l:g, r:free-g*1.5, t:hb+g, b:H-g};
+  }
+  var hf={base:30,ox:0,oy:0}, rf=hf, lf=hf, M=null;
   function resize(){
-    W=Math.max(window.innerWidth,1); H=Math.max(window.innerHeight,1); narrow=isNarrow();
+    W=Math.max(window.innerWidth,1); H=Math.max(window.innerHeight,1); narrow=isNarrow(); phone=W<=900;
     renderer.setSize(W,H,false); camera.aspect=W/H;
-    hf=fitFor(region()); df=fitFor(dockRegion()); base=hf.base; M=marks();
+    hf=fitFor(region()); rf=fitFor(sideRegion(true)); lf=fitFor(sideRegion(false)); base=hf.base; M=marks();
     camera.setViewOffset(W,H,hf.ox,hf.oy,W,H); camera.updateProjectionMatrix();
   }
   if('ResizeObserver' in window) new ResizeObserver(resize).observe(stage); else window.addEventListener('resize',resize);
@@ -610,7 +622,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var onScreen=true, visible=!document.hidden;
   document.addEventListener('visibilitychange',function(){ visible=!document.hidden; });
 
-  var T0=performance.now()/1000, last=0, sp=0, inited=false, glowT=-9, dock=0;
+  var T0=performance.now()/1000, last=0, sp=0, inited=false, glowT=-9, dock=0, side=1;
   function frame(){
     requestAnimationFrame(frame);
     if(!onScreen||!visible) return;
@@ -619,7 +631,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var y=window.scrollY, target=reduce?1:pageP(y,M);
     sp=inited?sp+(target-sp)*Math.min(1,dt*7):target;
     var dk=clamp01((y-M.heroEnd)/(M.vh*.5)); dk=dk*dk*(3-2*dk); dock+=(dk-dock)*(inited?Math.min(1,dt*8):1);
-    var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=(1-fade).toFixed(3);
+    // side: 1 = window on the right (text left), -1 = window on the left
+    var mid=y+M.vh*.5, st=1; for(var si=0;si<M.sides.length;si++){ st=M.sides[si].s; if(mid<M.sides[si].b) break; }
+    side+=(st-side)*(inited?Math.min(1,dt*3):1);
+    var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=((1-fade)*(1-dock*(phone?.8:.1))).toFixed(3);
     if(fade>=1){ last=now; return; }
     // the empty window appears first
     var k0=reduce?1:Math.min(Math.max((now-T0)/.6,0),1), s0=1-Math.pow(1-k0,3);
@@ -642,7 +657,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     // alive: float, wobble, breathing glow, drifting dots, slow camera
     var fl=reduce?0:Math.sin(now*.8), done=n===N;
     site.position.set(0, .2+fl*.14+bdy, bz);
-    site.rotation.set(.12+bx, -.44+.2*sp+by, reduce?0:Math.sin(now*.5)*.015);
+    site.rotation.set(.12+bx, (-.44+.2*sp)*(1-dock)-.3*side*dock+by, reduce?0:Math.sin(now*.5)*.015);
     var sq=Math.max(-.07,Math.min(.07,bsq*.045)); site.scale.set(1+sq,1-sq,1);
     var keep=1-dock;
     shadow.material.opacity=shadowBase*(1-.18*fl)*keep; shadow.scale.set(15-fl*.8,5-fl*.3,1);
@@ -651,10 +666,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     bokeh.forEach(function(g){ g.position.y=g.userData.y+(reduce?0:Math.sin(now*g.userData.sp+g.userData.ph)*.6); });
     smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
     root.rotation.y=reduce?0:smx*.18*keep; root.rotation.x=reduce?0:smy*.1*keep;
-    var heroBuilt=Math.min(sp/.45,1), b=hf.base+(df.base-hf.base)*dock, mult=(1.12-.08*heroBuilt)*keep+1.06*dock;
+    var heroBuilt=Math.min(sp/.45,1), sk=(side+1)/2, sb=lf.base+(rf.base-lf.base)*sk, sox=lf.ox+(rf.ox-lf.ox)*sk+(phone?side*W*.14:0), soy=lf.oy+(rf.oy-lf.oy)*sk;
+    var b=hf.base+(sb-hf.base)*dock, mult=(1.12-.08*heroBuilt)*keep+1.08*dock;
     camera.position.set(reduce?0:Math.sin(now*.13)*1.2*(1-.7*dock), reduce?.4:.4+Math.sin(now*.09)*.3*keep, b*(mult+(reduce?0:Math.cos(now*.1)*.02)));
     camera.lookAt(0,0,0);
-    camera.setViewOffset(W,H,hf.ox+(df.ox-hf.ox)*dock,hf.oy+(df.oy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
+    camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
     renderer.render(scene,camera);
   }
   frame();
