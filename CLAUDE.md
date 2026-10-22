@@ -1,6 +1,6 @@
 # Autom8 — web (contexto para Claude Code)
 
-Web de una sola página para **Autom8**, consultoría de eficiencia operativa: detectamos procesos lentos, manuales o con errores y los resolvemos con automatización, integraciones, desarrollo a medida e IA *solo donde tiene sentido*. Todo el contenido está en **español (España)**.
+Web de una sola página para **Autom8**, consultoría de eficiencia operativa: detectamos procesos lentos, manuales o con errores y los resolvemos con automatización, integraciones, desarrollo a medida e IA *solo donde tiene sentido*. También diseñamos y creamos páginas web, siempre conectadas a las herramientas del cliente (CRM, ERP, reservas): sección `#web` del inicio y página `/diseno-web`. Todo el contenido está en **español (España)**.
 
 ## Estructura
 - `index.html` — todo el sitio (HTML + CSS + JS en un archivo).
@@ -13,7 +13,7 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
 - `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.
 - `404.html` — página de error que Vercel sirve automáticamente.
-- Páginas de servicio para SEO (una por búsqueda objetivo): `automatizacion-de-procesos.html`. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (`/automatizacion-de-procesos`).
+- Páginas de servicio para SEO (una por búsqueda objetivo): `automatizacion-de-procesos.html`, `diseno-web.html`. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (`/automatizacion-de-procesos`).
 - El titular es autónomo (no hay sociedad): el aviso legal necesita nombre completo, NIF y domicilio.
 - Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
 
