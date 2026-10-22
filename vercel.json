@@ -62,5 +62,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/automatizacion-de-procesos",
+      "destination": "/",
+      "permanent": false
+    }
   ]
 }

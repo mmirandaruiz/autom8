@@ -1,6 +1,8 @@
 # Autom8 — web (contexto para Claude Code)
 
-Web de una sola página para **Autom8**, consultoría de eficiencia operativa: detectamos procesos lentos, manuales o con errores y los resolvemos con automatización, integraciones, desarrollo a medida e IA *solo donde tiene sentido*. Todo el contenido está en **español (España)**.
+Web de una sola página para **Autom8**. **Producto actual: diseño y creación de páginas web a medida para empresas**, hechas para el cliente y entregadas publicadas. No mencionar IA en la web. Todo el contenido está en **español (España)**.
+
+La versión anterior, centrada en automatización de procesos (historia 3D de papeles, calculadora, página `/automatizacion-de-procesos`), está guardada en la rama `backup/automatizacion` y la etiqueta `v1-automatizacion`. La sección "Más que una web" (`#conectada`) es el puente para volver a ofrecer automatización más adelante.
 
 ## Estructura
 - `index.html` — todo el sitio (HTML + CSS + JS en un archivo).
@@ -13,7 +15,7 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
 - `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.
 - `404.html` — página de error que Vercel sirve automáticamente.
-- Páginas de servicio para SEO (una por búsqueda objetivo): `automatizacion-de-procesos.html`. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (`/automatizacion-de-procesos`).
+- Páginas de servicio para SEO (una por búsqueda objetivo; ahora mismo ninguna en `main`). Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (sin `.html`). `vercel.json` redirige temporalmente `/automatizacion-de-procesos` al inicio.
 - El titular es autónomo (no hay sociedad): el aviso legal necesita nombre completo, NIF y domicilio.
 - Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
 
@@ -22,7 +24,6 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - La Access Key ya está en `WEB3FORMS_KEY` (`index.html`). Es pública por diseño en Web3Forms; no sustituirla por el marcador.
 - Antispam: campo `botcheck` oculto con la clase `.hp` (no usar `display:none`).
 - Solo 3 campos: nombre, email, descripción. No añadir más campos.
-- El formulario de la calculadora envía el email + el resultado calculado.
 
 ## Marca y paleta
 | Token | Oscuro | Claro | Uso |
@@ -38,25 +39,19 @@ Web de una sola página para **Autom8**, consultoría de eficiencia operativa: d
 - Tipografías: Bricolage Grotesque (titulares) + Instrument Sans (texto).
 - Tema: oscuro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
 
-## La historia 3D (scroll)
-Un único `InstancedMesh` de 720 bloques redondeados que cambia entre estados según el scroll:
-- `0` caos: papeles blancos (con líneas de texto sutiles), ~1/20 papeles lima, cubos lavanda que crecen con `heat`.
-- `2` detectar: maqueta en cuadrícula con focos lavanda (cuellos de botella).
-- `3` ordenar: maqueta plana con carriles lima.
-- `4` circuito en forma de 8 con paquetes de datos (paso final "Autom8").
-- `5` barras de crecimiento (medir).
-- Las secciones `.pin` (`story`, `method`, `final`) tienen un objeto de keyframes en `PINS` con: `p` progreso, `st` estado, `cp/cl` cámara, `sh` desplazamiento horizontal del encuadre, `heat`, `g` brillo lima, `h` brillo lavanda.
-- Textos de la historia: `data-beat="inicio,fin"` (progreso 0–1). Barra de progreso: `data-hud`.
-- El tema se aplica al 3D en `TH` / `applyTheme()`; en claro cada escena tiene su exposición (`ex`).
-- Fuera de los pins el canvas se oculta y no renderiza (rendimiento).
+## Hero 3D (una web construyéndose)
+- `#stage` con `<canvas id="gl">` dentro del hero (no es fijo ni ocupa toda la página). Three.js r128.
+- Una ventana de navegador (`site`, 12×8 unidades) y un móvil (`phone`) hechos de cajas (`add(grupo, rol, izquierda, arriba, ancho, alto, z, fondo)`). Roles de color en `MAT`, tema en `paint()`.
+- Al cargar, las piezas vuelan desde posiciones aleatorias y se colocan en orden; después, cada 6,5 s, `redesign()` cambia el color de la imagen, el ancho del titular y el orden de las tarjetas.
+- Ratón y scroll inclinan la escena; solo se renderiza cuando el hero está en pantalla. `prefers-reduced-motion`: montaje instantáneo y sin movimiento.
+- Sin WebGL, el escenario se oculta (`.nogl`) y el texto sigue funcionando.
 
 ## Inicio
-- La primera pantalla solo lleva el titular "Automatizamos los procesos de tu empresa." y "Desliza para ordenar el caos". Sin más texto: los papeles son el protagonista.
+- Titular: "Creamos la web de tu empresa." Texto a la izquierda y 3D a la derecha (en móvil, 3D arriba).
+- Secciones: problema → qué incluye → tipos de web → cómo trabajamos → más que una web → preguntas → contacto.
 
 ## Reglas a respetar
 - Accesibilidad WCAG 2.1 AA: texto ≥ 4.5:1, bordes de campos ≥ 3:1, foco visible, `prefers-reduced-motion`, enlace "Saltar al contenido".
-- Los textos sobre el 3D llevan un velo (`.scrim`) detrás; si se mueve un texto, comprobar el contraste.
-- Tiene que funcionar en móvil (texto abajo, 3D arriba, tarjeta del método a todo el ancho). Probar al menos 320×568, 375×667, 390×844, 430×932 y horizontal 667×375 / 844×390: sin scroll lateral y ningún texto tapado por la cabecera o la barra de progreso.
+- Tiene que funcionar en móvil (3D arriba, texto debajo). Probar al menos 320×568, 375×667, 390×844, 430×932 y horizontal 667×375 / 844×390: sin scroll lateral y ningún texto tapado por la cabecera o la barra de progreso.
 - Campos de formulario con texto ≥ 16px (si no, iOS hace zoom) y zonas táctiles ≥ 44px.
 - No inventar cifras ni testimonios; usar marcadores tipo [LOGO CLIENTE].
-- En la animación inicial no usar ejemplos concretos (facturas, etc.); esos van en la sección "Qué automatizamos".
