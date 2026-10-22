@@ -39,17 +39,19 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Tipografías: Bricolage Grotesque (titulares) + Instrument Sans (texto).
 - Tema: oscuro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
 
-## Hero 3D (una ventana de navegador que monta una web)
-- `#stage` con `<canvas id="gl">` dentro del hero (no es fijo ni ocupa toda la página). Three.js r128.
-- Una sola ventana de navegador flotante (`site`, 12×8 unidades), inclinada, con barra superior, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
-- Piezas con volumen y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie` es la cara sobre la que se apoya: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), imagen genérica abstracta pintada en código (`imageTex()`: degradado lima-lavanda con ondas, sin fotos ni imágenes externas) y tres tarjetas blancas.
-- Bucle: `build()` (vuelan y encajan) → 5 s quietas → `scatter()` → vuelta a empezar. El botón lima se ilumina al encajar y cada pieza que llega empuja la página, que se hunde, se inclina hacia el impacto y rebota con un muelle (`kick()` / `spring()`).
-- Detrás: brillo lima y lavanda, puntos desenfocados (`bokeh`) y sombra o reflejo debajo. Cámara con acercamiento y órbita lentos; el ratón y el scroll inclinan la escena.
-- Colores por tema en `paint()`. Solo renderiza con el hero en pantalla. `prefers-reduced-motion`: montaje instantáneo y sin bucle. Sin WebGL, `.nogl` oculta el escenario.
+## Hero 3D (una ventana de navegador que se monta con el scroll)
+- El hero es a pantalla completa y queda fijo (`.hero` 320vh con `.stick` sticky). El canvas `#gl` ocupa todo el fondo; el texto va encima a la izquierda con un velo (`.veil`). En móvil: ventana arriba y texto abajo (`setViewOffset` en `resize()`).
+- Una ventana de navegador flotante (`site`, 12×8) con volumen: marco, barra, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
+- Piezas con relieve y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie`: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), imagen genérica abstracta (`imageTex()`) y tres tarjetas.
+- **El scroll monta la web**: cada pieza tiene su tramo (`s0`, `SPAN`) dentro del progreso del hero (`heroP()`, suavizado en `sp`); al subir, las piezas se van.
+- Cada pieza que encaja golpea la página: retroceso con muelle (`kick()` / `spring()`: se hunde, baja, se inclina hacia el impacto y se aplasta) y una onda lima (`ripple()`). El botón lima se ilumina al encajar y luego respira.
+- Vida: flotación, brillos que laten, puntos desenfocados (`bokeh`), cámara que se acerca con el scroll y órbita lenta; la ventana gira hacia el usuario al completarse.
+- Indicador `.meter`: "Desliza para construir tu web" → "Construyendo tu web · %" → "Tu web está lista".
+- Sin JS, sin WebGL (`.nogl`) o con `prefers-reduced-motion`: el hero no queda fijo y la web aparece montada.
 - No mostrar texto legible dentro del 3D: titulares y textos son barras.
 
 ## Inicio
-- Titular: "Creamos la web de tu empresa." Texto a la izquierda y 3D a la derecha (en móvil, 3D arriba).
+- Titular: "Creamos la web de tu empresa." sobre el 3D a pantalla completa (en móvil, 3D arriba y texto abajo).
 - Secciones: problema → qué incluye → tipos de web → cómo trabajamos → más que una web → preguntas → contacto.
 
 ## Reglas a respetar
