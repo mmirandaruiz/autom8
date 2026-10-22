@@ -544,7 +544,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var renderer; try{ renderer=new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true}); }catch(e){ $('inicio').classList.add('nogl'); canvas.style.display='none'; return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
   var scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(30,1,.1,200);
-  scene.add(new THREE.AmbientLight(0xffffff,.62));
+  var amb=new THREE.AmbientLight(0xffffff,.62); scene.add(amb);
   var key=new THREE.DirectionalLight(0xffffff,.8); key.position.set(-6,9,12); scene.add(key);
   var rimA=new THREE.DirectionalLight(0xd4f57a,.5); rimA.position.set(10,4,-8); scene.add(rimA);
   var rimB=new THREE.DirectionalLight(0x9b8cff,.45); rimB.position.set(-10,-4,-8); scene.add(rimB);
@@ -643,9 +643,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 
   function paint(){
     var l=curTheme()==='light';
-    var c=l?{win:0xffffff,bar:0xe9edf2,text:0x0b0f14,muted:0xc3ccd7,lime:0xd4f57a,cta:0xd4f57a,paper:0xf1f4f8,ink:0x0b0f14,inkSoft:0xb9c2ce,line:0xaeb8c4,dot:0xc3ccd7,signal:0x7d6ef2}
+    // light mode: a slate window so the white cards and the page itself stand out from the light background
+    var c=l?{win:0xc9d2de,bar:0xaeb9c7,text:0x0b0f14,muted:0x8a96a5,lime:0xd4f57a,cta:0xd4f57a,paper:0xffffff,ink:0x0b0f14,inkSoft:0x9aa5b3,line:0x6f7b8a,dot:0x8a96a5,signal:0x7d6ef2}
            :{win:0x0f141b,bar:0x18202a,text:0xf5f7fa,muted:0x3b4554,lime:0xd4f57a,cta:0xd4f57a,paper:0xf5f7fa,ink:0x0b0f14,inkSoft:0xb9c2ce,line:0x4a5462,dot:0x3b4554,signal:0x9b8cff};
-    for(var k in c) MAT[k].color.setHex(c[k]);
+    for(var k in c) MAT[k].color.setHex(c[k]); amb.intensity=l?.45:.62;
     MAT.glass.opacity=l?.38:.26; MAT.glass.color.setHex(l?0xe9edf2:0xffffff); rim.material.opacity=l?.9:.55; rim.material.color.setHex(l?0x7a8494:0xffffff);
     glows.concat(bokeh).forEach(function(g){ g.material.blending=l?THREE.NormalBlending:THREE.AdditiveBlending; g.userData.op=l?.32:.6; g.material.opacity=g.userData.op; g.material.needsUpdate=true; });
     [dust,sparks].forEach(function(pt){ pt.material.blending=l?THREE.NormalBlending:THREE.AdditiveBlending; pt.material.opacity=l?.75:.9; pt.material.needsUpdate=true; });
