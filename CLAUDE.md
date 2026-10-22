@@ -39,12 +39,14 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Tipografías: Bricolage Grotesque (titulares) + Instrument Sans (texto).
 - Tema: oscuro por defecto, botón sol/luna en el menú, se guarda en `localStorage('autom8-theme')`.
 
-## Hero 3D (una web construyéndose)
+## Hero 3D (una ventana de navegador que monta una web)
 - `#stage` con `<canvas id="gl">` dentro del hero (no es fijo ni ocupa toda la página). Three.js r128.
-- Una ventana de navegador (`site`, 12×8 unidades) y un móvil (`phone`) hechos de cajas (`add(grupo, rol, izquierda, arriba, ancho, alto, z, fondo)`). Roles de color en `MAT`, tema en `paint()`.
-- Al cargar, las piezas vuelan desde posiciones aleatorias y se colocan en orden; después, cada 6,5 s, `redesign()` cambia el color de la imagen, el ancho del titular y el orden de las tarjetas.
-- Ratón y scroll inclinan la escena; solo se renderiza cuando el hero está en pantalla. `prefers-reduced-motion`: montaje instantáneo y sin movimiento.
-- Sin WebGL, el escenario se oculta (`.nogl`) y el texto sigue funcionando.
+- Una sola ventana de navegador flotante (`site`, 12×8 unidades), inclinada, con barra superior, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
+- Piezas con esquinas redondeadas (`piece(rol, izquierda, arriba, ancho, alto, z, fondo, radio)`): menú, titulares, botón lima (`cta`), foto de un interior moderno pintada en código (`interiorTex()`, sin imágenes externas) y tres tarjetas blancas.
+- Bucle: `build()` (vuelan y encajan) → 5 s quietas → `scatter()` → vuelta a empezar. El botón lima se ilumina al encajar.
+- Detrás: brillo lima y lavanda, puntos desenfocados (`bokeh`) y sombra o reflejo debajo. Cámara con acercamiento y órbita lentos; el ratón y el scroll inclinan la escena.
+- Colores por tema en `paint()`. Solo renderiza con el hero en pantalla. `prefers-reduced-motion`: montaje instantáneo y sin bucle. Sin WebGL, `.nogl` oculta el escenario.
+- No mostrar texto legible dentro del 3D: titulares y textos son barras.
 
 ## Inicio
 - Titular: "Creamos la web de tu empresa." Texto a la izquierda y 3D a la derecha (en móvil, 3D arriba).
