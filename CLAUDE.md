@@ -56,7 +56,6 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Secciones: problema → qué incluye → tipos de web → cómo trabajamos → más que una web → preguntas → contacto.
 
 ## Contenido de las secciones
-- Problemas: los títulos llevan subrayado ondulado lavanda, como errores de una página.
 - Qué incluye: tarjetas tipo bento (`.bento`), cada una con un pequeño dibujo CSS (`.viz`: web, dispositivos, carga segura, resultado de Google, puesta en marcha, legal) que se anima al aparecer.
 - Tipos de web: cada tarjeta muestra un esquema de esa web (`.wire`: corporativa, landing, antes/después).
 - Cómo trabajamos: línea de tiempo vertical (`.steps.tl`) que se rellena de lima con el scroll (`--p`) y enciende cada paso (`.lit`).
