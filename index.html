@@ -492,6 +492,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   fixed.push(mk('bar',-5.85,3.88,11.7,.62,F,.08,.22));
   fixed.push(mk('signal',-5.55,3.76,.24,.24,F+.08,.07,.12)); fixed.push(mk('lime',-5.18,3.76,.24,.24,F+.08,.07,.12)); fixed.push(mk('dot',-4.81,3.76,.24,.24,F+.08,.07,.12));
   fixed.push(mk('dot',-2.6,3.75,5.2,.26,F+.08,.05,.13));
+  var load=mk('lime',-2.6,3.75,5.2,.26,F+.1,.05,.13); load.scale.set(.001,1,1); var loadP=0;
 
   piece('text',-5.5,2.95,1.25,.34,F,.2,.08);
   [-1.3,-.3,.7].forEach(function(x){ piece('muted',x,2.87,.8,.18,F,.12,.09); });
@@ -532,7 +533,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function easeOutBack(k){ var c=1.35; k-=1; return 1+(c+1)*k*k*k+c*k*k; }
   var N=pieces.length, S0=.04, S1=.88, SPAN=.12;
   pieces.forEach(function(it,i){
-    var wide=window.innerWidth>900||(window.innerWidth>window.innerHeight&&window.innerHeight<=520), ang=wide?rnd(-1.35,1.35):rnd(.3,Math.PI-.3), rad=rnd(13,19);
+    var wide=window.innerWidth>900||(window.innerWidth>window.innerHeight&&window.innerHeight<=520), ang=wide?rnd(-1.35,1.35):rnd(.3,Math.PI-.3), rad=rnd(22,30);
     it.from=[Math.cos(ang)*rad, Math.sin(ang)*rad*.7, rnd(-4,12)];
     it.fr=[rnd(-2.5,2.5),rnd(-2.5,2.5),rnd(-2.5,2.5)];
     it.s0=S0+(S1-S0-SPAN)*(i/(N-1)); it.landed=false;
@@ -542,6 +543,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     m.position.set(it.from[0]+(it.p[0]-it.from[0])*e, it.from[1]+(it.p[1]-it.from[1])*e, it.from[2]+(it.p[2]-it.from[2])*e);
     m.rotation.set(it.fr[0]*u, it.fr[1]*u, it.fr[2]*u);
     m.scale.setScalar(Math.max(.2+.8*e,.001));
+    m.visible=k>0;
     return k;
   }
 
@@ -549,11 +551,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var bz=0,bvz=0,bdy=0,bvdy=0,bx=0,bvx=0,by=0,bvy=0,bsq=0,bvsq=0;
   function kick(it){
     var f=.5+.5*it.w;
-    bvz-=3.6*f; bvdy-=2*f; bvsq+=.8*f;
-    bvx+=(it.p[1]/4)*.5*f; bvy+=(-it.p[0]/6)*.5*f;
+    bvz-=1.8*f; bvdy-=1*f; bvsq+=.4*f;
+    bvx+=(it.p[1]/4)*.25*f; bvy+=(-it.p[0]/6)*.25*f;
   }
   function spring(dt){
-    var k=60,c=8.5;
+    var k=60,c=11;
     bvz+=(-k*bz-c*bvz)*dt; bz+=bvz*dt;
     bvdy+=(-k*bdy-c*bvdy)*dt; bdy+=bvdy*dt;
     bvx+=(-k*bx-c*bvx)*dt; bx+=bvx*dt;
@@ -621,6 +623,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     }
     inited=true;
     for(var st=0; st<3; st++) spring(dt/3);
+    loadP+=(n/N-loadP)*Math.min(1,dt*8); load.scale.x=Math.max(loadP*s0,.001); load.position.x=-2.6+2.6*Math.max(loadP,.001);
     rings.forEach(function(r){ var age=(now-r.t)/.45; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.3*(1-age); } else r.m.visible=false; });
     // the lime button lights up when it lands and keeps breathing
     var gk=Math.max(0,1-(now-glowT)/1.6), pulse=gk*gk;
