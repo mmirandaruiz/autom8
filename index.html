@@ -117,7 +117,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .hero canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
 .hero .veil{position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(var(--bg-rgb),.9) 0%, rgba(var(--bg-rgb),.6) 36%, rgba(var(--bg-rgb),0) 58%)}
 .hero .copy{position:absolute; z-index:2; left:max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); top:50%; transform:translateY(-44%); width:min(600px,44vw)}
-.meter{position:absolute; z-index:2; left:50%; bottom:max(28px, env(safe-area-inset-bottom,0px)); transform:translateX(-50%); margin:0; display:flex; align-items:center; gap:12px; white-space:nowrap; padding:10px 18px; border-radius:999px; background:rgba(var(--bg-rgb),.82); border:1px solid rgba(var(--lime-rgb),.55); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); font-size:15px; font-weight:600; color:var(--text)}
+.meter{position:absolute; z-index:2; left:70%; bottom:max(32px, env(safe-area-inset-bottom,0px)); transform:translateX(-50%); margin:0; display:flex; align-items:center; gap:12px; white-space:nowrap; padding:10px 18px; border-radius:999px; background:rgba(var(--bg-rgb),.82); border:1px solid rgba(var(--lime-rgb),.55); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); font-size:15px; font-weight:600; color:var(--text)}
 .meter span{display:block; width:90px; height:4px; border-radius:4px; background:rgba(var(--fg-rgb),.15); overflow:hidden}
 .meter span i{display:block; height:100%; width:0; background:var(--lime)}
 .meter em{font-style:normal; color:var(--muted); min-width:3.2em; text-align:right}
@@ -146,10 +146,10 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .ctas{margin-top:20px}
   .ctas .btn{flex:1 1 0; min-width:0; padding:0 14px}
   .trust{display:none}
-  .meter{top:calc(env(safe-area-inset-top,0px) + 84px); bottom:auto; font-size:14px; padding:8px 14px}
+  .meter{left:50%; top:46%; bottom:auto; font-size:14px; padding:8px 14px}
   .meter span{width:60px}
 }
-@media (max-width: 900px) and (max-height: 700px){ .hero .sub{display:none} }
+@media (max-width: 900px) and (max-height: 700px){ .hero .sub{display:none} .meter{top:calc(env(safe-area-inset-top,0px) + 80px)} }
 
 /* sections */
 .sec{background:var(--ink); padding:clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); transition:background-color .4s}
@@ -442,14 +442,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function cnv(w,h){ var c=document.createElement('canvas'); c.width=w; c.height=h; return c; }
   function radialTex(color){ var c=cnv(256,256), g=c.getContext('2d'), gr=g.createRadialGradient(128,128,0,128,128,128); gr.addColorStop(0,color); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(0,0,256,256); return new THREE.CanvasTexture(c); }
   function rr(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); g.fill(); }
-  function imageTex(){
-    var c=cnv(640,450), g=c.getContext('2d');
-    var bg=g.createLinearGradient(0,0,640,450); bg.addColorStop(0,'#D4F57A'); bg.addColorStop(.55,'#B9B0FF'); bg.addColorStop(1,'#7D6EF2'); g.fillStyle=bg; g.fillRect(0,0,640,450);
-    var sun=g.createRadialGradient(470,140,0,470,140,120); sun.addColorStop(0,'rgba(255,255,255,.95)'); sun.addColorStop(.45,'rgba(255,255,255,.55)'); sun.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=sun; g.fillRect(300,0,340,300);
-    g.fillStyle='rgba(255,255,255,.35)'; g.beginPath(); g.arc(150,120,70,0,Math.PI*2); g.fill();
-    function wave(y,amp,col){ g.fillStyle=col; g.beginPath(); g.moveTo(0,450); g.lineTo(0,y); for(var x=0;x<=640;x+=16) g.lineTo(x,y+Math.sin(x/95)*amp+Math.cos(x/53)*amp*.4); g.lineTo(640,450); g.closePath(); g.fill(); }
-    wave(290,26,'rgba(91,75,214,.55)'); wave(330,22,'rgba(11,15,20,.35)'); wave(375,18,'rgba(11,15,20,.6)');
-    var t=new THREE.CanvasTexture(c); t.anisotropy=4; return t;
+  function glassTex(){
+    var c=cnv(512,360), g=c.getContext('2d');
+    [[180,150,190,'rgba(212,245,122,.75)'],[360,230,200,'rgba(155,140,255,.8)'],[420,80,120,'rgba(255,255,255,.35)']].forEach(function(b){ var gr=g.createRadialGradient(b[0],b[1],0,b[0],b[1],b[2]); gr.addColorStop(0,b[3]); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(0,0,512,360); });
+    var st=g.createLinearGradient(0,0,512,360); st.addColorStop(.30,'rgba(255,255,255,0)'); st.addColorStop(.42,'rgba(255,255,255,.28)'); st.addColorStop(.47,'rgba(255,255,255,0)'); g.fillStyle=st; g.fillRect(0,0,512,360);
+    return new THREE.CanvasTexture(c);
   }
 
   // rounded slabs, cached by size
@@ -465,6 +462,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var MAT={};
   ['win','bar','text','muted','lime','cta','paper','ink','inkSoft','line','dot','signal'].forEach(function(r){ MAT[r]=new THREE.MeshStandardMaterial({roughness:.5, metalness:.05}); });
   MAT.cta.emissive=new THREE.Color(0xd4f57a);
+  var envScene=new THREE.Scene(); envScene.background=new THREE.Color(0x0c1015);
+  [[0xffffff,0,7,2,10,6],[0xd4f57a,8,1,0,6,9],[0x9b8cff,-8,-1,0,6,9],[0xffffff,0,0,9,6,3]].forEach(function(q){ var pm=new THREE.Mesh(new THREE.PlaneGeometry(q[4],q[5]), new THREE.MeshBasicMaterial({color:q[0], side:THREE.DoubleSide})); pm.position.set(q[1],q[2],q[3]); pm.lookAt(0,0,0); envScene.add(pm); });
+  var envTex=new THREE.PMREMGenerator(renderer).fromScene(envScene,.04).texture;
+  MAT.glass=new THREE.MeshPhysicalMaterial({color:0xffffff, metalness:.1, roughness:.06, clearcoat:1, clearcoatRoughness:.05, envMap:envTex, envMapIntensity:1.6, transparent:true, opacity:.26, depthWrite:false});
 
   var root=new THREE.Group(), site=new THREE.Group(); scene.add(root); root.add(site);
   site.rotation.set(.12,-.32,0);
@@ -496,8 +497,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   piece('text',-5.5,2.0,6.1,.66,F,.28,.14); piece('text',-5.5,1.18,4.2,.66,F,.28,.14);
   piece('muted',-5.5,.26,5.1,.17,F,.1,.085); piece('muted',-5.5,-.06,4.1,.17,F,.1,.085);
   var cta=piece('cta',-5.5,-.62,2.05,.62,F,.4,.31); piece('line',-3.25,-.62,1.8,.62,F,.26,.31);
-  var photo=piece('paper',1.15,2.05,4.4,3.15,F,.3,.22);
-  var pic=new THREE.Mesh(new THREE.PlaneGeometry(4.16,2.91), new THREE.MeshBasicMaterial({map:imageTex()})); pic.position.z=.156; photo.m.add(pic);
+  var photo=piece('glass',1.15,2.05,4.4,3.15,F+.14,.46,.32);
+  photo.m.renderOrder=3;
+  var tint=new THREE.Mesh(new THREE.PlaneGeometry(4.2,2.95), new THREE.MeshBasicMaterial({map:glassTex(), transparent:true, depthWrite:false})); tint.position.z=-.06; tint.renderOrder=2; photo.m.add(tint);
+  var rim=new THREE.LineSegments(new THREE.EdgesGeometry(rbox(4.4,3.15,.46,.32),25), new THREE.LineBasicMaterial({color:0xffffff, transparent:true, opacity:.55, depthWrite:false})); rim.renderOrder=4; photo.m.add(rim);
   [-5.5,-1.75,2.0].forEach(function(x){
     piece('paper',x,-1.62,3.5,1.85,F,.34,.22);
     piece('lime',x+.3,-1.92,.36,.36,C,.14,.18);
@@ -511,6 +514,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var c=l?{win:0xffffff,bar:0xe9edf2,text:0x0b0f14,muted:0xc3ccd7,lime:0xd4f57a,cta:0xd4f57a,paper:0xf1f4f8,ink:0x0b0f14,inkSoft:0xb9c2ce,line:0xaeb8c4,dot:0xc3ccd7,signal:0x7d6ef2}
            :{win:0x0f141b,bar:0x18202a,text:0xf5f7fa,muted:0x3b4554,lime:0xd4f57a,cta:0xd4f57a,paper:0xf5f7fa,ink:0x0b0f14,inkSoft:0xb9c2ce,line:0x4a5462,dot:0x3b4554,signal:0x9b8cff};
     for(var k in c) MAT[k].color.setHex(c[k]);
+    MAT.glass.opacity=l?.38:.26; MAT.glass.color.setHex(l?0xe9edf2:0xffffff); rim.material.opacity=l?.9:.55; rim.material.color.setHex(l?0x7a8494:0xffffff);
     glows.concat(bokeh).forEach(function(g){ g.material.blending=l?THREE.NormalBlending:THREE.AdditiveBlending; g.userData.op=l?.32:.6; g.material.opacity=g.userData.op; g.material.needsUpdate=true; });
     shadow.material.map=l?shadowLight:shadowDark; shadow.material.needsUpdate=true; shadowBase=l?.22:.6;
   }

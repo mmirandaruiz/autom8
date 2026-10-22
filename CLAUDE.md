@@ -42,11 +42,11 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 ## Hero 3D (una ventana de navegador que se monta con el scroll)
 - El hero es a pantalla completa y queda fijo (`.hero` 320vh con `.stick` sticky). El canvas `#gl` ocupa todo el fondo; el texto va encima a la izquierda con un velo (`.veil`). En móvil: ventana arriba y texto abajo (`setViewOffset` en `resize()`).
 - Una ventana de navegador flotante (`site`, 12×8) con volumen: marco, barra, tres puntos y barra de dirección (`fixed`, visibles desde el inicio).
-- Piezas con relieve y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie`: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), imagen genérica abstracta (`imageTex()`) y tres tarjetas.
+- Piezas con relieve y bordes biselados (`piece(rol, izquierda, arriba, ancho, alto, superficie, fondo, radio)`; `superficie`: `F` ventana, `C` tarjeta): menú, titulares, botón lima (`cta`), panel de cristal (`MAT.glass`, MeshPhysicalMaterial translúcido con reflejos de un entorno propio `envTex`, color interior `glassTex()` y bordes de luz) en lugar de foto y tres tarjetas.
 - **El scroll monta la web**: cada pieza tiene su tramo (`s0`, `SPAN`) dentro del progreso del hero (`heroP()`, suavizado en `sp`); al subir, las piezas se van.
 - Cada pieza que encaja golpea la página: retroceso con muelle (`kick()` / `spring()`: se hunde, baja, se inclina hacia el impacto y se aplasta) y una onda lima (`ripple()`). El botón lima se ilumina al encajar y luego respira.
 - Vida: flotación, brillos que laten, puntos desenfocados (`bokeh`), cámara que se acerca con el scroll y órbita lenta; la ventana gira hacia el usuario al completarse.
-- Indicador `.meter`: "Desliza para construir tu web" → "Construyendo tu web · %" → "Tu web está lista".
+- Indicador `.meter` (escritorio: abajo, centrado bajo la ventana; móvil: entre la ventana y el texto, arriba en pantallas bajas): "Desliza para construir tu web" → "Construyendo tu web · %" → "Tu web está lista".
 - Sin JS, sin WebGL (`.nogl`) o con `prefers-reduced-motion`: el hero no queda fijo y la web aparece montada.
 - No mostrar texto legible dentro del 3D: titulares y textos son barras.
 
