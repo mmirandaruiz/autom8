@@ -27,8 +27,8 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Solo 3 campos: nombre, email, descripción. No añadir más campos.
 
 ## Demo gratis
-- La sección `#tu-web` («Gratis · en 10 minutos»), justo después del hero, explica la demo y tiene el botón grande «Consigue tu demo gratis en 10 minutos» a `https://demo.autom8.es/demo/` (repo `autom8-sites`). Es `side-r`, así que la ventana 3D se monta a su izquierda mientras se lee.
-- El botón principal del hero, «Tu web nueva en 10 min ↓», baja a esa sección. «Pedir presupuesto» queda como segundo botón.
+- La sección `#tu-web` («Gratis · en 10 minutos»), justo después del hero, explica la demo y tiene el botón grande «Pide tu demo gratis →» a `https://demo.autom8.es/demo/` (repo `autom8-sites`). Es `side-r`, así que la ventana 3D se monta a su izquierda mientras se lee.
+- El botón principal del hero, «Pide tu demo gratis ↓», baja a esa sección. «Pedir presupuesto» queda como segundo botón.
 - También enlazan a `/demo/`: la tarjeta «Rediseño», la pregunta «Ya tengo web, ¿podéis renovarla?», la sección de contacto y, en `/precios`, debajo de las webs de ejemplo y en el bloque final.
 - `demo.autom8.es/demo/` usa el mismo diseño que este sitio (fuentes, colores, cabecera). Si cambia la marca aquí, hay que cambiarla también allí.
 - Es solo un enlace a propósito: el formulario, su antibots (Cloudflare Turnstile) y sus datos viven en `demo.autom8.es`. Así esta web no cambia su CSP ni recibe datos de esas solicitudes. No incrustar ese formulario aquí.
