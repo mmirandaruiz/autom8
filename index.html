@@ -354,6 +354,8 @@ details p{padding:0 0 24px; margin:0; color:var(--soft); max-width:760px}
 .form textarea{padding:14px 16px; resize:vertical}
 .form .btn{grid-column:1/-1; min-height:58px}
 .form .ok{grid-column:1/-1; margin:0; color:var(--accent); min-height:1.6em}
+.form .legal{grid-column:1/-1; margin:0; font-size:14px; line-height:1.5; color:var(--soft)}
+.form .legal a{color:inherit; text-decoration:underline; text-underline-offset:2px}
 @media (max-width: 900px){ .contact{grid-template-columns:minmax(0,1fr)} .form{grid-template-columns:minmax(0,1fr)} }
 
 footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) 36px max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px))}
@@ -523,6 +525,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <label class="full">¿Qué web necesitas?<textarea name="message" rows="5" required placeholder="Cuéntanos a qué se dedica tu negocio y qué te gustaría tener en la web."></textarea></label>
         <button class="btn btn-lime" type="submit">Enviar</button>
         <p class="ok" id="ok" role="status"></p>
+        <p class="legal">Responsable: Autom8. Usamos tus datos solo para contestarte y, si lo pides, prepararte un presupuesto. Quién es el responsable, tus derechos y cómo ejercerlos, en <a href="privacidad.html">Privacidad</a>.</p>
       </form>
     </div>
   </section>
