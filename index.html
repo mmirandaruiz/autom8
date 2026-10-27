@@ -156,6 +156,24 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .ctas{display:flex; flex-wrap:wrap; gap:12px; margin-top:34px}
 .demo-note{margin:14px 0 0; font-size:15px; color:var(--muted)}
 .demo-note b{color:var(--text); font-weight:600}
+.arr-down{display:inline-block; margin-left:2px; transition:transform .25s}
+.btn-demo:hover .arr-down{transform:translateY(3px)}
+/* «Tu web nueva en 10 minutos»: the section right after the hero, with the biggest button on the page */
+.tw-pasos{list-style:none; counter-reset:tw; padding:0; margin:36px 0 0; display:grid; gap:12px; max-width:640px}
+.tw-pasos li{counter-increment:tw; display:grid; grid-template-columns:44px 1fr; gap:2px 14px; align-items:center; padding:14px 18px; border:1px solid var(--line); border-radius:18px; background:var(--panel); color:var(--muted); font-size:16px}
+.tw-pasos li::before{content:counter(tw); grid-row:span 2; display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--lime); color:#0B0F05; font:800 20px/1 "Bricolage Grotesque",sans-serif}
+:root[data-theme="light"] .tw-pasos li::before{box-shadow:inset 0 0 0 1.5px #0B0F14}
+.tw-pasos b{color:var(--text); font-weight:600}
+.tw-cta{margin-top:40px}
+.btn-xl{min-height:76px; padding:0 40px; font-size:clamp(18px,1.6vw,22px); gap:12px; box-shadow:0 0 0 0 rgba(var(--lime-rgb),.45); animation:tw-glow 2.6s ease-out infinite}
+.btn-xl .arr{display:inline-block; font-size:1.2em; transition:transform .25s}
+.btn-xl:hover .arr{transform:translateX(5px)}
+@keyframes tw-glow{0%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),.45)} 70%{box-shadow:0 0 0 18px rgba(var(--lime-rgb),0)} 100%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),0)}}
+:root[data-theme="light"] .btn-xl{animation-name:tw-glow-l}
+@keyframes tw-glow-l{0%{box-shadow:0 0 0 0 rgba(11,15,20,.28)} 70%{box-shadow:0 0 0 18px rgba(11,15,20,0)} 100%{box-shadow:0 0 0 0 rgba(11,15,20,0)}}
+.tw-nota{margin:16px 0 0; color:var(--muted); font-size:15px; font-weight:600}
+@media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
+@media (prefers-reduced-motion: reduce){ .btn-xl{animation:none} }
 .trust{list-style:none; padding:0; margin:30px 0 0; display:flex; flex-wrap:wrap; gap:10px 22px; color:var(--muted); font-size:15px; font-weight:600}
 .trust li{display:flex; align-items:center; gap:8px}
 .trust li::before{content:""; width:8px; height:8px; border-radius:2px; background:var(--lime)}
@@ -409,11 +427,30 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h1>Creamos la web de <em>tu empresa</em>.</h1>
         <p class="sub">Webs modernas para todo tipo de empresas. Renovamos páginas anticuadas con diseños innovadores y las ponemos en marcha rápido, sin apenas esfuerzo por tu parte.</p>
         <div class="ctas">
-          <a class="btn btn-lime" href="#contacto">Pedir presupuesto</a>
-          <a class="btn btn-line btn-demo" href="https://demo.autom8.es/demo-gratis/">Demo gratis</a>
+          <a class="btn btn-lime btn-demo" href="#tu-web">Tu web nueva en 10 min <span class="arr-down" aria-hidden="true">↓</span></a>
+          <a class="btn btn-line" href="#contacto">Pedir presupuesto</a>
         </div>
-        <p class="demo-note">Mira tu web renovada, gratis: <b>sin registro y sin tarjeta</b>.</p>
+        <p class="demo-note">Gratis, <b>sin registro y sin tarjeta</b>.</p>
         <ul class="trust"><li>Adaptada a cualquier pantalla</li><li>Rápida</li><li>Una imagen más confiable</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="tu-web" class="sec side-r tu-web" aria-labelledby="tu-web-t">
+    <div class="wrap">
+      <div class="rv">
+        <div class="label">Gratis · en 10 minutos</div>
+        <h2 class="h2" id="tu-web-t">Mira tu web nueva antes de decidir nada.</h2>
+        <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
+      </div>
+      <ol class="tw-pasos rv">
+        <li><b>Nos dices tu web</b><span>y el email al que te la mandamos.</span></li>
+        <li><b>Confirmas tu email</b><span>con el enlace que te llega.</span></li>
+        <li><b>En 10 minutos</b><span>tienes tu web nueva en tu bandeja.</span></li>
+      </ol>
+      <div class="tw-cta rv">
+        <a class="btn btn-lime btn-xl" href="https://demo.autom8.es/demo/">Consigue tu demo gratis en 10 minutos <span class="arr" aria-hidden="true">→</span></a>
+        <p class="tw-nota">Sin registro · sin tarjeta · sin compromiso</p>
       </div>
     </div>
   </section>
@@ -462,7 +499,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
       <div class="grid">
         <article class="card rv"><div class="wire w-corp" aria-hidden="true"><i class="nav"></i><i class="hero"></i><div class="cols"><i></i><i></i><i></i></div></div><span class="tag">Web corporativa</span><h3>Quién eres y qué haces</h3><p>Tu negocio, tus servicios y cómo contactarte, explicado con claridad y con una imagen que transmite confianza.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
         <article class="card rv"><div class="wire w-land" aria-hidden="true"><i class="nav"></i><div class="big"><i class="t"></i><i class="t s"></i><i class="cta"></i></div></div><span class="tag">Landing page</span><h3>Una página, un objetivo</h3><p>Para un servicio, un lanzamiento o una campaña: una sola página pensada para que el visitante dé el paso.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
-        <article class="card rv"><div class="wire w-redo" aria-hidden="true"><div class="old"><i></i><i></i><i></i></div><span class="arr"></span><div class="new"><i class="nav"></i><i class="hero"></i><i class="cta"></i></div></div><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="https://demo.autom8.es/demo-gratis/">Pide una demo gratis</a></article>
+        <article class="card rv"><div class="wire w-redo" aria-hidden="true"><div class="old"><i></i><i></i><i></i></div><span class="arr"></span><div class="new"><i class="nav"></i><i class="hero"></i><i class="cta"></i></div></div><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="https://demo.autom8.es/demo/">Consigue tu demo gratis</a></article>
       </div>
     </div>
   </section>
@@ -511,7 +548,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <details><summary>¿Podré cambiar los textos yo mismo?</summary><p>Sí. Te la dejamos preparada para que actualices textos e imágenes, o nos encargamos nosotros si lo prefieres.</p></details>
         <details><summary>¿Os encargáis del dominio y del alojamiento?</summary><p>Sí. Te ayudamos a registrar el dominio y publicamos la web en un alojamiento profesional con certificado de seguridad, o usamos el que ya tienes.</p></details>
         <details><summary>¿Saldrá en Google?</summary><p>La dejamos preparada técnicamente y dada de alta en Google. Llegar a las primeras posiciones depende además del contenido y del tiempo, y te ayudamos con ello.</p></details>
-        <details><summary>Ya tengo web, ¿podéis renovarla?</summary><p>Sí. Revisamos lo que tienes, conservamos lo que funciona y renovamos el diseño, la velocidad y los textos. Si quieres verlo antes, <a href="https://demo.autom8.es/demo-gratis/">pide una demo gratis</a> con los colores de tu marca.</p></details>
+        <details><summary>Ya tengo web, ¿podéis renovarla?</summary><p>Sí. Revisamos lo que tienes, conservamos lo que funciona y renovamos el diseño, la velocidad y los textos. Si quieres verlo antes, <a href="https://demo.autom8.es/demo/">mira tu web nueva en 10 minutos, gratis</a> con los colores de tu marca.</p></details>
       </div>
     </div>
   </section>
@@ -523,7 +560,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h2 class="h2">Cuéntanos tu proyecto.</h2>
         <p class="lead">Te respondemos el mismo día con los siguientes pasos.</p>
         <ul><li>Primera conversación sin compromiso</li><li>Propuesta de estructura y diseño</li><li>Presupuesto cerrado</li></ul>
-        <p class="demo-alt">¿Ya tienes web? <a href="https://demo.autom8.es/demo-gratis/">Pide una demo gratis</a> y mira cómo quedaría renovada, con una comparación medida por Google.</p>
+        <p class="demo-alt">¿Ya tienes web? <a href="https://demo.autom8.es/demo/">Consigue tu demo gratis en 10 minutos</a> y mira cómo quedaría renovada, con una comparación medida por Google.</p>
       </div>
       <form class="form rv" id="contact-form" novalidate>
         <label class="hp" aria-hidden="true">No rellenar<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
@@ -771,7 +808,8 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function sideRegion(right){
     var hb=$('hdr').getBoundingClientRect().bottom, g=Math.max(16,W*.025);
     if(phone){ var dw=Math.min(Math.max(W*.36,110),170), dh=dw*.72; g=12; return {l:W-g-dw, r:W-g, t:H-g-dh, b:H-g}; }
-    var w=sideEls[0].querySelector('.wrap').getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2; laneCy=cy;
+    // measured on a left-hand section (text on the left, free space on the right), whichever section comes first
+    var w=(document.querySelector('.sec.side-l .wrap')||sideEls[0].querySelector('.wrap')).getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2; laneCy=cy;
     var l=right ? w.right+g*1.5+(free-g*2.5-lw)/2 : g+(free-g*2.5-lw)/2;
     return {l:l, r:l+lw, t:cy-lh/2, b:cy+lh/2};
   }
