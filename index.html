@@ -66,6 +66,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth} }
 body{margin:0; background:var(--ink); color:var(--text); font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif; font-size:18px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; transition:background-color .4s, color .4s}
 h1,h2,h3{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; font-weight:800; letter-spacing:-.035em; line-height:.98; margin:0}
 a{color:inherit}
@@ -138,6 +139,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 @media (min-width: 601px){ #mini{display:none} }
 :root:not(.js) #mini,.nogl #mini{display:none}
 :root:not(.js) #rail,.nogl #rail{display:none}
+#capa3d{position:fixed; inset:0; z-index:3; pointer-events:none; opacity:var(--capa,1)}
 #gl{position:fixed; inset:0; width:100%; height:100%; display:block; z-index:3; pointer-events:none; transition:opacity .4s}
 .hero .veil{position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(var(--bg-rgb),.9) 0%, rgba(var(--bg-rgb),.6) 36%, rgba(var(--bg-rgb),0) 58%)}
 .hero .copy{position:absolute; z-index:2; left:max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); top:50%; transform:translateY(-44%); width:min(600px,44vw)}
@@ -178,8 +180,9 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 @media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
 /* the request flow in 3D: form → confirmation email → the new website (script «tw» below); the page-build window steps aside here */
 .tw-grid{display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr); gap:clamp(32px,5vw,80px); align-items:center}
-.tw-on #gl,.tw-on #rail,.tw-on #mini{opacity:0 !important; transition:opacity .45s}
-.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%}
+
+.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%; --tw:1; opacity:var(--tw); transform:translateX(calc((1 - var(--tw)) * 14%)) scale(calc(.9 + .1 * var(--tw)))}
+.js .tw-escena{--tw:0}
 .tw-mundo{position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(9deg) rotateY(16deg); animation:tw-flota 8s ease-in-out infinite}
 @keyframes tw-flota{0%,100%{transform:rotateX(9deg) rotateY(16deg) translateY(0)} 50%{transform:rotateX(7deg) rotateY(12deg) translateY(-10px)}}
 .tw-escena::before{content:""; position:absolute; inset:8% 6%; border-radius:50%; background:radial-gradient(closest-side, rgba(var(--lime-rgb),.16), transparent 70%); filter:blur(8px)}
@@ -254,6 +257,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 }
 @media (prefers-reduced-motion: reduce){
   .tw-mundo{animation:none}
+  .tw-escena{transform:none}
   .tw-card,.tw-cursor,.tw-hero i,.tw-cols i,.tw-lista,.tw-reloj{transition:none}
   .tw-reloj i::after,.tw-typed.on::after{animation:none}
 }
@@ -481,9 +485,11 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
+<div id="capa3d">
 <canvas id="gl" aria-hidden="true"></canvas>
 <div id="mini" aria-hidden="true"><strong id="mini-pct">0 %</strong><em><b id="mini-bar"></b></em></div>
 <div id="rail" aria-hidden="true"><i class="seg st"><b></b></i><i class="seg sb"><b></b></i><div class="tag tt"><span>Tu web</span><strong id="rail-pct">0 %</strong><em><b id="rail-bar"></b></em></div><div class="tag tb"><span>Piezas</span><strong id="rail-n">0</strong><em class="dots" id="rail-dots"></em></div></div>
+</div>
 <header id="hdr">
   <nav class="nav" aria-label="Principal">
     <a class="logo" href="#inicio" aria-label="Autom8, inicio">Autom<span class="eight">8</span></a>
@@ -559,7 +565,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
       <div class="tw-texto">
         <div class="rv">
           <div class="label">Gratis · en 10 minutos</div>
-          <h2 class="h2" id="tu-web-t">Pide tu web en segundos.</h2>
+          <h2 class="h2" id="tu-web-t">Pide tu demo en segundos.</h2>
           <p class="tw-gratis">Totalmente gratis y sin compromiso.</p>
           <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
         </div>
@@ -1062,9 +1068,9 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
 })();
 </script>
 <script>
-// «Tu web nueva en 10 minutos»: the request flow in 3D (form → confirmation email → the new website), looping
-// while the section is on screen; the steps light up with it and choose it. While the section sits in the
-// middle of the screen the page-build window steps aside (.tw-on). With reduced motion: the finished state, still.
+// «Pide tu demo en segundos»: the request flow in 3D (form → confirmation email → the new website), looping
+// while the section is on screen; the steps light up with it and choose it. The page-build window (#capa3d)
+// crossfades with it as the section scrolls in and out. With reduced motion: the finished state, still.
 (function(){
   var esc=document.getElementById('tw-escena'), sec=document.getElementById('tu-web'); if(!esc||!sec) return;
   var root=document.documentElement, pasos=[].slice.call(document.querySelectorAll('#tw-pasos li'));
@@ -1087,8 +1093,15 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
   var ir={1:uno,2:dos,3:tres};
   pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else ir[n](); }); });
   if(reduce){ lleno(); marcar(3); min.textContent='10:00'; }
+  // crossfade tied to the scroll: as the section rises the page-build window fades out and the scene fades in
+  // (and the other way round further down), so hero → section is one continuous move, also when scrolling back
+  var capa=document.getElementById('capa3d'), pend=false;
+  function mezcla(){ pend=false; var vh=window.innerHeight, b=sec.getBoundingClientRect();
+    var entra=Math.min(1,Math.max(0,(vh*.95-b.top)/(vh*.55))), sale=Math.min(1,Math.max(0,(b.bottom-vh*.25)/(vh*.45))), v=Math.min(entra,sale);
+    v=v*v*(3-2*v); esc.style.setProperty('--tw',v.toFixed(3)); if(capa) capa.style.setProperty('--capa',(1-v).toFixed(3)); }
+  function pedir(){ if(!pend){ pend=true; requestAnimationFrame(mezcla); } }
+  window.addEventListener('scroll',pedir,{passive:true}); window.addEventListener('resize',pedir); mezcla();
   if('IntersectionObserver' in window){
-    new IntersectionObserver(function(es){ es.forEach(function(e){ root.classList.toggle('tw-on', e.isIntersecting); }); },{rootMargin:'-40% 0px -40% 0px'}).observe(sec);
     new IntersectionObserver(function(es){ es.forEach(function(e){ if(reduce) return;
       if(e.isIntersecting&&!activo){ activo=true; uno(); } else if(!e.isIntersecting&&activo){ activo=false; limpiar(); } }); },{threshold:.15}).observe(esc);
   } else if(!reduce) uno();
