@@ -15,7 +15,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
 - `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.
 - `404.html` — página de error que Vercel sirve automáticamente.
-- Páginas de servicio para SEO (una por búsqueda objetivo; ahora mismo ninguna en `main`). Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (sin `.html`). `vercel.json` redirige temporalmente `/automatizacion-de-procesos` al inicio.
+- Páginas de servicio para SEO (una por búsqueda objetivo): `precios.html` («cuánto cuesta una página web»; los planes salen literalmente de la oferta, sin inventar precios ni condiciones) y `diseno-web-barcelona.html` («diseño web barcelona»). Comparten el mismo CSS en línea, solo modo oscuro. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (sin `.html`). `vercel.json` redirige temporalmente `/automatizacion-de-procesos` al inicio.
 - El titular es autónomo (no hay sociedad): el aviso legal necesita nombre completo, NIF y domicilio.
 - Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
 
