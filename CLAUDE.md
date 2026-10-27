@@ -27,7 +27,14 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Solo 3 campos: nombre, email, descripción. No añadir más campos.
 
 ## Demo gratis
-- La sección `#tu-web` («Gratis · en 10 minutos»), justo después del hero, explica la demo y tiene el botón grande «Pide tu demo gratis →» a `https://demo.autom8.es/demo/` (repo `autom8-sites`). Es `side-r`, así que la ventana 3D se monta a su izquierda mientras se lee.
+- La sección `#tu-web` («Gratis · en 10 minutos»), justo después del hero, explica la demo y tiene el botón grande «Pide tu demo gratis →» a `https://demo.autom8.es/demo/` (repo `autom8-sites`).
+- En esa sección la ventana 3D de la web que se monta se aparta (clase `tw-on` en `<html>` mientras la sección cruza el centro de la pantalla; `#gl`, `#rail` y `#mini` a opacidad 0). En su lugar, una escena 3D en CSS (`#tw-escena`, script «tw» al final) enseña cómo se pide la demo, en bucle mientras se ve:
+  1. el formulario se rellena solo y el cursor pulsa «Pide tu demo gratis»;
+  2. llega el email «Confirma tu demo gratis» y el cursor pulsa «Confirmar mi demo»;
+  3. se monta la web nueva con «Tu demo está lista ✓» y un reloj hasta 10:00.
+
+  Los pasos de la lista se iluminan con la escena y, al pulsarlos, la llevan a ese momento. Con `prefers-reduced-motion`, se queda quieta en el momento 3.
+- La sección no es `side-l`/`side-r`. `sideRegion()` mide el hueco en la primera `.sec.side-l`, así que el orden de las secciones laterales no importa.
 - El botón principal del hero, «Pide tu demo gratis ↓», baja a esa sección. «Pedir presupuesto» queda como segundo botón.
 - También enlazan a `/demo/`: la tarjeta «Rediseño», la pregunta «Ya tengo web, ¿podéis renovarla?», la sección de contacto y, en `/precios`, debajo de las webs de ejemplo y en el bloque final.
 - `demo.autom8.es/demo/` usa el mismo diseño que este sitio (fuentes, colores, cabecera). Si cambia la marca aquí, hay que cambiarla también allí.

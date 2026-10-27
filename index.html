@@ -173,6 +173,87 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 @keyframes tw-glow-l{0%{box-shadow:0 0 0 0 rgba(11,15,20,.28)} 70%{box-shadow:0 0 0 18px rgba(11,15,20,0)} 100%{box-shadow:0 0 0 0 rgba(11,15,20,0)}}
 .tw-nota{margin:16px 0 0; color:var(--muted); font-size:15px; font-weight:600}
 @media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
+/* the request flow in 3D: form → confirmation email → the new website (script «tw» below); the page-build window steps aside here */
+.tw-grid{display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr); gap:clamp(32px,5vw,80px); align-items:center}
+.tw-on #gl,.tw-on #rail,.tw-on #mini{opacity:0 !important; transition:opacity .45s}
+.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%}
+.tw-mundo{position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(9deg) rotateY(16deg); animation:tw-flota 8s ease-in-out infinite}
+@keyframes tw-flota{0%,100%{transform:rotateX(9deg) rotateY(16deg) translateY(0)} 50%{transform:rotateX(7deg) rotateY(12deg) translateY(-10px)}}
+.tw-escena::before{content:""; position:absolute; inset:8% 6%; border-radius:50%; background:radial-gradient(closest-side, rgba(var(--lime-rgb),.16), transparent 70%); filter:blur(8px)}
+.tw-card{position:absolute; left:8%; right:8%; top:12%; border-radius:18px; border:1px solid var(--line); background:linear-gradient(160deg, var(--panel), var(--ink)); box-shadow:0 40px 80px -30px rgba(0,0,0,.75), 0 0 0 1px rgba(var(--fg-rgb),.03) inset; overflow:hidden; transform-style:preserve-3d; transition:transform 1s cubic-bezier(.16,1,.3,1), opacity .7s; will-change:transform}
+.tw-chrome{display:flex; align-items:center; gap:6px; padding:12px 14px; border-bottom:1px solid var(--line)}
+.tw-chrome i{width:9px; height:9px; border-radius:50%; background:rgba(var(--fg-rgb),.18)}
+.tw-chrome i:first-child{background:var(--lime)}
+.tw-chrome span{margin-left:10px; flex:1; font-size:12px; color:var(--muted); background:rgba(var(--fg-rgb),.06); border-radius:7px; padding:4px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tw-body{display:flex; flex-direction:column; gap:7px; padding:20px 22px 24px}
+.tw-h{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:clamp(17px,1.6vw,22px); letter-spacing:-.02em; line-height:1.1; margin-bottom:6px; color:var(--text)}
+.tw-l{font-size:12px; color:var(--muted)}
+.tw-in{display:flex; align-items:center; min-height:38px; padding:0 12px; border-radius:10px; border:1px solid var(--input-line); background:var(--input-bg); font-size:14px; color:var(--text)}
+.tw-typed::after{content:""; display:inline-block; width:2px; height:1em; margin-left:1px; vertical-align:-2px; background:var(--lime); opacity:0}
+.tw-typed.on::after{opacity:1; animation:tw-caret .9s steps(1) infinite}
+@keyframes tw-caret{50%{opacity:0}}
+.tw-chk{display:flex; flex-direction:column; gap:6px; margin:4px 0}
+.tw-chk i{display:block; height:10px; border-radius:4px; background:rgba(var(--fg-rgb),.08); position:relative; padding-left:18px}
+.tw-chk i::before{content:""; position:absolute; left:0; top:-1px; width:12px; height:12px; border-radius:3px; border:1.5px solid var(--input-line); background:var(--input-bg); transition:background .25s, border-color .25s}
+.tw-escena.chk .tw-chk i::before{background:var(--lime); border-color:var(--lime)}
+.tw-btn{display:flex; align-items:center; justify-content:center; min-height:40px; margin-top:6px; border-radius:999px; background:var(--lime); color:#0B0F05; font-weight:700; font-size:14px; transition:transform .15s, box-shadow .3s}
+:root[data-theme="light"] .tw-btn,:root[data-theme="light"] .tw-lista,:root[data-theme="light"] .tw-hero .cta,:root[data-theme="light"] .tw-chrome i:first-child{box-shadow:inset 0 0 0 1.5px #0B0F14}
+.tw-btn.press{transform:scale(.94); box-shadow:0 0 0 10px rgba(var(--lime-rgb),.22)}
+.tw-from{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); margin-bottom:6px}
+.tw-from i{display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--lime); color:#0B0F05; font-style:normal; font-weight:800; font-size:12px}
+.tw-from b{color:var(--text)}
+.tw-from em{margin-left:auto; font-style:normal}
+.tw-line{display:block; height:9px; border-radius:5px; background:rgba(var(--fg-rgb),.09)}
+.tw-line.s{width:65%}
+.tw-nav{display:flex; gap:8px; margin-bottom:4px}
+.tw-nav i{height:8px; flex:0 0 18%; border-radius:4px; background:rgba(var(--fg-rgb),.12)}
+.tw-nav i:first-child{flex-basis:26%; background:rgba(var(--fg-rgb),.3)}
+.tw-hero{display:flex; flex-direction:column; gap:8px; padding:18px; border-radius:12px; background:linear-gradient(120deg, rgba(var(--lime-rgb),.22), rgba(var(--signal-rgb),.16))}
+.tw-hero i{display:block; height:14px; width:78%; border-radius:5px; background:rgba(var(--fg-rgb),.55); transform-origin:left; transform:scaleX(0)}
+.tw-hero i.s{width:52%; height:9px; background:rgba(var(--fg-rgb),.25)}
+.tw-hero i.cta{width:34%; height:22px; border-radius:99px; background:var(--lime)}
+.tw-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
+.tw-cols i{height:54px; border-radius:10px; background:rgba(var(--fg-rgb),.07); border:1px solid var(--line); transform:translateY(14px); opacity:0}
+.tw-lista{position:absolute; right:14px; bottom:14px; padding:8px 14px; border-radius:999px; background:var(--lime); color:#0B0F05; font-weight:700; font-size:13px; transform:translateZ(40px) scale(.6); opacity:0; transition:transform .6s cubic-bezier(.34,1.56,.64,1) .9s, opacity .4s .9s}
+.tw-reloj{position:absolute; right:8%; top:3%; display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:var(--panel); font-weight:700; font-size:14px; color:var(--text); transform:translateZ(160px); opacity:0; transition:opacity .4s}
+.tw-reloj i{width:14px; height:14px; border-radius:50%; border:2px solid var(--lime); position:relative}
+.tw-reloj i::after{content:""; position:absolute; left:50%; top:1px; width:2px; height:5px; margin-left:-1px; background:var(--lime); transform-origin:50% 100%; animation:tw-aguja 1s linear infinite}
+@keyframes tw-aguja{to{transform:rotate(360deg)}}
+.tw-cursor{position:absolute; left:84%; top:96%; width:24px; height:24px; background:var(--text); clip-path:polygon(0 0, 0 78%, 22% 60%, 38% 96%, 52% 90%, 37% 55%, 66% 55%); filter:drop-shadow(0 4px 6px rgba(0,0,0,.5)); transform:translateZ(150px); transition:left 1.1s cubic-bezier(.65,0,.35,1), top 1.1s cubic-bezier(.65,0,.35,1), opacity .4s; opacity:0}
+/* the three moments */
+.tw-form{transform:translateZ(60px)}
+.tw-mail{transform:translate(8%,-6%) translateZ(-160px) rotateY(-6deg); opacity:0}
+.tw-web{transform:translate(-10%,8%) translateZ(-240px); opacity:0}
+[data-paso="2"] .tw-form{transform:translate(-8%,10%) translateZ(-150px) rotateY(8deg); opacity:.4}
+[data-paso="2"] .tw-mail{transform:translateZ(80px); opacity:1}
+[data-paso="3"] .tw-form{transform:translate(-10%,16%) translateZ(-280px) rotateY(8deg); opacity:.18}
+[data-paso="3"] .tw-mail{transform:translate(10%,-10%) translateZ(-190px) rotateY(-8deg); opacity:.32}
+[data-paso="3"] .tw-web{transform:translateZ(90px); opacity:1}
+[data-paso="3"] .tw-hero i{transform:scaleX(1); transition:transform .7s cubic-bezier(.16,1,.3,1) .5s}
+[data-paso="3"] .tw-hero i.s{transition-delay:.65s}
+[data-paso="3"] .tw-hero i.cta{transition-delay:.8s}
+[data-paso="3"] .tw-cols i{transform:none; opacity:1; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .5s}
+[data-paso="3"] .tw-cols i:nth-child(1){transition-delay:.9s} [data-paso="3"] .tw-cols i:nth-child(2){transition-delay:1s} [data-paso="3"] .tw-cols i:nth-child(3){transition-delay:1.1s}
+[data-paso="3"] .tw-lista{transform:translateZ(40px) scale(1); opacity:1}
+[data-paso="3"] .tw-reloj{opacity:1}
+.tw-escena.c1 .tw-cursor{opacity:1; left:var(--c1x,52%); top:var(--c1y,80%)}
+.tw-escena.c2 .tw-cursor{opacity:1; left:var(--c2x,50%); top:var(--c2y,62%)}
+/* the steps follow the scene, and choose it */
+.tw-pasos li{cursor:pointer; transition:border-color .3s, background-color .3s}
+.tw-pasos li.lit{border-color:rgba(var(--lime-rgb),.6); background:color-mix(in srgb, var(--panel) 70%, rgba(var(--lime-rgb),.10))}
+:root[data-theme="light"] .tw-pasos li.lit{border-color:#0B0F14}
+.tw-pasos li.lit::before{box-shadow:0 0 0 6px rgba(var(--lime-rgb),.18)}
+.tw-texto{position:relative; z-index:1}
+@media (max-width: 900px){
+  .tw-grid{grid-template-columns:minmax(0,1fr); gap:24px}
+  .tw-escena{height:clamp(410px,112vw,520px)}
+  .tw-card{left:12%; right:12%; top:14%}
+}
+@media (prefers-reduced-motion: reduce){
+  .tw-mundo{animation:none}
+  .tw-card,.tw-cursor,.tw-hero i,.tw-cols i,.tw-lista,.tw-reloj{transition:none}
+  .tw-reloj i::after,.tw-typed.on::after{animation:none}
+}
 @media (prefers-reduced-motion: reduce){ .btn-xl{animation:none} }
 .trust{list-style:none; padding:0; margin:30px 0 0; display:flex; flex-wrap:wrap; gap:10px 22px; color:var(--muted); font-size:15px; font-weight:600}
 .trust li{display:flex; align-items:center; gap:8px}
@@ -189,7 +270,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .trust{display:none}
 }
 @media (max-width: 900px) and (max-height: 700px){ .hero .sub{display:none} }
-@media (max-width: 360px){ .hero .ctas .btn-line:not(.btn-demo){display:none} .hero .ctas .btn{flex:1 1 100%} .demo-note{font-size:14px; margin-top:10px} }
+@media (max-width: 420px){ .hero .ctas .btn-line:not(.btn-demo){display:none} .hero .ctas .btn{flex:1 1 100%} .demo-note{font-size:14px; margin-top:10px} }
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px){
   .hero .veil{background:linear-gradient(90deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 40%, rgba(var(--bg-rgb),0) 60%)}
   .hero .copy{left:max(20px, env(safe-area-inset-left,0px)); right:auto; width:44vw; top:50%; bottom:auto; transform:translateY(-38%)}
@@ -436,21 +517,57 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     </div>
   </section>
 
-  <section id="tu-web" class="sec side-r tu-web" aria-labelledby="tu-web-t">
-    <div class="wrap">
-      <div class="rv">
-        <div class="label">Gratis · en 10 minutos</div>
-        <h2 class="h2" id="tu-web-t">Mira tu web nueva antes de decidir nada.</h2>
-        <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
+  <section id="tu-web" class="sec tu-web" aria-labelledby="tu-web-t">
+    <div class="wrap tw-grid">
+      <div class="tw-escena" id="tw-escena" data-paso="1" aria-hidden="true">
+        <div class="tw-mundo">
+          <div class="tw-card tw-form">
+            <div class="tw-chrome"><i></i><i></i><i></i><span>demo.autom8.es/demo</span></div>
+            <div class="tw-body">
+              <b class="tw-h">Pide tu demo gratis</b>
+              <span class="tw-l">Tu web actual</span><span class="tw-in"><span class="tw-typed" data-t="tuempresa.es"></span></span>
+              <span class="tw-l">Tu email</span><span class="tw-in"><span class="tw-typed" data-t="info@tuempresa.es"></span></span>
+              <span class="tw-chk"><i></i><i></i></span>
+              <span class="tw-btn tw-b1">Pide tu demo gratis</span>
+            </div>
+          </div>
+          <div class="tw-card tw-mail">
+            <div class="tw-chrome"><i></i><i></i><i></i><span>Bandeja de entrada</span></div>
+            <div class="tw-body">
+              <span class="tw-from"><i>A8</i><b>Autom8</b><em>ahora</em></span>
+              <b class="tw-h">Confirma tu demo gratis de tuempresa.es</b>
+              <span class="tw-line"></span><span class="tw-line s"></span>
+              <span class="tw-btn tw-b2">Confirmar mi demo</span>
+            </div>
+          </div>
+          <div class="tw-card tw-web">
+            <div class="tw-chrome"><i></i><i></i><i></i><span>demo.autom8.es/tu-web</span></div>
+            <div class="tw-body">
+              <span class="tw-nav"><i></i><i></i><i></i></span>
+              <span class="tw-hero"><i></i><i class="s"></i><i class="cta"></i></span>
+              <span class="tw-cols"><i></i><i></i><i></i></span>
+            </div>
+            <span class="tw-lista">Tu demo está lista <b>✓</b></span>
+          </div>
+          <span class="tw-reloj"><i></i><b id="tw-min">0:00</b></span>
+          <span class="tw-cursor"></span>
+        </div>
       </div>
-      <ol class="tw-pasos rv">
-        <li><b>Nos dices tu web</b><span>y el email al que te la mandamos.</span></li>
-        <li><b>Confirmas tu email</b><span>con el enlace que te llega.</span></li>
-        <li><b>En 10 minutos</b><span>tienes tu web nueva en tu bandeja.</span></li>
-      </ol>
-      <div class="tw-cta rv">
-        <a class="btn btn-lime btn-xl" href="https://demo.autom8.es/demo/">Pide tu demo gratis <span class="arr" aria-hidden="true">→</span></a>
-        <p class="tw-nota">Sin registro · sin tarjeta · sin compromiso</p>
+      <div class="tw-texto">
+        <div class="rv">
+          <div class="label">Gratis · en 10 minutos</div>
+          <h2 class="h2" id="tu-web-t">Mira tu web nueva antes de decidir nada.</h2>
+          <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
+        </div>
+        <ol class="tw-pasos rv" id="tw-pasos">
+          <li data-paso="1" class="lit"><b>Nos dices tu web</b><span>y el email al que te la mandamos.</span></li>
+          <li data-paso="2"><b>Confirmas tu email</b><span>con el enlace que te llega.</span></li>
+          <li data-paso="3"><b>En 10 minutos</b><span>tienes tu web nueva en tu bandeja.</span></li>
+        </ol>
+        <div class="tw-cta rv">
+          <a class="btn btn-lime btn-xl" href="https://demo.autom8.es/demo/">Pide tu demo gratis <span class="arr" aria-hidden="true">→</span></a>
+          <p class="tw-nota">Sin registro · sin tarjeta · sin compromiso</p>
+        </div>
       </div>
     </div>
   </section>
@@ -938,6 +1055,39 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
       .then(function(){ ok.textContent='Gracias. Te escribimos hoy mismo.'; cf.reset(); btn.textContent='Enviado'; if(window.autom8Track) autom8Track('lead'); })
       .catch(function(){ ok.innerHTML='No se ha podido enviar. Escríbenos a <a href="mailto:marcos@autom8.es">marcos@autom8.es</a>.'; btn.disabled=false; btn.textContent='Enviar'; });
   });
+})();
+</script>
+<script>
+// «Tu web nueva en 10 minutos»: the request flow in 3D (form → confirmation email → the new website), looping
+// while the section is on screen; the steps light up with it and choose it. While the section sits in the
+// middle of the screen the page-build window steps aside (.tw-on). With reduced motion: the finished state, still.
+(function(){
+  var esc=document.getElementById('tw-escena'), sec=document.getElementById('tu-web'); if(!esc||!sec) return;
+  var root=document.documentElement, pasos=[].slice.call(document.querySelectorAll('#tw-pasos li'));
+  var typed=[].slice.call(esc.querySelectorAll('.tw-typed')), b1=esc.querySelector('.tw-b1'), b2=esc.querySelector('.tw-b2'), min=document.getElementById('tw-min');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches, timers=[], activo=false;
+  function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+  function limpiar(){ timers.forEach(clearTimeout); timers=[]; }
+  function marcar(n){ esc.setAttribute('data-paso',n); pasos.forEach(function(li){ li.classList.toggle('lit', +li.getAttribute('data-paso')===n); }); }
+  function lleno(){ typed.forEach(function(e){ e.textContent=e.getAttribute('data-t'); e.classList.remove('on'); }); esc.classList.add('chk'); }
+  function pulsar(b){ b.classList.add('press'); later(function(){ b.classList.remove('press'); },260); }
+  function escribir(el,ms,done){ var t=el.getAttribute('data-t'), i=0; el.textContent=''; el.classList.add('on');
+    (function tick(){ el.textContent=t.slice(0,++i); if(i<t.length) later(tick,ms); else { el.classList.remove('on'); if(done) done(); } })(); }
+  function reloj(){ var s=0; (function tick(){ s+=15; var m=Math.floor(s/60), r=s%60; min.textContent=m+':'+(r<10?'0':'')+r; if(s<600) later(tick,45); })(); }
+  function uno(){ limpiar(); marcar(1); esc.classList.remove('chk','c1','c2'); typed.forEach(function(e){ e.textContent=''; });
+    later(function(){ escribir(typed[0],75,function(){ later(function(){ escribir(typed[1],50,function(){
+      later(function(){ esc.classList.add('chk'); },250); later(function(){ esc.classList.add('c1'); },500);
+      later(function(){ pulsar(b1); },1700); later(dos,2300); }); },250); }); },600); }
+  function dos(){ limpiar(); lleno(); esc.classList.remove('c1'); marcar(2); later(function(){ esc.classList.add('c2'); },800); later(function(){ pulsar(b2); },2100); later(tres,2700); }
+  function tres(){ limpiar(); lleno(); esc.classList.remove('c1','c2'); marcar(3); min.textContent='0:00'; later(reloj,700); later(uno,5600); }
+  var ir={1:uno,2:dos,3:tres};
+  pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else ir[n](); }); });
+  if(reduce){ lleno(); marcar(3); min.textContent='10:00'; }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ es.forEach(function(e){ root.classList.toggle('tw-on', e.isIntersecting); }); },{rootMargin:'-40% 0px -40% 0px'}).observe(sec);
+    new IntersectionObserver(function(es){ es.forEach(function(e){ if(reduce) return;
+      if(e.isIntersecting&&!activo){ activo=true; uno(); } else if(!e.isIntersecting&&activo){ activo=false; limpiar(); } }); },{threshold:.15}).observe(esc);
+  } else if(!reduce) uno();
 })();
 </script>
 <script src="/consent.js" defer></script>
