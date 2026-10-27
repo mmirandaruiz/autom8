@@ -171,6 +171,9 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 @keyframes tw-glow{0%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),.45)} 70%{box-shadow:0 0 0 18px rgba(var(--lime-rgb),0)} 100%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),0)}}
 :root[data-theme="light"] .btn-xl{animation-name:tw-glow-l}
 @keyframes tw-glow-l{0%{box-shadow:0 0 0 0 rgba(11,15,20,.28)} 70%{box-shadow:0 0 0 18px rgba(11,15,20,0)} 100%{box-shadow:0 0 0 0 rgba(11,15,20,0)}}
+.tw-gratis{margin:16px 0 0; font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:clamp(22px,2.2vw,32px); letter-spacing:-.03em; line-height:1.1; color:var(--text)}
+.tw-gratis::after{content:""; display:block; width:72px; height:5px; margin-top:12px; border-radius:3px; background:var(--lime)}
+:root[data-theme="light"] .tw-gratis::after{box-shadow:inset 0 0 0 1.5px #0B0F14}
 .tw-nota{margin:16px 0 0; color:var(--muted); font-size:15px; font-weight:600}
 @media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
 /* the request flow in 3D: form → confirmation email → the new website (script «tw» below); the page-build window steps aside here */
@@ -557,6 +560,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <div class="rv">
           <div class="label">Gratis · en 10 minutos</div>
           <h2 class="h2" id="tu-web-t">Pide tu web en segundos.</h2>
+          <p class="tw-gratis">Totalmente gratis y sin compromiso.</p>
           <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
         </div>
         <ol class="tw-pasos rv" id="tw-pasos">
