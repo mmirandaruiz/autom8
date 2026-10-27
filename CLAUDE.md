@@ -25,6 +25,10 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Antispam: campo `botcheck` oculto con la clase `.hp` (no usar `display:none`).
 - Solo 3 campos: nombre, email, descripción. No añadir más campos.
 
+## Demo gratis
+- La tarjeta «Rediseño», la pregunta «Ya tengo web, ¿podéis renovarla?» y la sección de contacto enlazan a `https://demo.autom8.es/demo-gratis/` (repo `autom8-sites`), donde el negocio pide una demo de su web renovada.
+- Es solo un enlace a propósito: el formulario, su antibots (Cloudflare Turnstile) y sus datos viven en `demo.autom8.es`. Así esta web no cambia su CSP ni recibe datos de esas solicitudes. No incrustar ese formulario aquí.
+
 ## Marca y paleta
 | Token | Oscuro | Claro | Uso |
 |---|---|---|---|
