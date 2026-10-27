@@ -11,6 +11,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - `aviso-legal.html`, `privacidad.html`, `cookies.html` — páginas legales enlazadas desde el pie.
 - `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`.
 - `robots.txt`, `sitemap.xml`; metadatos SEO, Open Graph y JSON-LD en el `<head>` de `index.html`.
+- `consent.js` — aviso de cookies de todas las páginas. Los IDs de Google Ads (y su etiqueta de conversión), GA4 y el píxel de Meta van en `CONFIG` al principio del archivo; sin IDs no aparece ningún aviso. Nada de terceros se carga antes de aceptar. El formulario llama a `autom8Track('lead')` al enviarse. La tabla de `/cookies` sale de los servicios configurados.
 - `vercel.json` — `cleanUrls` y cabeceras de seguridad/caché, incluida una Content-Security-Policy. **Si se añade un servicio externo (script, fuente, API, iframe), hay que añadir su dominio a la CSP** o el navegador lo bloqueará.
 - URLs limpias: canonical, sitemap y `og:url` usan `/aviso-legal`, `/privacidad`, `/cookies` (sin `.html`).
 - `og-image.png` (1200×630) — imagen para compartir en redes; si cambia el titular, regenerarla.

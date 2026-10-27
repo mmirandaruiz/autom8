@@ -534,7 +534,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     <div><b>Webs</b><a href="#webs">Web corporativa</a><a href="#webs">Landing page</a><a href="#webs">Rediseño web</a></div>
     <div><b>Autom8</b><a href="/precios">Precios</a><a href="/diseno-web-barcelona">Diseño web en Barcelona</a><a href="#proceso">Cómo trabajamos</a><a href="#faq">Preguntas</a><a href="#contacto">Contacto</a></div>
   </div>
-  <div class="fbot"><span>© 2026 Autom8. Todos los derechos reservados.</span><span><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></span></div>
+  <div class="fbot"><span>© 2026 Autom8. Todos los derechos reservados.</span><span><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <button type="button" data-cookie-settings hidden>Configurar cookies</button></span></div>
 </footer>
 
 <script src="vendor/three.min.js"></script>
@@ -887,10 +887,11 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
     if(cf.botcheck.checked) return;
     var btn=cf.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Enviando…'; ok.textContent='';
     send({subject:'Nuevo proyecto web: '+cf.name.value, name:cf.name.value, email:cf.email.value, replyto:cf.email.value, message:cf.message.value})
-      .then(function(){ ok.textContent='Gracias. Te escribimos hoy mismo.'; cf.reset(); btn.textContent='Enviado'; })
+      .then(function(){ ok.textContent='Gracias. Te escribimos hoy mismo.'; cf.reset(); btn.textContent='Enviado'; if(window.autom8Track) autom8Track('lead'); })
       .catch(function(){ ok.innerHTML='No se ha podido enviar. Escríbenos a <a href="mailto:marcos@autom8.es">marcos@autom8.es</a>.'; btn.disabled=false; btn.textContent='Enviar'; });
   });
 })();
 </script>
+<script src="/consent.js" defer></script>
 </body>
 </html>
