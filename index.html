@@ -111,10 +111,10 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .nav-toggle[aria-expanded="true"] .burger i:nth-child(3){top:5px; transform:rotate(-45deg)}
 @media (prefers-reduced-motion: reduce){.burger i{transition:none}}
 /* Pedir demo weighs the same as Pedir presupuesto: both solid, a contrasting pair in each theme */
-.btn-demo{background:#F5F7FA; color:#0B0F14}
-.btn-demo:hover{transform:translateY(-2px); background:#fff}
-:root[data-theme="light"] .btn-demo{background:var(--lime); color:#0B0F05}
-:root[data-theme="light"] .btn-demo:hover{background:#E6FBAE}
+.btn-pair{background:#F5F7FA; color:#0B0F14}
+.btn-pair:hover{transform:translateY(-2px); background:#fff}
+:root[data-theme="light"] .btn-pair{background:var(--lime); color:#0B0F05}
+:root[data-theme="light"] .btn-pair:hover{background:#E6FBAE}
 /* small screens: both buttons in a sticky bar at the bottom */
 .cta-bar{display:none}
 @media (max-width: 760px){
@@ -698,7 +698,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
       </button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" aria-label="Abrir menú"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
-      <a class="btn btn-demo nav-cta" href="https://demo.autom8.es/demo/">Pedir demo</a>
+      <a class="btn btn-pair nav-cta" href="https://demo.autom8.es/demo/">Pedir demo</a>
       <a class="btn btn-lime nav-cta" href="#contacto">Pedir presupuesto</a>
     </div>
   </nav>
@@ -915,7 +915,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 </main>
 
 <div class="cta-bar off" id="cta-bar">
-  <a class="btn btn-demo" href="https://demo.autom8.es/demo/">Pedir demo</a>
+  <a class="btn btn-pair" href="https://demo.autom8.es/demo/">Pedir demo</a>
   <a class="btn btn-lime" href="#contacto">Pedir presupuesto</a>
 </div>
 <footer>
@@ -940,14 +940,13 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   siteLinks.addEventListener('click',function(e){ if(e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&navToggle.getAttribute('aria-expanded')==='true'){ setMenu(false); navToggle.focus(); } });
 
-  /* sticky bottom buttons on small screens: shown after the first screen, hidden over the demo and contact sections */
-  var ctaBar=$('cta-bar'), ctaOver=0;
-  function syncCtaBar(){ ctaBar.classList.toggle('off', window.scrollY<window.innerHeight*.6 || ctaOver>0); }
+  /* sticky bottom buttons on small screens: hidden while the hero's own buttons, the demo section or the contact section are on screen */
+  var ctaBar=$('cta-bar'), ctaWatch=[document.querySelector('.hero .ctas'),$('tu-web'),$('contacto')].filter(Boolean);
+  function syncCtaBar(){ ctaBar.classList.toggle('off', ctaWatch.some(function(el){ return el._over; })); }
   if('IntersectionObserver' in window){
-    var ctaIo=new IntersectionObserver(function(es){ es.forEach(function(e){ e.target._over=e.isIntersecting; }); ctaOver=['tu-web','contacto'].filter(function(id){ return $(id)&&$(id)._over; }).length; syncCtaBar(); },{threshold:.15});
-    ['tu-web','contacto'].forEach(function(id){ if($(id)) ctaIo.observe($(id)); });
-  }
-  window.addEventListener('scroll',syncCtaBar,{passive:true}); syncCtaBar();
+    var ctaIo=new IntersectionObserver(function(es){ es.forEach(function(e){ e.target._over=e.isIntersecting; }); syncCtaBar(); },{threshold:0});
+    ctaWatch.forEach(function(el){ el._over=true; ctaIo.observe(el); });
+  }else{ ctaBar.classList.remove('off'); }
 
   /* theme toggle */
   var tb=$('theme-btn');
