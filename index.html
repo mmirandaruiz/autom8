@@ -87,7 +87,6 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .nav-cta{min-height:46px; padding:0 20px; font-size:15px}
 .links a{color:var(--text); text-decoration:none; font-weight:600; font-size:15px}
 .links a:hover{color:var(--accent)}
-.links .menu-cta{display:none}
 .nav-right{display:flex; align-items:center; gap:10px}
 .btn{display:inline-flex; align-items:center; justify-content:center; min-height:50px; padding:0 24px; border-radius:999px; font:inherit; font-weight:600; font-size:16px; text-decoration:none; border:1px solid transparent; cursor:pointer; transition:transform .25s, background-color .25s, color .25s, border-color .25s}
 .btn-lime{background:var(--fill); color:var(--fill-ink)}
@@ -111,18 +110,25 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .nav-toggle[aria-expanded="true"] .burger i:nth-child(2){opacity:0}
 .nav-toggle[aria-expanded="true"] .burger i:nth-child(3){top:5px; transform:rotate(-45deg)}
 @media (prefers-reduced-motion: reduce){.burger i{transition:none}}
-.links .menu-cta{margin-top:10px; justify-content:center}
-.links .btn-lime.menu-cta{color:var(--fill-ink)}
+/* Pedir demo weighs the same as Pedir presupuesto: both solid, a contrasting pair in each theme */
+.btn-demo{background:#F5F7FA; color:#0B0F14}
+.btn-demo:hover{transform:translateY(-2px); background:#fff}
+:root[data-theme="light"] .btn-demo{background:var(--lime); color:#0B0F05}
+:root[data-theme="light"] .btn-demo:hover{background:#E6FBAE}
+/* small screens: both buttons in a sticky bar at the bottom */
+.cta-bar{display:none}
 @media (max-width: 760px){
   .links{left:0; right:0; width:auto; margin-top:0; border-width:0 0 1px; border-radius:0; box-shadow:none; padding:8px 20px 18px; max-height:calc(100svh - 80px); overflow-y:auto}
-  .nav-demo{display:none}
-  .links .btn-line.menu-cta{display:flex}
+  .nav-cta{display:none}
+  .cta-bar{display:grid; grid-template-columns:1fr 1fr; gap:10px; position:fixed; left:0; right:0; bottom:0; z-index:49; padding:10px max(16px, env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px)); background:rgba(var(--bg-rgb),.86); -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); border-top:1px solid rgba(var(--fg-rgb),.08); transition:transform .3s, opacity .3s}
+  .cta-bar .btn{min-height:48px; padding:0 12px; font-size:15px}
+  .cta-bar.off{transform:translateY(110%); opacity:0; pointer-events:none}
+  body{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
 }
+@media (max-width: 760px) and (prefers-reduced-motion: reduce){.cta-bar{transition:none}}
 @media (max-width: 560px){
   .nav{padding-top:12px; padding-bottom:12px; gap:10px}
   .logo{font-size:26px}
-  .nav-cta{display:none}
-  .links .menu-cta{display:flex}
   .theme-btn,.nav-toggle{width:44px; height:44px}
 }
 
@@ -685,8 +691,6 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     <a class="logo" href="#inicio" aria-label="Autom8, inicio">Autom<span class="eight">8</span></a>
     <div class="links" id="site-links">
       <a href="#incluye">Qué incluye</a><a href="#webs">Tipos de web</a><a href="#proceso">Cómo trabajamos</a><a href="#faq">Preguntas</a>
-      <a class="btn btn-line menu-cta" href="https://demo.autom8.es/demo/">Pedir demo</a>
-      <a class="btn btn-lime menu-cta" href="#contacto">Pedir presupuesto</a>
     </div>
     <div class="nav-right">
       <button class="theme-btn" id="theme-btn" type="button" aria-label="Cambiar a modo claro">
@@ -694,7 +698,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
       </button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" aria-label="Abrir menú"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
-      <a class="btn btn-line nav-cta nav-demo" href="https://demo.autom8.es/demo/">Pedir demo</a>
+      <a class="btn btn-demo nav-cta" href="https://demo.autom8.es/demo/">Pedir demo</a>
       <a class="btn btn-lime nav-cta" href="#contacto">Pedir presupuesto</a>
     </div>
   </nav>
@@ -910,6 +914,10 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 </main>
 
+<div class="cta-bar off" id="cta-bar">
+  <a class="btn btn-demo" href="https://demo.autom8.es/demo/">Pedir demo</a>
+  <a class="btn btn-lime" href="#contacto">Pedir presupuesto</a>
+</div>
 <footer>
   <div class="fgrid">
     <div><strong>Autom<span class="eight">8</span></strong><span>Diseño y creación de páginas web para empresas.</span></div>
@@ -931,6 +939,15 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   navToggle.addEventListener('click',function(){ setMenu(navToggle.getAttribute('aria-expanded')!=='true'); });
   siteLinks.addEventListener('click',function(e){ if(e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&navToggle.getAttribute('aria-expanded')==='true'){ setMenu(false); navToggle.focus(); } });
+
+  /* sticky bottom buttons on small screens: shown after the first screen, hidden over the demo and contact sections */
+  var ctaBar=$('cta-bar'), ctaOver=0;
+  function syncCtaBar(){ ctaBar.classList.toggle('off', window.scrollY<window.innerHeight*.6 || ctaOver>0); }
+  if('IntersectionObserver' in window){
+    var ctaIo=new IntersectionObserver(function(es){ es.forEach(function(e){ e.target._over=e.isIntersecting; }); ctaOver=['tu-web','contacto'].filter(function(id){ return $(id)&&$(id)._over; }).length; syncCtaBar(); },{threshold:.15});
+    ['tu-web','contacto'].forEach(function(id){ if($(id)) ctaIo.observe($(id)); });
+  }
+  window.addEventListener('scroll',syncCtaBar,{passive:true}); syncCtaBar();
 
   /* theme toggle */
   var tb=$('theme-btn');
