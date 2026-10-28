@@ -948,6 +948,16 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     ctaWatch.forEach(function(el){ el._over=true; ctaIo.observe(el); });
   }else{ ctaBar.classList.remove('off'); }
 
+  /* soft resistance when scrolling down past the end of «Pide tu demo»: the wheel moves at a third of its speed for a short stretch */
+  var tuWeb=$('tu-web');
+  if(tuWeb) window.addEventListener('wheel',function(e){
+    if(e.deltaY<=0||e.ctrlKey||e.defaultPrevented||tuWeb.classList.contains('diving')) return;
+    var r=tuWeb.getBoundingClientRect(), past=window.innerHeight-r.bottom;
+    if(r.top>0||past<-40||past>window.innerHeight*.3) return;
+    e.preventDefault();
+    window.scrollBy({top:(e.deltaMode===1?e.deltaY*16:e.deltaY)*.33, behavior:'instant'});
+  },{passive:false});
+
   /* theme toggle */
   var tb=$('theme-btn');
   function curTheme(){ return document.documentElement.getAttribute('data-theme')==='light'?'light':'dark'; }
