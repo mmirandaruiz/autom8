@@ -1579,7 +1579,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
       for(var j=0;j<designParts.length;j++){var part=designParts[j];part.material.copy(sectionMat[part.role]);part.color.copy(sectionMat[part.role].color);}include.update(include.time);
       edge.color.setHex(0xd4f57a);edge.opacity=.18;drawLabels();wake();}
 
-    function resize2(){width=window.innerWidth;height=window.innerHeight;gl2.setPixelRatio(Math.min(window.devicePixelRatio||1,width<=900?1.5:2));gl2.setSize(width,height,false);for(var i=0;i<views.length;i++){var v=views[i],rect=v.el.getBoundingClientRect();v.aspect=rect.width/rect.height||1;contentBounds(v,v.frameBounds);fitCamera(v.scene,v.camera,v.frameBounds,v.aspect,.94);}wake();}
+    function resize2(){width=window.innerWidth;height=window.innerHeight;gl2.setPixelRatio(renderer.getPixelRatio());gl2.setSize(width,height,false);for(var i=0;i<views.length;i++){var v=views[i],rect=v.el.getBoundingClientRect();v.aspect=rect.width/rect.height||1;contentBounds(v,v.frameBounds);fitCamera(v.scene,v.camera,v.frameBounds,v.aspect,.94);}wake();}
     function wake(){if(alive&&!raf)raf=requestAnimationFrame(render2);}
     function fallback2(){alive=false;cancelAnimationFrame(raf);raf=0;canvas2.style.display='none';for(var i=0;i<views.length;i++)views[i].el.classList.remove('webgl');}
     function render2(ms){try{draw2(ms);}catch(e){fallback2();}}
