@@ -100,7 +100,17 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .theme-btn .moon{display:none}
 :root[data-theme="light"] .theme-btn .sun{display:none}
 :root[data-theme="light"] .theme-btn .moon{display:block}
-.nav-toggle{display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:999px; border:1px solid rgba(var(--fg-rgb),.45); background:transparent; color:var(--text); font:inherit; font-weight:600; font-size:15px; cursor:pointer}
+.nav-toggle{display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; padding:0; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--text); font:inherit; font-weight:600; font-size:15px; cursor:pointer}
+.nav-toggle:hover{border-color:var(--accent); color:var(--accent)}
+.burger{position:relative; display:block; width:18px; height:12px}
+.burger i{position:absolute; left:0; width:100%; height:2px; border-radius:2px; background:currentColor; transition:transform .3s, opacity .2s, top .3s}
+.burger i:nth-child(1){top:0}
+.burger i:nth-child(2){top:5px}
+.burger i:nth-child(3){top:10px}
+.nav-toggle[aria-expanded="true"] .burger i:nth-child(1){top:5px; transform:rotate(45deg)}
+.nav-toggle[aria-expanded="true"] .burger i:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] .burger i:nth-child(3){top:5px; transform:rotate(-45deg)}
+@media (prefers-reduced-motion: reduce){.burger i{transition:none}}
 .links .menu-cta{margin-top:10px; justify-content:center}
 .links .btn-lime.menu-cta{color:var(--fill-ink)}
 @media (max-width: 760px){
@@ -113,7 +123,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .logo{font-size:26px}
   .nav-cta{display:none}
   .links .menu-cta{display:flex}
-  .theme-btn{width:44px; height:44px}
+  .theme-btn,.nav-toggle{width:44px; height:44px}
 }
 
 /* hero */
@@ -683,7 +693,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
       </button>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links">Menú</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-links" aria-label="Abrir menú"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <a class="btn btn-line nav-cta nav-demo" href="https://demo.autom8.es/demo/">Pedir demo</a>
       <a class="btn btn-lime nav-cta" href="#contacto">Pedir presupuesto</a>
     </div>
@@ -917,7 +927,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 
   /* mobile menu */
   var navToggle=document.querySelector('.nav-toggle'), siteLinks=$('site-links');
-  function setMenu(open){ siteLinks.classList.toggle('open',open); navToggle.setAttribute('aria-expanded',open?'true':'false'); navToggle.textContent=open?'Cerrar':'Menú'; }
+  function setMenu(open){ siteLinks.classList.toggle('open',open); navToggle.setAttribute('aria-expanded',open?'true':'false'); navToggle.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú'); }
   navToggle.addEventListener('click',function(){ setMenu(navToggle.getAttribute('aria-expanded')!=='true'); });
   siteLinks.addEventListener('click',function(e){ if(e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&navToggle.getAttribute('aria-expanded')==='true'){ setMenu(false); navToggle.focus(); } });
