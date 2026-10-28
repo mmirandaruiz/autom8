@@ -66,6 +66,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth} }
 body{margin:0; background:var(--ink); color:var(--text); font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif; font-size:18px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; transition:background-color .4s, color .4s}
 h1,h2,h3{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; font-weight:800; letter-spacing:-.035em; line-height:.98; margin:0}
 a{color:inherit}
@@ -116,28 +117,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .hero{position:relative; height:240vh}
 .hero .stick{position:sticky; top:0; height:100vh; height:100svh; overflow:hidden}
 .hero .stick::before{content:""; position:absolute; inset:0; background:radial-gradient(55% 60% at 68% 50%, rgba(var(--lime-rgb),.10), transparent 70%), radial-gradient(40% 40% at 88% 85%, rgba(var(--signal-rgb),.12), transparent 70%); pointer-events:none}
-/* progress rail beside the docked window: a line above and below it with how complete the website is */
-#rail{position:fixed; inset:0; z-index:3; pointer-events:none; opacity:0; visibility:hidden}
-#rail .seg{position:absolute; left:0; top:0; width:2px; margin-left:-1px; border-radius:2px; background:var(--track); overflow:hidden}
-#rail .seg b{display:block; height:100%; background:var(--meter); transform-origin:top; transform:scaleY(0)}
-#rail .tag{position:absolute; left:0; top:0; transform:translate(-50%,-50%); min-width:132px; padding:10px 14px 12px; border-radius:14px; border:1px solid var(--line); background:rgba(var(--bg-rgb),.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); display:flex; flex-direction:column; gap:2px; font-size:13px; color:var(--muted); line-height:1.3}
-#rail strong{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:22px; letter-spacing:-.02em; color:var(--text)}
-#rail em{display:block; height:4px; margin-top:6px; border-radius:4px; background:var(--track); overflow:hidden}
-#rail em b{display:block; height:100%; background:var(--meter); transform-origin:left; transform:scaleX(0)}
-#rail .dots{display:flex; gap:3px; height:auto; background:none; border-radius:0}
-#rail .dots i{flex:1; height:4px; border-radius:2px; background:var(--track)}
-#rail .dots i.on{background:var(--meter)}
-#rail .dots i{transition:background-color .35s}
-#rail .tag{transition:border-color .4s}
-#rail .tag.done{border-color:var(--accent)}
-@media (max-width: 600px){ #rail{display:none} }
-#mini{position:fixed; left:0; top:0; z-index:3; pointer-events:none; opacity:0; visibility:hidden; display:flex; align-items:center; gap:8px; padding:5px 10px; border-radius:99px; border:1px solid var(--line); background:rgba(var(--bg-rgb),.88); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
-#mini strong{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:13px; color:var(--text); min-width:3.2em}
-#mini em{display:block; width:44px; height:4px; border-radius:4px; background:var(--track); overflow:hidden}
-#mini em b{display:block; height:100%; background:var(--meter); transform-origin:left; transform:scaleX(0)}
-@media (min-width: 601px){ #mini{display:none} }
-:root:not(.js) #mini,.nogl #mini{display:none}
-:root:not(.js) #rail,.nogl #rail{display:none}
+#capa3d{position:fixed; inset:0; z-index:3; pointer-events:none; opacity:var(--capa,1)}
 #gl{position:fixed; inset:0; width:100%; height:100%; display:block; z-index:3; pointer-events:none; transition:opacity .4s}
 .hero .veil{position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(var(--bg-rgb),.9) 0%, rgba(var(--bg-rgb),.6) 36%, rgba(var(--bg-rgb),0) 58%)}
 .hero .copy{position:absolute; z-index:2; left:max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); top:50%; transform:translateY(-44%); width:min(600px,44vw)}
@@ -156,6 +136,139 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .ctas{display:flex; flex-wrap:wrap; gap:12px; margin-top:34px}
 .demo-note{margin:14px 0 0; font-size:15px; color:var(--muted)}
 .demo-note b{color:var(--text); font-weight:600}
+.arr-down{display:inline-block; margin-left:2px; transition:transform .25s}
+.btn-demo:hover .arr-down{transform:translateY(3px)}
+/* «Tu web nueva en 10 minutos»: the section right after the hero, with the biggest button on the page */
+.tw-pasos{list-style:none; counter-reset:tw; padding:0; margin:36px 0 0; display:grid; gap:12px; max-width:640px}
+.tw-pasos li{counter-increment:tw; display:grid; grid-template-columns:44px 1fr; gap:2px 14px; align-items:center; padding:14px 18px; border:1px solid var(--line); border-radius:18px; background:var(--panel); color:var(--muted); font-size:16px}
+.tw-pasos li::before{content:counter(tw); grid-row:span 2; display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--lime); color:#0B0F05; font:800 20px/1 "Bricolage Grotesque",sans-serif}
+:root[data-theme="light"] .tw-pasos li::before{box-shadow:inset 0 0 0 1.5px #0B0F14}
+.tw-pasos b{color:var(--text); font-weight:600}
+.tw-cta{margin-top:40px}
+.btn-xl{min-height:76px; padding:0 40px; font-size:clamp(18px,1.6vw,22px); gap:12px; box-shadow:0 0 0 0 rgba(var(--lime-rgb),.45); animation:tw-glow 2.6s ease-out infinite}
+.btn-xl .arr{display:inline-block; font-size:1.2em; transition:transform .25s}
+.btn-xl:hover .arr{transform:translateX(5px)}
+@keyframes tw-glow{0%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),.45)} 70%{box-shadow:0 0 0 18px rgba(var(--lime-rgb),0)} 100%{box-shadow:0 0 0 0 rgba(var(--lime-rgb),0)}}
+:root[data-theme="light"] .btn-xl{animation-name:tw-glow-l}
+@keyframes tw-glow-l{0%{box-shadow:0 0 0 0 rgba(11,15,20,.28)} 70%{box-shadow:0 0 0 18px rgba(11,15,20,0)} 100%{box-shadow:0 0 0 0 rgba(11,15,20,0)}}
+.tw-gratis{margin:16px 0 0; font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:clamp(22px,2.2vw,32px); letter-spacing:-.03em; line-height:1.1; color:var(--text)}
+.tw-gratis::after{content:""; display:block; width:72px; height:5px; margin-top:12px; border-radius:3px; background:var(--lime)}
+:root[data-theme="light"] .tw-gratis::after{box-shadow:inset 0 0 0 1.5px #0B0F14}
+.tw-nota{margin:16px 0 0; color:var(--muted); font-size:15px; font-weight:600}
+@media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
+/* the request flow in 3D: form → confirmation email → the new website (script «tw» below); the page-build window steps aside here */
+.tw-grid{display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr); gap:clamp(32px,5vw,80px); align-items:center}
+
+.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%; --tw:1; opacity:var(--tw); transform:translateX(calc((1 - var(--tw)) * 14%)) scale(calc(.9 + .1 * var(--tw)))}
+.js .tw-escena{--tw:0}
+.tw-mundo{position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(9deg) rotateY(16deg); animation:tw-flota 8s ease-in-out infinite}
+@keyframes tw-flota{0%,100%{transform:rotateX(9deg) rotateY(16deg) translateY(0)} 50%{transform:rotateX(7deg) rotateY(12deg) translateY(-10px)}}
+.tw-escena::before{content:""; position:absolute; inset:8% 6%; border-radius:50%; background:radial-gradient(closest-side, rgba(var(--lime-rgb),.16), transparent 70%); filter:blur(8px)}
+.tw-card{position:absolute; left:8%; right:8%; top:12%; border-radius:18px; border:1px solid var(--line); background:linear-gradient(160deg, var(--panel), var(--ink)); box-shadow:0 40px 80px -30px rgba(0,0,0,.75), 0 0 0 1px rgba(var(--fg-rgb),.03) inset; overflow:hidden; transform-style:preserve-3d; transition:transform 1s cubic-bezier(.16,1,.3,1), opacity .7s; will-change:transform}
+.tw-chrome{display:flex; align-items:center; gap:6px; padding:12px 14px; border-bottom:1px solid var(--line)}
+.tw-chrome i{width:9px; height:9px; border-radius:50%; background:rgba(var(--fg-rgb),.18)}
+.tw-chrome i:first-child{background:var(--lime)}
+.tw-chrome span{margin-left:10px; flex:1; font-size:12px; color:var(--muted); background:rgba(var(--fg-rgb),.06); border-radius:7px; padding:4px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tw-body{display:flex; flex-direction:column; gap:7px; padding:20px 22px 24px}
+.tw-h{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:clamp(17px,1.6vw,22px); letter-spacing:-.02em; line-height:1.1; margin-bottom:6px; color:var(--text)}
+.tw-l{font-size:12px; color:var(--muted)}
+.tw-in{display:flex; align-items:center; min-height:38px; padding:0 12px; border-radius:10px; border:1px solid var(--input-line); background:var(--input-bg); font-size:14px; color:var(--text)}
+.tw-typed::after{content:""; display:inline-block; width:2px; height:1em; margin-left:1px; vertical-align:-2px; background:var(--lime); opacity:0}
+.tw-typed.on::after{opacity:1; animation:tw-caret .9s steps(1) infinite}
+@keyframes tw-caret{50%{opacity:0}}
+.tw-chk{display:flex; flex-direction:column; gap:6px; margin:4px 0}
+.tw-chk i{display:block; height:10px; border-radius:4px; background:rgba(var(--fg-rgb),.08); position:relative; padding-left:18px}
+.tw-chk i::before{content:""; position:absolute; left:0; top:-1px; width:12px; height:12px; border-radius:3px; border:1.5px solid var(--input-line); background:var(--input-bg); transition:background .25s, border-color .25s}
+.tw-escena.chk .tw-chk i::before{background:var(--lime); border-color:var(--lime)}
+.tw-btn{display:flex; align-items:center; justify-content:center; min-height:40px; margin-top:6px; border-radius:999px; background:var(--lime); color:#0B0F05; font-weight:700; font-size:14px; transition:transform .15s, box-shadow .3s}
+:root[data-theme="light"] .tw-btn,:root[data-theme="light"] .tw-lista,:root[data-theme="light"] .tw-hero .cta,:root[data-theme="light"] .tw-chrome i:first-child{box-shadow:inset 0 0 0 1.5px #0B0F14}
+.tw-btn.press{transform:scale(.94); box-shadow:0 0 0 10px rgba(var(--lime-rgb),.22)}
+/* the mail card looks like an inbox: toolbar, folders, the list, and the email that opens */
+.tw-mailbar{display:flex; align-items:center; gap:12px; padding:10px 14px; border-bottom:1px solid var(--line); font-size:13px}
+.tw-mailbar b{font-family:"Bricolage Grotesque",sans-serif; font-size:15px; color:var(--text)}
+.tw-busca{flex:1; color:var(--muted); background:rgba(var(--fg-rgb),.06); border-radius:999px; padding:6px 12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tw-av{display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--signal); color:#fff; font-style:normal; font-weight:700; font-size:10px}
+.tw-inbox{display:grid; grid-template-columns:30% 1fr; min-height:220px}
+.tw-side{display:flex; flex-direction:column; gap:4px; padding:12px 10px; border-right:1px solid var(--line); font-size:12px; color:var(--muted)}
+.tw-side span{padding:6px 8px; border-radius:8px; display:flex; justify-content:space-between}
+.tw-side .on{background:rgba(var(--lime-rgb),.14); color:var(--text); font-weight:600}
+.tw-side .on b{color:var(--text)}
+.tw-nuevo-btn{justify-content:center !important; margin-bottom:6px; border:1px solid var(--line); color:var(--text)}
+.tw-list{position:relative; overflow:hidden}
+.tw-row{display:grid; grid-template-columns:10px 64px 1fr auto; align-items:center; gap:8px; padding:11px 12px; border-bottom:1px solid var(--line); font-size:12px; color:var(--muted)}
+.tw-row i{width:7px; height:7px; border-radius:50%}
+.tw-row b{color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tw-row span{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tw-row .g{display:block; height:8px; border-radius:4px; background:rgba(var(--fg-rgb),.1)}
+.tw-row span.g{width:80%} .tw-row span.g.s{width:55%}
+.tw-row em{font-style:normal; font-size:11px}
+.tw-row.nuevo{background:rgba(var(--lime-rgb),.10)}
+.tw-row.nuevo i{background:var(--lime)}
+.tw-row.nuevo span,.tw-row.nuevo em{color:var(--text); font-weight:600}
+.tw-escena.sel .tw-row.nuevo{background:rgba(var(--lime-rgb),.22)}
+.tw-msg{position:absolute; inset:0; display:flex; flex-direction:column; gap:7px; padding:12px 14px; background:var(--panel); transform:translateX(102%); transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.tw-escena.abierto .tw-msg{transform:none}
+.tw-back{font-size:11px; color:var(--muted)}
+.tw-msg .tw-h{font-size:clamp(14px,1.3vw,17px); margin:2px 0}
+.tw-from{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); margin-bottom:6px}
+.tw-from i{display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--lime); color:#0B0F05; font-style:normal; font-weight:800; font-size:12px}
+.tw-from b{color:var(--text)}
+.tw-from em{margin-left:auto; font-style:normal}
+.tw-line{display:block; height:9px; border-radius:5px; background:rgba(var(--fg-rgb),.09)}
+.tw-line.s{width:65%}
+.tw-nav{display:flex; gap:8px; margin-bottom:4px}
+.tw-nav i{height:8px; flex:0 0 18%; border-radius:4px; background:rgba(var(--fg-rgb),.12)}
+.tw-nav i:first-child{flex-basis:26%; background:rgba(var(--fg-rgb),.3)}
+.tw-hero{display:flex; flex-direction:column; gap:8px; padding:18px; border-radius:12px; background:linear-gradient(120deg, rgba(var(--lime-rgb),.22), rgba(var(--signal-rgb),.16))}
+.tw-hero i{display:block; height:14px; width:78%; border-radius:5px; background:rgba(var(--fg-rgb),.55); transform-origin:left; transform:scaleX(0)}
+.tw-hero i.s{width:52%; height:9px; background:rgba(var(--fg-rgb),.25)}
+.tw-hero i.cta{width:34%; height:22px; border-radius:99px; background:var(--lime)}
+.tw-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
+.tw-cols i{height:54px; border-radius:10px; background:rgba(var(--fg-rgb),.07); border:1px solid var(--line); transform:translateY(14px); opacity:0}
+.tw-lista{position:absolute; right:14px; bottom:14px; padding:8px 14px; border-radius:999px; background:var(--lime); color:#0B0F05; font-weight:700; font-size:13px; transform:translateZ(40px) scale(.6); opacity:0; transition:transform .6s cubic-bezier(.34,1.56,.64,1) .9s, opacity .4s .9s}
+.tw-reloj{position:absolute; right:8%; top:3%; display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:var(--panel); font-weight:700; font-size:14px; color:var(--text); transform:translateZ(160px); opacity:0; transition:opacity .4s}
+.tw-reloj i{width:14px; height:14px; border-radius:50%; border:2px solid var(--lime); position:relative}
+.tw-reloj i::after{content:""; position:absolute; left:50%; top:1px; width:2px; height:5px; margin-left:-1px; background:var(--lime); transform-origin:50% 100%; animation:tw-aguja 1s linear infinite}
+@keyframes tw-aguja{to{transform:rotate(360deg)}}
+.tw-cursor{position:absolute; left:84%; top:96%; width:30px; height:34px; margin-left:-11px; background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 30'%3E%3Cpath d='M9.5 1.5c1.4 0 2.5 1.1 2.5 2.5v8.2l1-.1c1.3-.2 2.4.6 2.6 1.6l.9-.1c1.3-.1 2.3.7 2.5 1.7h.6c1.4 0 2.4 1 2.4 2.4v4.6c0 4-3.2 6.7-7.4 6.7h-2.2c-2.4 0-4.2-1.1-5.5-3L2.2 19.5c-.8-1.2-.5-2.7.7-3.4 1-.6 2.3-.4 3.1.4L7 17.6V4c0-1.4 1.1-2.5 2.5-2.5z' fill='%23F5F7FA' stroke='%2307090C' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cpath d='M12 12.2v5M15.6 13.7v3.8M19.2 15.4v2.4' stroke='%2307090C' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E"); filter:drop-shadow(0 4px 6px rgba(0,0,0,.5)); transform:translateZ(150px); transition:left 1.1s cubic-bezier(.65,0,.35,1), top 1.1s cubic-bezier(.65,0,.35,1), opacity .4s, scale .12s; opacity:0}
+/* the three moments */
+.tw-form{transform:translateZ(60px)}
+.tw-mail{transform:translate(8%,-6%) translateZ(-160px) rotateY(-6deg); opacity:0}
+.tw-web{transform:translate(-10%,8%) translateZ(-240px); opacity:0}
+[data-paso="2"] .tw-form{transform:translate(-8%,10%) translateZ(-150px) rotateY(8deg); opacity:.4}
+[data-paso="2"] .tw-mail{transform:translateZ(80px); opacity:1}
+[data-paso="3"] .tw-form{transform:translate(-10%,16%) translateZ(-280px) rotateY(8deg); opacity:.18}
+[data-paso="3"] .tw-mail{transform:translate(10%,-10%) translateZ(-190px) rotateY(-8deg); opacity:.32}
+[data-paso="3"] .tw-web{transform:translateZ(90px); opacity:1}
+[data-paso="3"] .tw-hero i{transform:scaleX(1); transition:transform .7s cubic-bezier(.16,1,.3,1) .5s}
+[data-paso="3"] .tw-hero i.s{transition-delay:.65s}
+[data-paso="3"] .tw-hero i.cta{transition-delay:.8s}
+[data-paso="3"] .tw-cols i{transform:none; opacity:1; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .5s}
+[data-paso="3"] .tw-cols i:nth-child(1){transition-delay:.9s} [data-paso="3"] .tw-cols i:nth-child(2){transition-delay:1s} [data-paso="3"] .tw-cols i:nth-child(3){transition-delay:1.1s}
+[data-paso="3"] .tw-lista{transform:translateZ(40px) scale(1); opacity:1}
+[data-paso="3"] .tw-reloj{opacity:1}
+.tw-escena:has(.press) .tw-cursor{scale:.84}
+.tw-escena.c1 .tw-cursor{opacity:1; left:var(--c1x,52%); top:var(--c1y,80%)}
+.tw-escena.c2a .tw-cursor{opacity:1; left:var(--c2ax,62%); top:var(--c2ay,34%)}
+.tw-escena.c2 .tw-cursor{opacity:1; left:var(--c2x,50%); top:var(--c2y,62%)}
+/* the steps follow the scene, and choose it */
+.tw-pasos li{cursor:pointer; transition:border-color .3s, background-color .3s}
+.tw-pasos li.lit{border-color:rgba(var(--lime-rgb),.6); background:color-mix(in srgb, var(--panel) 70%, rgba(var(--lime-rgb),.10))}
+:root[data-theme="light"] .tw-pasos li.lit{border-color:#0B0F14}
+.tw-pasos li.lit::before{box-shadow:0 0 0 6px rgba(var(--lime-rgb),.18)}
+.tw-texto{position:relative; z-index:1}
+@media (max-width: 900px){
+  .tw-grid{grid-template-columns:minmax(0,1fr); gap:24px}
+  .tw-escena{height:clamp(410px,112vw,520px)}
+  .tw-card{left:12%; right:12%; top:14%}
+}
+@media (prefers-reduced-motion: reduce){
+  .tw-mundo{animation:none}
+  .tw-escena{transform:none}
+  .tw-card,.tw-cursor,.tw-hero i,.tw-cols i,.tw-lista,.tw-reloj{transition:none}
+  .tw-reloj i::after,.tw-typed.on::after{animation:none}
+}
+@media (prefers-reduced-motion: reduce){ .btn-xl{animation:none} }
 .trust{list-style:none; padding:0; margin:30px 0 0; display:flex; flex-wrap:wrap; gap:10px 22px; color:var(--muted); font-size:15px; font-weight:600}
 .trust li{display:flex; align-items:center; gap:8px}
 .trust li::before{content:""; width:8px; height:8px; border-radius:2px; background:var(--lime)}
@@ -171,7 +284,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .trust{display:none}
 }
 @media (max-width: 900px) and (max-height: 700px){ .hero .sub{display:none} }
-@media (max-width: 360px){ .hero .ctas .btn-line:not(.btn-demo){display:none} .hero .ctas .btn{flex:1 1 100%} .demo-note{font-size:14px; margin-top:10px} }
+@media (max-width: 420px){ .hero .ctas .btn-line:not(.btn-demo){display:none} .hero .ctas .btn{flex:1 1 100%} .demo-note{font-size:14px; margin-top:10px} }
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px){
   .hero .veil{background:linear-gradient(90deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 40%, rgba(var(--bg-rgb),0) 60%)}
   .hero .copy{left:max(20px, env(safe-area-inset-left,0px)); right:auto; width:44vw; top:50%; bottom:auto; transform:translateY(-38%)}
@@ -321,7 +434,6 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 :root[data-theme="light"] .w-redo .old{border-color:var(--signal); opacity:1} :root[data-theme="light"] .w-redo .old i{background:#DCD6FF}
 :root[data-theme="light"] .steps.tl li.lit{border-color:#7A8494}
 :root[data-theme="light"] .steps.tl li.lit::before{border-color:#0B0F14}
-:root[data-theme="light"] #rail .tag{background:rgba(255,255,255,.92); border-color:#C3CCD7}
 @media (prefers-reduced-motion: reduce){ .viz *,.wire *,.v-launch::after{transition:none} }
 
 .steps{list-style:none; padding:0; margin:48px 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:16px; counter-reset:s}
@@ -379,9 +491,9 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
+<div id="capa3d">
 <canvas id="gl" aria-hidden="true"></canvas>
-<div id="mini" aria-hidden="true"><strong id="mini-pct">0 %</strong><em><b id="mini-bar"></b></em></div>
-<div id="rail" aria-hidden="true"><i class="seg st"><b></b></i><i class="seg sb"><b></b></i><div class="tag tt"><span>Tu web</span><strong id="rail-pct">0 %</strong><em><b id="rail-bar"></b></em></div><div class="tag tb"><span>Piezas</span><strong id="rail-n">0</strong><em class="dots" id="rail-dots"></em></div></div>
+</div>
 <header id="hdr">
   <nav class="nav" aria-label="Principal">
     <a class="logo" href="#inicio" aria-label="Autom8, inicio">Autom<span class="eight">8</span></a>
@@ -409,11 +521,77 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h1>Creamos la web de <em>tu empresa</em>.</h1>
         <p class="sub">Webs modernas para todo tipo de empresas. Renovamos páginas anticuadas con diseños innovadores y las ponemos en marcha rápido, sin apenas esfuerzo por tu parte.</p>
         <div class="ctas">
-          <a class="btn btn-lime" href="#contacto">Pedir presupuesto</a>
-          <a class="btn btn-line btn-demo" href="https://demo.autom8.es/demo/">Demo gratis</a>
+          <a class="btn btn-lime btn-demo" href="#tu-web">Pide tu demo gratis <span class="arr-down" aria-hidden="true">↓</span></a>
+          <a class="btn btn-line" href="#contacto">Pedir presupuesto</a>
         </div>
-        <p class="demo-note">Mira tu web renovada, gratis: <b>sin registro y sin tarjeta</b>.</p>
+        <p class="demo-note">Gratis, <b>sin registro y sin tarjeta</b>.</p>
         <ul class="trust"><li>Adaptada a cualquier pantalla</li><li>Rápida</li><li>Una imagen más confiable</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="tu-web" class="sec tu-web" aria-labelledby="tu-web-t">
+    <div class="wrap tw-grid">
+      <div class="tw-escena" id="tw-escena" data-paso="1" aria-hidden="true">
+        <div class="tw-mundo">
+          <div class="tw-card tw-form">
+            <div class="tw-chrome"><i></i><i></i><i></i><span>demo.autom8.es/demo</span></div>
+            <div class="tw-body">
+              <b class="tw-h">Pide tu demo gratis</b>
+              <span class="tw-l">Tu web actual</span><span class="tw-in"><span class="tw-typed" data-t="tuempresa.es"></span></span>
+              <span class="tw-l">Tu email</span><span class="tw-in"><span class="tw-typed" data-t="info@tuempresa.es"></span></span>
+              <span class="tw-chk"><i></i><i></i></span>
+              <span class="tw-btn tw-b1">Pide tu demo gratis</span>
+            </div>
+          </div>
+          <div class="tw-card tw-mail">
+            <div class="tw-mailbar"><b>Correo</b><span class="tw-busca">Buscar en el correo</span><i class="tw-av">TU</i></div>
+            <div class="tw-inbox">
+              <div class="tw-side"><span class="tw-nuevo-btn">Redactar</span><span class="on">Recibidos <b>1</b></span><span>Destacados</span><span>Enviados</span><span>Papelera</span></div>
+              <div class="tw-list">
+                <div class="tw-row nuevo"><i></i><b>Autom8</b><span>Confirma tu demo gratis de tuempresa.es</span><em>ahora</em></div>
+                <div class="tw-row"><i></i><b class="g"></b><span class="g"></span><em>9:41</em></div>
+                <div class="tw-row"><i></i><b class="g"></b><span class="g s"></span><em>ayer</em></div>
+                <div class="tw-row"><i></i><b class="g"></b><span class="g"></span><em>lun</em></div>
+                <div class="tw-msg">
+                  <span class="tw-back">← Recibidos</span>
+                  <b class="tw-h">Confirma tu demo gratis de tuempresa.es</b>
+                  <span class="tw-from"><i>A8</i><b>Autom8</b><em>para mí · ahora</em></span>
+                  <span class="tw-line"></span><span class="tw-line s"></span>
+                  <span class="tw-btn tw-b2">Confirmar mi demo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tw-card tw-web">
+            <div class="tw-chrome"><i></i><i></i><i></i><span>demo.autom8.es/tu-web</span></div>
+            <div class="tw-body">
+              <span class="tw-nav"><i></i><i></i><i></i></span>
+              <span class="tw-hero"><i></i><i class="s"></i><i class="cta"></i></span>
+              <span class="tw-cols"><i></i><i></i><i></i></span>
+            </div>
+            <span class="tw-lista">Tu demo está lista <b>✓</b></span>
+          </div>
+          <span class="tw-reloj"><i></i><b id="tw-min">0:00</b></span>
+          <span class="tw-cursor"></span>
+        </div>
+      </div>
+      <div class="tw-texto">
+        <div class="rv">
+          <div class="label">Gratis · en 10 minutos</div>
+          <h2 class="h2" id="tu-web-t">Pide tu demo en segundos.</h2>
+          <p class="tw-gratis">Totalmente gratis y sin compromiso.</p>
+          <p class="lead">Dinos tu web y te preparamos una demo con los colores de tu marca, pensada para tu sector. En 10 minutos la tienes en tu email, con una comparación de tu web actual y la nueva medida por Google.</p>
+        </div>
+        <ol class="tw-pasos rv" id="tw-pasos">
+          <li data-paso="1" class="lit"><b>Nos dices tu web</b><span>y el email al que te la mandamos.</span></li>
+          <li data-paso="2"><b>Confirmas tu email</b><span>con el enlace que te llega.</span></li>
+          <li data-paso="3"><b>En 10 minutos</b><span>tienes tu web nueva en tu bandeja.</span></li>
+        </ol>
+        <div class="tw-cta rv">
+          <a class="btn btn-lime btn-xl" href="https://demo.autom8.es/demo/">Pide tu demo gratis <span class="arr" aria-hidden="true">→</span></a>
+          <p class="tw-nota">Sin registro · sin tarjeta · sin compromiso</p>
+        </div>
       </div>
     </div>
   </section>
@@ -462,7 +640,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
       <div class="grid">
         <article class="card rv"><div class="wire w-corp" aria-hidden="true"><i class="nav"></i><i class="hero"></i><div class="cols"><i></i><i></i><i></i></div></div><span class="tag">Web corporativa</span><h3>Quién eres y qué haces</h3><p>Tu negocio, tus servicios y cómo contactarte, explicado con claridad y con una imagen que transmite confianza.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
         <article class="card rv"><div class="wire w-land" aria-hidden="true"><i class="nav"></i><div class="big"><i class="t"></i><i class="t s"></i><i class="cta"></i></div></div><span class="tag">Landing page</span><h3>Una página, un objetivo</h3><p>Para un servicio, un lanzamiento o una campaña: una sola página pensada para que el visitante dé el paso.</p><a class="more" href="#contacto">Pedir presupuesto</a></article>
-        <article class="card rv"><div class="wire w-redo" aria-hidden="true"><div class="old"><i></i><i></i><i></i></div><span class="arr"></span><div class="new"><i class="nav"></i><i class="hero"></i><i class="cta"></i></div></div><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="https://demo.autom8.es/demo/">Pide una demo gratis</a></article>
+        <article class="card rv"><div class="wire w-redo" aria-hidden="true"><div class="old"><i></i><i></i><i></i></div><span class="arr"></span><div class="new"><i class="nav"></i><i class="hero"></i><i class="cta"></i></div></div><span class="tag">Rediseño</span><h3>Renueva la que tienes</h3><p>Arreglamos páginas obsoletas con un diseño moderno: más rápida, mejor en el móvil y con una imagen renovada y más confiable.</p><a class="more" href="https://demo.autom8.es/demo/">Pide tu demo gratis</a></article>
       </div>
     </div>
   </section>
@@ -511,7 +689,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <details><summary>¿Podré cambiar los textos yo mismo?</summary><p>Sí. Te la dejamos preparada para que actualices textos e imágenes, o nos encargamos nosotros si lo prefieres.</p></details>
         <details><summary>¿Os encargáis del dominio y del alojamiento?</summary><p>Sí. Te ayudamos a registrar el dominio y publicamos la web en un alojamiento profesional con certificado de seguridad, o usamos el que ya tienes.</p></details>
         <details><summary>¿Saldrá en Google?</summary><p>La dejamos preparada técnicamente y dada de alta en Google. Llegar a las primeras posiciones depende además del contenido y del tiempo, y te ayudamos con ello.</p></details>
-        <details><summary>Ya tengo web, ¿podéis renovarla?</summary><p>Sí. Revisamos lo que tienes, conservamos lo que funciona y renovamos el diseño, la velocidad y los textos. Si quieres verlo antes, <a href="https://demo.autom8.es/demo/">pide una demo gratis</a> con los colores de tu marca.</p></details>
+        <details><summary>Ya tengo web, ¿podéis renovarla?</summary><p>Sí. Revisamos lo que tienes, conservamos lo que funciona y renovamos el diseño, la velocidad y los textos. Si quieres verlo antes, <a href="https://demo.autom8.es/demo/">mira tu web nueva en 10 minutos, gratis</a> con los colores de tu marca.</p></details>
       </div>
     </div>
   </section>
@@ -523,7 +701,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         <h2 class="h2">Cuéntanos tu proyecto.</h2>
         <p class="lead">Te respondemos el mismo día con los siguientes pasos.</p>
         <ul><li>Primera conversación sin compromiso</li><li>Propuesta de estructura y diseño</li><li>Presupuesto cerrado</li></ul>
-        <p class="demo-alt">¿Ya tienes web? <a href="https://demo.autom8.es/demo/">Pide una demo gratis</a> y mira cómo quedaría renovada, con una comparación medida por Google.</p>
+        <p class="demo-alt">¿Ya tienes web? <a href="https://demo.autom8.es/demo/">Pide tu demo gratis</a> y mira en 10 minutos cómo quedaría renovada, con una comparación medida por Google.</p>
       </div>
       <form class="form rv" id="contact-form" novalidate>
         <label class="hp" aria-hidden="true">No rellenar<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
@@ -771,7 +949,8 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   function sideRegion(right){
     var hb=$('hdr').getBoundingClientRect().bottom, g=Math.max(16,W*.025);
     if(phone){ var dw=Math.min(Math.max(W*.36,110),170), dh=dw*.72; g=12; return {l:W-g-dw, r:W-g, t:H-g-dh, b:H-g}; }
-    var w=sideEls[0].querySelector('.wrap').getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2; laneCy=cy;
+    // measured on a left-hand section (text on the left, free space on the right), whichever section comes first
+    var w=(document.querySelector('.sec.side-l .wrap')||sideEls[0].querySelector('.wrap')).getBoundingClientRect(), free=W-w.right, lw=Math.min(free-g*2.5, W*.3), lh=Math.min(H*.5, lw*.8), cy=(hb+H)/2; laneCy=cy;
     var l=right ? w.right+g*1.5+(free-g*2.5-lw)/2 : g+(free-g*2.5-lw)/2;
     return {l:l, r:l+lw, t:cy-lh/2, b:cy+lh/2};
   }
@@ -791,6 +970,23 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var onScreen=true, visible=!document.hidden;
   document.addEventListener('visibilitychange',function(){ visible=!document.hidden; });
 
+  // near «Pide tu demo» the window breaks apart: every part comes loose and drifts out from the centre, turning,
+  // while the request scene takes its place; further down (or back up) the parts fly back and it is whole again
+  var twSec=$('tu-web'), parts=[];
+  function looseDir(x,y){ var d=new THREE.Vector3(x*.55+(Math.random()-.5)*1.6, y*.55+(Math.random()-.5)*1.6, .8+Math.random()*1.6); return d.normalize(); }
+  fixed.forEach(function(m){ parts.push({m:m, base:m.position.clone(), dir:looseDir(m.position.x,m.position.y), spin:[(Math.random()-.5)*3,(Math.random()-.5)*3,(Math.random()-.5)*2]}); });
+  pieces.forEach(function(it){ parts.push({m:it.m, dir:looseDir(it.p[0],it.p[1]), spin:[(Math.random()-.5)*4,(Math.random()-.5)*4,(Math.random()-.5)*3]}); });
+  parts.push({m:load, ld:true, dir:looseDir(0,3.75), spin:[0,0,(Math.random()-.5)*2]});
+  // 0 = whole, 1 = in pieces: starts a little before the fade (#capa3d, script «tw»), so the break is seen before it disappears
+  function apart(){ var vh=window.innerHeight, b=twSec.getBoundingClientRect();
+    var entra=clamp01((vh*1.2-b.top)/(vh*.6)), sale=clamp01((b.bottom-vh*.05)/(vh*.6)), v=Math.min(entra,sale); return v*v*(3-2*v); }
+  function breakApart(v){ var R=7*v, sh=1-.35*v;
+    for(var i=0;i<parts.length;i++){ var q=parts[i], m=q.m;
+      if(q.base) m.position.copy(q.base);
+      if(v<=0) { if(q.base) m.rotation.set(0,0,0); continue; }
+      m.position.addScaledVector(q.dir,R);
+      if(q.base) m.rotation.set(q.spin[0]*v,q.spin[1]*v,q.spin[2]*v); else { m.rotation.x+=q.spin[0]*v; m.rotation.y+=q.spin[1]*v; m.rotation.z+=q.spin[2]*v; }
+      m.scale.multiplyScalar(sh); } }
   var T0=performance.now()/1000, last=0, sp=0, inited=false, glowT=-9, dock=0, side=1;
   function frame(){
     requestAnimationFrame(frame);
@@ -807,7 +1003,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     if(phone){ st=1; cr=0; } // phones are too narrow to switch sides: it stays in the corner
     side+=(st-side)*(inited?Math.min(1,dt*10):1); cross+=(cr-cross)*(inited?Math.min(1,dt*10):1); if(cr>.02) seam=seamY;
     var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=(1-fade).toFixed(3);
-    if(fade>=1){ last=now; rail.style.visibility='hidden'; mini.style.visibility='hidden'; return; }
+    if(fade>=1){ last=now; return; }
     // the empty window appears first
     var k0=reduce?1:Math.min(Math.max((now-T0)/.6,0),1), s0=1-Math.pow(1-k0,3);
     fixed.forEach(function(m){ m.scale.setScalar(Math.max(s0,.001)); });
@@ -821,6 +1017,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     inited=true;
     for(var st=0; st<3; st++) spring(dt/3);
     loadP+=(n/N-loadP)*Math.min(1,dt*8); load.scale.x=Math.max(loadP*s0,.001); load.position.x=-2.6+2.6*Math.max(loadP,.001);
+    breakApart(reduce?0:apart());
     rings.forEach(function(r){ var age=(now-r.t)/.45; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.3*(1-age); } else r.m.visible=false; });
     // the lime button lights up when it lands and keeps breathing
     var gk=Math.max(0,1-(now-glowT)/1.6), pulse=gk*gk;
@@ -852,31 +1049,6 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     camera.lookAt(0,0,0);
     camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
     renderer.render(scene,camera);
-    railUpdate(n,dt);
-  }
-  // the rail follows the window on screen: a line above and below it, each with a box showing the progress
-  var mini=$('mini'), miniPct=$('mini-pct'), miniBar=$('mini-bar'), miniShown=-1, rail=$('rail'), railPct=$('rail-pct'), railBar=$('rail-bar'), railN=$('rail-n'), railDots=$('rail-dots'), segT=rail.querySelector('.st'), segB=rail.querySelector('.sb'), tagT=rail.querySelector('.tt'), tagB=rail.querySelector('.tb'), railShown=-1, dotEls=[], fillP=0, railLbl=rail.querySelector('.tt span');
-  for(var q=0;q<N;q++){ var di=document.createElement('i'); railDots.appendChild(di); dotEls.push(di); }
-  function railUpdate(n,dt){
-    var op=phone?0:clamp01((dock-.5)*2)*clamp01(1-cross*1.4)*parseFloat(canvas.style.opacity||1);
-    // the lines fill continuously with the scroll, not in steps
-    fillP+=(clamp01((sp-S0)/(S1-S0))-fillP)*Math.min(1,dt*6);
-    var mop=phone?clamp01((dock-.5)*2)*parseFloat(canvas.style.opacity||1):0;
-    mini.style.opacity=mop.toFixed(3); mini.style.visibility=mop>.01?'visible':'hidden';
-    rail.style.opacity=op.toFixed(3); rail.style.visibility=op>.01?'visible':'hidden'; if(op<=.01&&mop<=.01) return;
-    var fp=n===N?1:fillP, pc=n===N?100:Math.min(99,Math.round(fp*100));
-    if(mop>.01){ var R=sideRegion(true); mini.style.transform='translate('+(R.r-mini.offsetWidth)+'px,'+(R.t-mini.offsetHeight-8)+'px)'; miniBar.style.transform='scaleX('+fp.toFixed(4)+')'; if(pc!==miniShown){ miniShown=pc; miniPct.textContent=pc+' %'; } return; }
-    tmpBox.setFromObject(fixed[0]); var l=1e9,r=-1e9,t=1e9,b=-1e9;
-    for(var i=0;i<8;i++){ tmpV.set(i&1?tmpBox.max.x:tmpBox.min.x, i&2?tmpBox.max.y:tmpBox.min.y, i&4?tmpBox.max.z:tmpBox.min.z).project(camera); var x=(tmpV.x+1)/2*W, y=(1-tmpV.y)/2*H; l=Math.min(l,x); r=Math.max(r,x); t=Math.min(t,y); b=Math.max(b,y); }
-    var cx=(l+r)/2, hb=$('hdr').getBoundingClientRect().bottom, gap=26, t0=hb+24, t1=t-gap, b0=b+gap, b1=Math.min(H-24, contact.getBoundingClientRect().top-24);
-    segT.style.transform='translate('+cx+'px,'+t0+'px)'; segT.style.height=Math.max(t1-t0,0)+'px';
-    segB.style.transform='translate('+cx+'px,'+b0+'px)'; segB.style.height=Math.max(b1-b0,0)+'px';
-    segT.firstChild.style.transform='scaleY('+Math.min(fp*2,1).toFixed(4)+')'; segB.firstChild.style.transform='scaleY('+clamp01(fp*2-1).toFixed(4)+')';
-    tagT.style.transform='translate('+cx+'px,'+(t0+t1)/2+'px) translate(-50%,-50%)'; tagB.style.transform='translate('+cx+'px,'+(b0+b1)/2+'px) translate(-50%,-50%)';
-    tagT.style.opacity=clamp01((t1-t0-70)/60).toFixed(3); tagB.style.opacity=clamp01((b1-b0-70)/60).toFixed(3);
-    railBar.style.transform='scaleX('+fp.toFixed(4)+')';
-    if(pc!==railShown){ railShown=pc; railPct.textContent=pc+' %'; railLbl.textContent=pc===100?'Tu web está lista':'Tu web'; tagT.classList.toggle('done',pc===100); }
-    if(n!==railN._n){ railN._n=n; railN.textContent=n+' de '+N; dotEls.forEach(function(d,i){ d.className=i<n?'on':''; }); }
   }
   frame();
 })();
@@ -900,6 +1072,49 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
       .then(function(){ ok.textContent='Gracias. Te escribimos hoy mismo.'; cf.reset(); btn.textContent='Enviado'; if(window.autom8Track) autom8Track('lead'); })
       .catch(function(){ ok.innerHTML='No se ha podido enviar. Escríbenos a <a href="mailto:marcos@autom8.es">marcos@autom8.es</a>.'; btn.disabled=false; btn.textContent='Enviar'; });
   });
+})();
+</script>
+<script>
+// «Pide tu demo en segundos»: the request flow in 3D (form → confirmation email → the new website), looping
+// while the section is on screen; the steps light up with it and choose it. The page-build window (#capa3d)
+// crossfades with it as the section scrolls in and out. With reduced motion: the finished state, still.
+(function(){
+  var esc=document.getElementById('tw-escena'), sec=document.getElementById('tu-web'); if(!esc||!sec) return;
+  var root=document.documentElement, pasos=[].slice.call(document.querySelectorAll('#tw-pasos li'));
+  var typed=[].slice.call(esc.querySelectorAll('.tw-typed')), b1=esc.querySelector('.tw-b1'), b2=esc.querySelector('.tw-b2'), min=document.getElementById('tw-min');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches, timers=[], activo=false;
+  function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+  function limpiar(){ timers.forEach(clearTimeout); timers=[]; }
+  function marcar(n){ esc.setAttribute('data-paso',n); pasos.forEach(function(li){ li.classList.toggle('lit', +li.getAttribute('data-paso')===n); }); }
+  function lleno(){ typed.forEach(function(e){ e.textContent=e.getAttribute('data-t'); e.classList.remove('on'); }); esc.classList.add('chk'); }
+  function pulsar(b){ b.classList.add('press'); later(function(){ b.classList.remove('press'); },260); }
+  function escribir(el,ms,done){ var t=el.getAttribute('data-t'), i=0; el.textContent=''; el.classList.add('on');
+    (function tick(){ el.textContent=t.slice(0,++i); if(i<t.length) later(tick,ms); else { el.classList.remove('on'); if(done) done(); } })(); }
+  function reloj(){ var s=0; (function tick(){ s+=15; var m=Math.floor(s/60), r=s%60; min.textContent=m+':'+(r<10?'0':'')+r; if(s<600) later(tick,45); })(); }
+  function uno(){ limpiar(); marcar(1); esc.classList.remove('chk','c1','c2','c2a','sel','abierto'); typed.forEach(function(e){ e.textContent=''; });
+    later(function(){ escribir(typed[0],75,function(){ later(function(){ escribir(typed[1],50,function(){
+      later(function(){ esc.classList.add('chk'); },250); later(function(){ esc.classList.add('c1'); },500);
+      later(function(){ pulsar(b1); },1700); later(dos,2300); }); },250); }); },600); }
+  // the inbox: the cursor goes to the new email, opens it, and presses «Confirmar mi demo»
+  function dos(){ limpiar(); lleno(); esc.classList.remove('c1','c2','c2a','sel','abierto'); marcar(2);
+    later(function(){ esc.classList.add('c2a'); },700); later(function(){ esc.classList.add('sel'); },1700); later(function(){ esc.classList.add('abierto'); esc.classList.remove('c2a'); },2000);
+    later(function(){ esc.classList.add('c2'); },2500); later(function(){ pulsar(b2); },3700); later(tres,4300); }
+  function tres(){ limpiar(); lleno(); esc.classList.remove('c1','c2','c2a','sel'); esc.classList.add('abierto'); marcar(3); min.textContent='0:00'; later(reloj,700); later(uno,5600); }
+  var ir={1:uno,2:dos,3:tres};
+  pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else ir[n](); }); });
+  if(reduce){ lleno(); esc.classList.add('abierto'); marcar(3); min.textContent='10:00'; }
+  // crossfade tied to the scroll: as the section rises the page-build window fades out and the scene fades in
+  // (and the other way round further down), so hero → section is one continuous move, also when scrolling back
+  var capa=document.getElementById('capa3d'), pend=false;
+  function mezcla(){ pend=false; var vh=window.innerHeight, b=sec.getBoundingClientRect();
+    var entra=Math.min(1,Math.max(0,(vh*.95-b.top)/(vh*.55))), sale=Math.min(1,Math.max(0,(b.bottom-vh*.25)/(vh*.45))), v=Math.min(entra,sale);
+    v=v*v*(3-2*v); esc.style.setProperty('--tw',v.toFixed(3)); if(capa) capa.style.setProperty('--capa',(1-v).toFixed(3)); }
+  function pedir(){ if(!pend){ pend=true; requestAnimationFrame(mezcla); } }
+  window.addEventListener('scroll',pedir,{passive:true}); window.addEventListener('resize',pedir); mezcla();
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ es.forEach(function(e){ if(reduce) return;
+      if(e.isIntersecting&&!activo){ activo=true; uno(); } else if(!e.isIntersecting&&activo){ activo=false; limpiar(); } }); },{threshold:.15}).observe(esc);
+  } else if(!reduce) uno();
 })();
 </script>
 <script src="/consent.js" defer></script>
