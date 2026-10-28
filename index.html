@@ -1470,7 +1470,8 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
       var button=slab(g,damaged?'signal':'cta',-1.92,-.76,.39,1.42,.48,.18,.16);
       var photo=slab(g,damaged?'bar':'glass',1.46,.25,.4,2.18,1.98,.24,.18);
       if(damaged){
-        iconFace(photo,'M4 5 H11 L9.5 9.5 L12.5 12.5 L11 19 H4 Z M14 5 H20 V19 H14 L15.5 13 L12.8 9.8 Z M4 16 L7.5 12.5 L10.5 15.5 M14.8 15.2 L17 13 L20 16 M7.5 8.5 A1.3 1.3 0 1 1 7.49 8.5',1.9,.16,'#9B8CFF');
+        photo.material=glass;
+        var tint=new THREE.Mesh(new THREE.PlaneGeometry(2.06,1.86),new THREE.MeshBasicMaterial({map:sectionGlassTex(),color:0x777381,transparent:true,opacity:.65,depthWrite:false}));photo.add(tint);onFace(photo,tint,.012);
       }else{
         var tint=new THREE.Mesh(new THREE.PlaneGeometry(2.06,1.86),new THREE.MeshBasicMaterial({map:sectionGlassTex(),transparent:true,depthWrite:false}));photo.add(tint);onFace(photo,tint,.012);
       }
@@ -1479,20 +1480,107 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
         slab(card,'ink',0,.02,.14,1.15,.16,.09,.06);cards.push(card);
       }
       mountFaces(g);
-      if(damaged){heading.rotation.z=-.025;cards[1].rotation.z=-.045;}
       return {group:g,address:address,heading:heading,button:button,cards:cards,photo:photo};
     }
     var problem=view('problema'),broken=new THREE.Group();problem.root.add(broken);broken.rotation.set(.035,-.12,0);
-    var damagedSite=editorialWindow(broken,true),warnings=[];
-    for(var j=0;j<2;j++){
-      var chip=new THREE.Group();broken.add(chip);chip.position.set(3.65,1.45-j*.94,.3);
-      slab(chip,'bar',0,0,0,.86,.86,.18,.19);
-      iconFace(chip,'M12 3 L22 21 H2 Z M12 9 V14 M12 17.5 V18',.72,.13,'#9B8CFF');warnings.push(chip);
+    // One shared, piecewise-linear fracture; all face geometry is cut against it.
+    var damagedSite=editorialWindow(broken,true),source=damagedSite.group;
+    var crack=[[-.18,2.1],[.3,1.22],[-.34,.48],[.26,-.32],[-.25,-1.15],[.12,-2.1]];
+    var halves=[new THREE.Group(),new THREE.Group()];
+    halves.forEach(function(h){broken.add(h);});
+    function fractureBody(side){
+      var s=new THREE.Shape(),r=.27;
+      s.moveTo(crack[0][0],2.1);
+      for(var i=1;i<crack.length;i++)s.lineTo(crack[i][0],crack[i][1]);
+      if(side===0){
+        s.lineTo(-3+r,-2.1);s.quadraticCurveTo(-3,-2.1,-3,-2.1+r);
+        s.lineTo(-3,2.1-r);s.quadraticCurveTo(-3,2.1,-3+r,2.1);
+      }else{
+        s.lineTo(3-r,-2.1);s.quadraticCurveTo(3,-2.1,3,-2.1+r);
+        s.lineTo(3,2.1-r);s.quadraticCurveTo(3,2.1,3-r,2.1);
+      }
+      s.closePath();
+      var geo=new THREE.ExtrudeGeometry(s,{depth:.4,bevelEnabled:true,bevelThickness:.05,bevelSize:.03,bevelSegments:3,curveSegments:8});
+      geo.translate(0,0,-.2);geo.computeVertexNormals();
+      halves[side].add(new THREE.Mesh(geo,old));
     }
-    problem.update=function(t){var slip=motion.matches?1:.5-.5*Math.cos(t*.45);
-      damagedSite.cards[1].position.y=-1.47-.12*slip;
-      damagedSite.heading.position.x=-1.36+.08*slip;
-      warnings[0].position.y=1.45+(motion.matches?0:Math.sin(t*.7)*.045);
+    // Clip triangles in window coordinates, preserving UVs and interpolated normals.
+    // Horizontal bands make each section of the non-convex lightning cut exact.
+    function cutPolygon(poly,distance){
+      var out=[];
+      for(var i=0;i<poly.length;i++){
+        var a=poly[i],b=poly[(i+1)%poly.length],da=distance(a),db=distance(b);
+        if(da>=-1e-8)out.push(a);
+        if((da>=0)!==(db>=0)){var t=da/(da-db);out.push(a.map(function(n,k){return n+(b[k]-n)*t;}));}
+      }return out;
+    }
+    source.updateMatrixWorld(true);
+    var inverse=source.matrixWorld.clone().invert(),meshes=[];
+    source.traverse(function(m){if(m.isMesh&&m!==source.children[0])meshes.push(m);});
+    meshes.forEach(function(m){
+      var geo=m.geometry.index?m.geometry.toNonIndexed():m.geometry;
+      var matrix=new THREE.Matrix4().multiplyMatrices(inverse,m.matrixWorld),normalMatrix=new THREE.Matrix3().getNormalMatrix(matrix);
+      var pos=geo.attributes.position,norm=geo.attributes.normal,uv=geo.attributes.uv;
+      var buffers=[[],[]];
+      for(var i=0;i<pos.count;i+=3){
+        var tri=[];
+        for(var k=0;k<3;k++){
+          var v=new THREE.Vector3().fromBufferAttribute(pos,i+k).applyMatrix4(matrix);
+          var n=new THREE.Vector3().fromBufferAttribute(norm,i+k).applyMatrix3(normalMatrix).normalize();
+          tri.push([v.x,v.y,v.z,n.x,n.y,n.z,uv?uv.getX(i+k):0,uv?uv.getY(i+k):0]);
+        }
+        for(var band=0;band<crack.length-1;band++){
+          var top=crack[band],bottom=crack[band+1],slope=(bottom[0]-top[0])/(bottom[1]-top[1]);
+          // Extend the end bands through the outer bevel.
+          var poly=cutPolygon(tri,function(v){return band===0?1:top[1]-v[1];});
+          poly=cutPolygon(poly,function(v){return band===crack.length-2?1:v[1]-bottom[1];});
+          for(var side=0;side<2;side++){
+            var clipped=cutPolygon(poly,function(v){return (side?1:-1)*(v[0]-top[0]-(v[1]-top[1])*slope);});
+            for(var f=1;f<clipped.length-1;f++)buffers[side].push(clipped[0],clipped[f],clipped[f+1]);
+          }
+        }
+      }
+      buffers.forEach(function(vertices,side){
+        if(!vertices.length)return;
+        var g=new THREE.BufferGeometry(),p=[],n=[],u=[];
+        vertices.forEach(function(v){p.push(v[0],v[1],v[2]);n.push(v[3],v[4],v[5]);u.push(v[6],v[7]);});
+        g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(u,2));
+        halves[side].add(new THREE.Mesh(g,m.material));
+      });
+      if(geo!==m.geometry)geo.dispose();
+    });
+    fractureBody(0);fractureBody(1);broken.remove(source);
+    var chip=new THREE.Group();halves[1].add(chip);chip.position.set(3.6,1.75,.3);
+    slab(chip,'bar',0,0,0,.86,.86,.18,.19);
+    iconFace(chip,'M12 3 L22 21 H2 Z M12 9 V14 M12 17.5 V18',.72,.13,'#9B8CFF');
+    var crackGlow=new THREE.Group();broken.add(crackGlow);
+    var glowMaterial=new THREE.MeshBasicMaterial({color:0x9b8cff,transparent:true,opacity:.4,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+    var coreMaterial=new THREE.MeshBasicMaterial({color:0x9b8cff,transparent:true,opacity:.8,depthWrite:false,toneMapped:false});
+    crackGlow.userData.atmosphere=true;
+    var crackSegments=[];
+    for(var j=0;j<crack.length-1;j++){
+      var a=crack[j],b=crack[j+1],length=Math.hypot(b[0]-a[0],b[1]-a[1]),segment=new THREE.Group();
+      segment.position.set(a[0],a[1],.63);segment.rotation.z=Math.atan2(b[1]-a[1],b[0]-a[0]);
+      var core=new THREE.Mesh(new THREE.PlaneGeometry(length,.018),coreMaterial);core.position.x=length/2;core.userData.atmosphere=true;segment.add(core);
+      for(var layer=1;layer<=4;layer++){
+        var mat=glowMaterial.clone();mat.opacity=.26/layer;
+        var glow=new THREE.Mesh(new THREE.PlaneGeometry(length,.035+layer*.035),mat);glow.position.x=length/2;glow.userData.atmosphere=true;segment.add(glow);
+      }
+      crackGlow.add(segment);crackSegments.push(segment);
+    }
+    problem.update=function(t){
+      var phase=t%6.6,opening=motion.matches?1:Math.max(0,Math.min(1,(phase-.95)/.5));
+      var amount=opening===1?1:1-Math.exp(-6*opening)*Math.cos(10*opening);
+      // Quietly rejoin before the next flash, without an abrupt loop reset.
+      if(!motion.matches&&phase>6)amount=1-(phase-6)/.6;
+      halves[0].position.x=-.22*amount;halves[0].rotation.z=.025*amount;
+      halves[1].position.set(.22*amount,-.3*amount,0);halves[1].rotation.z=-.07*amount;
+      var flash=motion.matches?1:Math.max(0,Math.min(1,(phase-.6)/.35));
+      var flicker=!motion.matches&&phase>1.45&&phase<1.85?(phase<1.55||phase>1.65&&phase<1.75?.2:1):1;
+      crackGlow.position.y=-.15*amount;crackGlow.rotation.z=-.0225*amount;
+      crackGlow.visible=motion.matches||phase>=.6&&phase<6.6;
+      coreMaterial.opacity=(motion.matches?.65:phase<.95?1:.65)*flicker*Math.min(1,amount*4+(phase<.95?1:0));
+      crackSegments.forEach(function(segment,i){segment.scale.x=Math.max(0,Math.min(1,flash*5-i));segment.children.forEach(function(m,k){if(k)m.material.opacity=.26/k*flicker*(motion.matches?1:Math.min(1,amount*4+(phase<.95?1:0)));});});
     };
     var include=view('incluye'),assembly=new THREE.Group(),features=[],designParts=[];
     include.root.add(assembly);assembly.position.z=.65;assembly.rotation.set(.035,-.12,0);
