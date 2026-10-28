@@ -157,10 +157,17 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .tw-nota{margin:16px 0 0; color:var(--muted); font-size:15px; font-weight:600}
 @media (max-width: 600px){ .btn-xl{width:100%; min-height:68px; padding:0 20px; font-size:18px; text-align:center} }
 /* the request flow in 3D: form → confirmation email → the new website (script «tw» below); the page-build window steps aside here */
+#tu-web{isolation:auto; z-index:auto}
+#tu-web::before{content:""; position:absolute; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 35% 45%,rgba(212,245,122,.6),transparent 65%); opacity:var(--bloom,0)}
 .tw-grid{display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr); gap:clamp(32px,5vw,80px); align-items:center}
 
-.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%; --tw:1; opacity:var(--tw); transform:translateX(calc((1 - var(--tw)) * 14%)) scale(calc(.9 + .1 * var(--tw)))}
+.tw-escena{position:relative; height:clamp(420px,46vw,580px); perspective:1600px; perspective-origin:50% 40%; --tw:1; opacity:var(--tw);}
 .js .tw-escena{--tw:0}
+.tw-escena.assembling .tw-mundo{animation:none}
+.tw-escena.assembling .tw-card{transition:none}
+.tw-escena.assembling .tw-form{opacity:var(--form,0); transform:translateZ(calc(-500px + 560px * var(--form,0))) rotateX(calc((1 - var(--form,0)) * 28deg))}
+.tw-escena.assembling .tw-mail{opacity:calc(var(--mail,0) * .32); transform:translate(10%,-10%) translateZ(calc(-500px + 310px * var(--mail,0))) rotateX(calc((1 - var(--mail,0)) * 28deg)) rotateY(-8deg)}
+.tw-escena.assembling .tw-web{opacity:calc(var(--web,0) * .18); transform:translate(-10%,16%) translateZ(calc(-500px + 220px * var(--web,0))) rotateX(calc((1 - var(--web,0)) * 28deg))}
 .tw-mundo{position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(9deg) rotateY(16deg); animation:tw-flota 8s ease-in-out infinite}
 @keyframes tw-flota{0%,100%{transform:rotateX(9deg) rotateY(16deg) translateY(0)} 50%{transform:rotateX(7deg) rotateY(12deg) translateY(-10px)}}
 .tw-escena::before{content:""; position:absolute; inset:8% 6%; border-radius:50%; background:radial-gradient(closest-side, rgba(var(--lime-rgb),.16), transparent 70%); filter:blur(8px)}
@@ -256,7 +263,7 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
 .tw-pasos li.lit{border-color:rgba(var(--lime-rgb),.6); background:color-mix(in srgb, var(--panel) 70%, rgba(var(--lime-rgb),.10))}
 :root[data-theme="light"] .tw-pasos li.lit{border-color:#0B0F14}
 .tw-pasos li.lit::before{box-shadow:0 0 0 6px rgba(var(--lime-rgb),.18)}
-.tw-texto{position:relative; z-index:1}
+.tw-texto{position:relative; z-index:4}
 @media (max-width: 900px){
   .tw-grid{grid-template-columns:minmax(0,1fr); gap:24px}
   .tw-escena{height:clamp(410px,112vw,520px)}
@@ -977,7 +984,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   for(var q=0;q<SPK;q++) spk.push({t:-9,p:[0,0,1e4],v:[0,0,0]});
   function burst(it,now){
     for(var j=0;j<12;j++){ var s=spk[spkIdx++%SPK], a=Math.random()*6.28, sp=1.5+Math.random()*3;
-      s.t=now; s.p=[it.p[0]+Math.cos(a)*it.w*.4, it.p[1]+Math.sin(a)*.2, it.p[2]+it.d/2+.1]; s.v=[Math.cos(a)*sp, Math.sin(a)*sp, 1+Math.random()*2.5]; }
+      s.t=now; s.p[0]=it.p[0]+Math.cos(a)*it.w*.4; s.p[1]=it.p[1]+Math.sin(a)*.2; s.p[2]=it.p[2]+it.d/2+.1; s.v[0]=Math.cos(a)*sp; s.v[1]=Math.sin(a)*sp; s.v[2]=1+Math.random()*2.5; }
   }
   var shadowDark=radialTex('rgba(212,245,122,.35)'), shadowLight=radialTex('rgba(11,15,20,1)');
   var shadow=new THREE.Mesh(new THREE.PlaneGeometry(1,1), new THREE.MeshBasicMaterial({map:shadowDark, transparent:true, depthWrite:false}));
@@ -1125,43 +1132,94 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   var onScreen=true, visible=!document.hidden;
   document.addEventListener('visibilitychange',function(){ visible=!document.hidden; });
 
-  // near «Pide tu demo» the window breaks apart: every part comes loose and drifts out from the centre, turning,
-  // while the request scene takes its place; scrolling back up restores the window
-  var twSec=$('tu-web'), parts=[];
-  function looseDir(x,y){ var d=new THREE.Vector3(x*.55+(Math.random()-.5)*1.6, y*.55+(Math.random()-.5)*1.6, .8+Math.random()*1.6); return d.normalize(); }
-  fixed.forEach(function(m){ parts.push({m:m, base:m.position.clone(), dir:looseDir(m.position.x,m.position.y), spin:[(Math.random()-.5)*3,(Math.random()-.5)*3,(Math.random()-.5)*2]}); });
-  pieces.forEach(function(it){ parts.push({m:it.m, dir:looseDir(it.p[0],it.p[1]), spin:[(Math.random()-.5)*4,(Math.random()-.5)*4,(Math.random()-.5)*3]}); });
-  parts.push({m:load, ld:true, dir:looseDir(0,3.75), spin:[0,0,(Math.random()-.5)*2]});
-  // 0 = whole, 1 = in pieces: starts a little before the fade (#capa3d, script «tw»), so the break is seen before it disappears
-  function apart(){ var vh=window.innerHeight, b=twSec.getBoundingClientRect();
-    var entra=clamp01((vh*1.2-b.top)/(vh*.6)), sale=clamp01((b.bottom-vh*.05)/(vh*.6)), v=Math.min(entra,sale); return v*v*(3-2*v); }
-  function breakApart(v){ var R=7*v, sh=1-.35*v;
-    for(var i=0;i<parts.length;i++){ var q=parts[i], m=q.m;
-      if(q.base) m.position.copy(q.base);
-      if(v<=0) { if(q.base) m.rotation.set(0,0,0); continue; }
-      m.position.addScaledVector(q.dir,R);
-      if(q.base) m.rotation.set(q.spin[0]*v,q.spin[1]*v,q.spin[2]*v); else { m.rotation.x+=q.spin[0]*v; m.rotation.y+=q.spin[1]*v; m.rotation.z+=q.spin[2]*v; }
-      m.scale.multiplyScalar(sh); } }
+  // One reversible path per part, from the window into the measured form.
+  var twSec=$('tu-web'), formCard=twSec.querySelector('.tw-form'), handText=twSec.querySelector('.tw-texto'), parts=[];
+  var handTarget=new THREE.Vector3(), handRay=new THREE.Vector3(), handLocal=new THREE.Vector3();
+  var trailPos=new Float32Array((fixed.length+pieces.length+1)*6);
+  var trailColors=new Float32Array(trailPos.length);
+  var trailGeo=new THREE.BufferGeometry(); trailGeo.setAttribute('color',new THREE.BufferAttribute(trailColors,3)); trailGeo.setAttribute('position',new THREE.BufferAttribute(trailPos,3));
+  var trails=new THREE.LineSegments(trailGeo,new THREE.LineBasicMaterial({color:0xd4f57a,vertexColors:true,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  trails.frustumCulled=false; site.add(trails);
+  function handPart(m){ var x=m.position.x,y=m.position.y, a=Math.atan2(y,x), i=parts.length;
+    parts.push({m:m,base:m.position.clone(),dx:Math.cos(a),dy:Math.sin(a),delay:Math.min(1,Math.hypot(x/6,y/4))*.1,spin:(i%2?1:-1)*(1.7+i%4*.4)}); }
+  fixed.forEach(handPart); pieces.forEach(function(it){ handPart(it.m); }); handPart(load);
+  var scan=new THREE.Mesh(new THREE.PlaneGeometry(11.7,.045),new THREE.MeshBasicMaterial({color:0xd4f57a,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false})); site.add(scan);
+  var flash=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.MeshBasicMaterial({map:radialTex('rgba(212,245,122,1)'),transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false})); scene.add(flash);
+  var landing=new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:0xd4f57a,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide})); scene.add(landing);
+  var avoidPoint=new THREE.Vector3(), handBefore=new THREE.Vector3();
+  // A smooth minimum reaches the hard screen limit without a snap at its edge.
+  function avoidText(point, textRect, above){
+    avoidPoint.copy(point); site.localToWorld(avoidPoint); avoidPoint.project(camera);
+    var screen=above?(1-avoidPoint.y)*H/2:(avoidPoint.x+1)*W/2;
+    var limit=(above?textRect.top:textRect.left)-40, d=screen-limit, fall=32;
+    var push=d<=-fall?0:d>=fall?d:(d+fall)*(d+fall)/(4*fall);
+    if(!push) return;
+    // Preserve projected depth: the correction stays in the camera plane.
+    var target=screen-push;
+    if(above) avoidPoint.y=1-target*2/H; else avoidPoint.x=target*2/W-1;
+    avoidPoint.unproject(camera); site.worldToLocal(avoidPoint); point.copy(avoidPoint);
+  }
+  function handoff(t){
+    var ant=Math.sin(Math.PI*clamp01(t/.35)), sh=clamp01((t-.2)/.4), absorb=clamp01((t-.5)/.4);
+    site.rotation.x+=ant*Math.PI/10;
+    MAT.glass.envMapIntensity=1.6+ant*2; MAT.cta.emissiveIntensity+=ant*.9;
+    scan.position.set(0,3.8-7.6*clamp01(t/.25),1.25); scan.material.opacity=t>0&&t<.25?Math.sin(Math.PI*t/.25)*.8:0;
+    scene.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+    var rect=formCard.getBoundingClientRect(), textRect=handText.getBoundingClientRect(), depth=8;
+    var above=W<=900;
+    var sceneSign=above?1:-1;
+    handRay.set((rect.left+rect.width*.5)/W*2-1,1-(rect.top+rect.height*.5)/H*2,.5).unproject(camera).sub(camera.position).normalize();
+    handTarget.copy(camera.position).addScaledVector(handRay,depth/Math.max(.01,-handRay.z));
+    handLocal.copy(handTarget); site.worldToLocal(handLocal);
+    for(var i=0;i<parts.length;i++){
+      var q=parts[i],m=q.m,u=clamp01((t-.2-q.delay)/(.4-q.delay)),c=clamp01((t-.5-q.delay*.3)/(.4-q.delay*.3)); c=c*c*(3-2*c);
+      if(q.m===load||i<fixed.length){ m.position.copy(q.base); m.rotation.set(0,0,0); }
+      var dist=(phone?5:9)*u*u;
+      var dx=above?q.dx*.5:sceneSign*(.45+Math.abs(q.dx)*.55), dy=above?.45+Math.abs(q.dy)*.55:q.dy*.65;
+      var x=m.position.x+dx*dist,y=m.position.y+dy*dist,z=m.position.z+dist*1.1;
+      m.position.set(x+(handLocal.x-x)*c,y+(handLocal.y-y)*c,z+(handLocal.z-z)*c);
+      m.rotation.x+=q.spin*u*(1-c); m.rotation.y+=q.spin*u*(1-c); m.rotation.z+=q.spin*u;
+      m.scale.multiplyScalar(Math.max(.001,1-c)); m.visible=m.visible&&t<.9;
+      handBefore.copy(m.position);
+      if(t>0) avoidText(m.position,textRect,above);
+      var trailScale=1/(1+handBefore.distanceTo(m.position));
+      var approach=Math.hypot(x-handLocal.x,y-handLocal.y,z-handLocal.z);
+      var remaining=m.position.distanceTo(handLocal)/Math.max(.001,approach);
+      var trailFade=Math.pow(clamp01(remaining/.2),2)*(1-clamp01((t-.9)/.05));
+      var j=i*6, tail=(1-c)*u*.7*trailFade*trailScale;
+      for(var channel=0;channel<6;channel++) trailColors[j+channel]=m.visible&&t<.95?trailFade:0;
+      trailPos[j]=m.position.x; trailPos[j+1]=m.position.y; trailPos[j+2]=m.position.z;
+      handRay.set(m.position.x-dx*tail,m.position.y-dy*tail,m.position.z-tail);
+      if(t>0) avoidText(handRay,textRect,above);
+      trailPos[j+3]=handRay.x; trailPos[j+4]=handRay.y; trailPos[j+5]=handRay.z;
+    }
+    trails.material.opacity=Math.sin(Math.PI*sh)*(1-absorb)*.8; trailGeo.attributes.position.needsUpdate=true; trailGeo.attributes.color.needsUpdate=true;
+    var land=clamp01((t-.85)/.15); landing.position.copy(handTarget); landing.quaternion.copy(camera.quaternion);
+    landing.scale.setScalar(.4+land*5); landing.material.opacity=Math.sin(Math.PI*land)*.75;
+    flash.position.copy(handTarget); flash.quaternion.copy(camera.quaternion); flash.material.opacity=Math.sin(Math.PI*land)*.5;
+  }
   var T0=performance.now()/1000, last=0, sp=0, inited=false, glowT=-9, dock=0, side=1;
   function frame(){
     requestAnimationFrame(frame);
     if(!onScreen||!visible) return;
     var now=performance.now()/1000, dt=Math.min(Math.max(now-(last||now),0),.05); last=now;
     if(!M) M=marks();
-    var y=window.scrollY, target=reduce?1:pageP(y,M);
-    sp=inited?sp+(target-sp)*Math.min(1,dt*7):target; if(Math.abs(target-sp)<.002) sp=target;
-    var dk=clamp01((y-M.heroEnd)/(M.vh*.5)); dk=dk*dk*(3-2*dk); dock+=(dk-dock)*(inited?Math.min(1,dt*8):1);
+    var hand=window.autom8Hand||0;
+    var y=window.scrollY, target=reduce?1:clamp01(pageP(y,M)/.45);
+    sp=hand>0?1:inited?sp+(target-sp)*Math.min(1,dt*7):target; if(Math.abs(target-sp)<.002) sp=target;
+    var dk=clamp01((y-M.heroEnd)/(M.vh*.5)); dk=dk*dk*(3-2*dk); dock=hand>0?dk:dock+(dk-dock)*(inited?Math.min(1,dt*8):1);
     // side: 1 = window on the right (text left), -1 = window on the left
     // it crosses over at the seam between two sections, tied to the scroll: it rides the empty band between them, shrinking a little on the way
     var st=M.sides.length?M.sides[0].s:1, cr=0, seamY=0;
     for(var si=0;si<M.sides.length-1;si++){ var yb=M.sides[si].b-y, u=clamp01((M.vh*.85-yb)/(M.vh*.7)); u=u*u*(3-2*u); st+=(M.sides[si+1].s-M.sides[si].s)*u; var c=Math.sin(Math.PI*u); if(c>cr){ cr=c; seamY=yb; } }
     if(phone){ st=1; cr=0; } // phones are too narrow to switch sides: it stays in the corner
     side+=(st-side)*(inited?Math.min(1,dt*10):1); cross+=(cr-cross)*(inited?Math.min(1,dt*10):1); if(cr>.02) seam=seamY;
-    var fade=clamp01((y-M.fade0)/(M.fade1-M.fade0)); canvas.style.opacity=(1-fade).toFixed(3);
+    var fade=reduce?hand:clamp01((hand-.9)/.1); canvas.style.opacity=(1-fade).toFixed(3);
     if(fade>=1){ last=now; return; }
     // the empty window appears first
     var k0=reduce?1:Math.min(Math.max((now-T0)/.6,0),1), s0=1-Math.pow(1-k0,3);
-    fixed.forEach(function(m){ m.scale.setScalar(Math.max(s0,.001)); });
+    for(var fi=0;fi<fixed.length;fi++){ fixed[fi].visible=true; fixed[fi].scale.setScalar(Math.max(s0,.001)); }
+    load.visible=true;
     // parts follow the scroll; each one that lands hits the page
     var n=0;
     for(var i=0;i<N;i++){
@@ -1171,9 +1229,9 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     }
     inited=true;
     for(var st=0; st<3; st++) spring(dt/3);
-    loadP+=(n/N-loadP)*Math.min(1,dt*8); load.scale.x=Math.max(loadP*s0,.001); load.position.x=-2.6+2.6*Math.max(loadP,.001);
-    breakApart(reduce?0:apart());
-    rings.forEach(function(r){ var age=(now-r.t)/.45; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.3*(1-age); } else r.m.visible=false; });
+    loadP+=(n/N-loadP)*Math.min(1,dt*8); load.scale.set(Math.max(loadP*s0,.001),1,1); load.position.x=-2.6+2.6*Math.max(loadP,.001);
+
+    for(var ri=0;ri<rings.length;ri++){ var r=rings[ri], age=(now-r.t)/.45; if(age>=0&&age<1){ r.m.visible=true; var e=1-Math.pow(1-age,3); r.m.scale.setScalar(.5+r.s*e); r.m.material.opacity=.3*(1-age); } else r.m.visible=false; }
     // the lime button lights up when it lands and keeps breathing
     var gk=Math.max(0,1-(now-glowT)/1.6), pulse=gk*gk;
     MAT.cta.emissiveIntensity=(cta.landed?.14+.08*Math.sin(now*2.4):0)+pulse*.9;
@@ -1185,24 +1243,26 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
     var sq=Math.max(-.07,Math.min(.07,bsq*.045)); site.scale.set(1+sq,1-sq,1);
     var keep=1-dock, aura=keep+.7*dock; // glows and drifting dots travel with the window beside the text
     shadow.material.opacity=shadowBase*(1-.18*fl)*keep; shadow.scale.set(15-fl*.8,5-fl*.3,1);
-    glows.forEach(function(g,gi){ g.material.opacity=g.userData.op*(1+(done?.35:.15)*Math.sin(now*1.3+gi*2))*aura; });
-    bokeh.forEach(function(g){ g.material.opacity=g.userData.op*aura; });
+    for(var gi=0;gi<glows.length;gi++){ var glow=glows[gi]; glow.material.opacity=glow.userData.op*(1+(done?.35:.15)*Math.sin(now*1.3+gi*2))*aura; }
+    for(var bi=0;bi<bokeh.length;bi++) bokeh[bi].material.opacity=bokeh[bi].userData.op*aura;
     var dn=Math.round(DUST*Math.min(1,.12+sp)), dp=dust.geometry.attributes.position.array;
-    for(var di=0;di<dn;di++){ var d=dustA[di], da=d.a+(reduce?0:now*d.sp); dp[di*3]=Math.cos(da)*d.rx; dp[di*3+1]=Math.sin(da)*d.ry+(reduce?0:Math.sin(now*.7+d.ph)*.25); dp[di*3+2]=d.z; }
+    for(var di=0;di<dn;di++){ var d=dustA[di], da=d.a+(reduce?0:(now+hand*12)*d.sp); dp[di*3]=Math.cos(da)*d.rx; dp[di*3+1]=Math.sin(da)*d.ry+(reduce?0:Math.sin(now*.7+d.ph)*.25); dp[di*3+2]=d.z+(reduce?0:Math.sin(Math.PI*clamp01((hand-.2)/.5))*((di%7)+1)); }
     dust.geometry.setDrawRange(0,dn); dust.geometry.attributes.position.needsUpdate=true;
     var spp=sparks.geometry.attributes.position.array;
     for(var si2=0;si2<SPK;si2++){ var s=spk[si2], age=now-s.t;
       if(age>=0&&age<.8){ spp[si2*3]=s.p[0]+s.v[0]*age*(1-age*.6); spp[si2*3+1]=s.p[1]+s.v[1]*age*(1-age*.6)-age*age*1.5; spp[si2*3+2]=s.p[2]+s.v[2]*age*(1-age*.6); }
       else { spp[si2*3]=0; spp[si2*3+1]=0; spp[si2*3+2]=1e4; } }
     sparks.geometry.attributes.position.needsUpdate=true;
-    bokeh.forEach(function(g){ g.position.y=g.userData.y+(reduce?0:Math.sin(now*g.userData.sp+g.userData.ph)*.6); });
+    for(var bi=0;bi<bokeh.length;bi++){ var g=bokeh[bi]; g.position.y=g.userData.y+(reduce?0:Math.sin((now+hand*10)*g.userData.sp+g.userData.ph)*.6); }
     smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
     root.rotation.y=reduce?0:smx*.18*keep; root.rotation.x=reduce?0:smy*.1*keep;
-    var heroBuilt=Math.min(sp/.45,1), sk=(side+1)/2, sb=lf.base+(rf.base-lf.base)*sk, sox=lf.ox+(rf.ox-lf.ox)*sk, soy=lf.oy+(rf.oy-lf.oy)*sk+(phone?0:(laneCy-seam)*cross);
+    var heroBuilt=sp, sk=(side+1)/2, sb=lf.base+(rf.base-lf.base)*sk, sox=lf.ox+(rf.ox-lf.ox)*sk, soy=lf.oy+(rf.oy-lf.oy)*sk+(phone?0:(laneCy-seam)*cross);
     var b=hf.base+(sb-hf.base)*dock, mult=(1.12-.08*heroBuilt)*keep+1.08*dock*(1+.55*cross);
     camera.position.set(reduce?0:Math.sin(now*.13)*1.2*(1-.7*dock), reduce?.4:.4+Math.sin(now*.09)*.3*keep, b*(mult+(reduce?0:Math.cos(now*.1)*.02)));
+    camera.position.z-=reduce?0:Math.sin(Math.PI*hand)*2;
     camera.lookAt(0,0,0);
     camera.setViewOffset(W,H,hf.ox+(sox-hf.ox)*dock,hf.oy+(soy-hf.oy)*dock,W,H); camera.updateProjectionMatrix();
+    if(!reduce) handoff(hand);
     renderer.render(scene,camera);
   }
   frame();
@@ -1231,8 +1291,7 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
 </script>
 <script>
 // «Pide tu demo en segundos»: the request flow in 3D (form → confirmation email → the new website), looping
-// while the section is on screen; the steps light up with it and choose it. The page-build window (#capa3d)
-// crossfades with it on entry; below the demo the WebGL window stays hidden. Reduced motion: still.
+// after the hand-off lands; the steps choose it. Scrolling up restores the window. Reduced motion: still.
 (function(){
   var esc=document.getElementById('tw-escena'), sec=document.getElementById('tu-web'); if(!esc||!sec) return;
   var root=document.documentElement, pasos=[].slice.call(document.querySelectorAll('#tw-pasos li'));
@@ -1256,20 +1315,34 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
     later(function(){ esc.classList.add('c2'); },2500); later(function(){ pulsar(b2); },3700); later(tres,4300); }
   function tres(){ limpiar(); lleno(); esc.classList.remove('c1','c2','c2a','sel'); esc.classList.add('abierto'); marcar(3); min.textContent='0:00'; later(reloj,700); later(uno,5600); }
   var ir={1:uno,2:dos,3:tres};
-  pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else ir[n](); }); });
+  pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else if((window.autom8Hand||0)>=1) ir[n](); }); });
   if(reduce){ lleno(); esc.classList.add('abierto'); marcar(3); min.textContent='10:00'; }
-  // crossfade tied to the scroll: as the section rises the page-build window fades out and the scene fades in
-  // scrolling back above the demo restores the window; below it the window stays hidden
-  var capa=document.getElementById('capa3d'), pend=false;
-  function mezcla(){ pend=false; var vh=window.innerHeight, b=sec.getBoundingClientRect();
-    var entra=Math.min(1,Math.max(0,(vh*.95-b.top)/(vh*.55))), sale=Math.min(1,Math.max(0,(b.bottom-vh*.25)/(vh*.45))), v=Math.min(entra,sale);
-    v=v*v*(3-2*v); esc.style.setProperty('--tw',v.toFixed(3)); if(capa) capa.style.setProperty('--capa',(b.bottom<=vh*.7?0:1-entra*entra*(3-2*entra)).toFixed(3)); }
+  // Shared scroll clock: all motion is a pure function of this progress.
+  var capa=document.getElementById('capa3d'), pend=false, inView=false;
+  function unit(v){ return Math.max(0,Math.min(1,v)); }
+  function smooth(v){ v=unit(v); return v*v*(3-2*v); }
+  function run(){ var ready=(window.autom8Hand||0)>=1;
+    if(!reduce&&ready&&inView&&!activo){ activo=true; uno(); }
+    else if(!ready||!inView){ if(activo){ activo=false; limpiar(); } if(!reduce&&!ready){ marcar(1); esc.classList.remove('c1','c2','c2a','sel','abierto'); } }
+  }
+  function mezcla(){ pend=false; var vh=window.innerHeight,b=sec.getBoundingClientRect();
+    var t=unit((vh*1.2-b.top)/(vh*1.2)), noGL=document.getElementById('inicio').classList.contains('nogl');
+    window.autom8Hand=t; sec.style.setProperty('--hand',t.toFixed(4));
+    var simple=reduce||noGL, show=simple?smooth(t):smooth((t-.56)/.32);
+    esc.style.setProperty('--tw',show.toFixed(4)); esc.classList.toggle('assembling',!simple&&t<1);
+    esc.style.setProperty('--form',smooth((t-.56)/.34).toFixed(4));
+    esc.style.setProperty('--mail',smooth((t-.86)/.09).toFixed(4));
+    esc.style.setProperty('--web',smooth((t-.91)/.09).toFixed(4));
+    sec.style.setProperty('--bloom',simple?0:(Math.sin(Math.PI*unit((t-.8)/.2))*.34).toFixed(4));
+    if(capa) capa.style.setProperty('--capa',simple?(1-smooth(t)).toFixed(4):1);
+    run();
+  }
   function pedir(){ if(!pend){ pend=true; requestAnimationFrame(mezcla); } }
-  window.addEventListener('scroll',pedir,{passive:true}); window.addEventListener('resize',pedir); mezcla();
+  window.addEventListener('scroll',pedir,{passive:true}); window.addEventListener('resize',pedir);
   if('IntersectionObserver' in window){
-    new IntersectionObserver(function(es){ es.forEach(function(e){ if(reduce) return;
-      if(e.isIntersecting&&!activo){ activo=true; uno(); } else if(!e.isIntersecting&&activo){ activo=false; limpiar(); } }); },{threshold:.15}).observe(esc);
-  } else if(!reduce) uno();
+    new IntersectionObserver(function(es){ inView=es[0].isIntersecting; run(); },{threshold:.15}).observe(esc);
+  } else inView=true;
+  mezcla();
 })();
 </script>
 <script>
