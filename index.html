@@ -294,13 +294,162 @@ header{position:fixed; top:0; left:0; right:0; z-index:50; padding-top:env(safe-
   .ctas .btn{flex:0 0 auto; min-height:44px; padding:0 16px; font-size:15px}
 }
 
+/* local CSS depth scenes */
+.esc3d{position:sticky; top:max(90px,calc(50svh - 220px)); width:100%; max-width:min(560px,40vw); height:440px; align-self:start; perspective:1200px; pointer-events:none; --tilt:0deg}
+.side-r>.esc3d{grid-column:1; grid-row:1}
+.e-world{position:absolute; width:280px; height:260px; left:50%; top:50%; margin:-130px 0 0 -140px; transform-style:preserve-3d; scale:1.45; transform:rotateX(calc(8deg + var(--tilt))) rotateY(-12deg)}
+.e-float{width:100%; height:100%; transform-style:preserve-3d; animation:e-float 7s ease-in-out infinite alternate}
+.e-part{position:absolute; transform:var(--pose); transition:transform 1.2s cubic-bezier(.34,1.56,.64,1),opacity 1.2s; transition-delay:var(--delay,0s); backface-visibility:hidden}
+.js .esc3d:not(.in) .e-part{opacity:0; transform:translate3d(0,45px,-400px) rotateX(-18deg) rotateY(45deg)}
+.esc3d *{animation-play-state:paused!important}
+.esc3d.visible *{animation-play-state:running!important}
+.e-card{width:220px; height:160px; padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--text); box-shadow:12px 20px 28px color-mix(in srgb,var(--ink) 45%,transparent)}
+.e-bar{display:block; height:6px; width:65%; background:var(--soft); opacity:.75; border-radius:3px; margin:10px 0}
+.e-bar.short{width:40%}
+.e-nav{height:12px; border-bottom:1px solid var(--line); margin-bottom:15px}
+.e-hero{height:52px; background:var(--line); border-radius:4px; margin:10px 0}
+.e-cta{display:block; width:70px; height:19px; background:var(--lime); border:1px solid var(--text); border-radius:4px; margin-top:12px}
+.e-caption{font-size:17px; font-weight:600; color:var(--text)}
+.esc3d--problema .e-card{--pose:translate3d(25px,32px,0) rotateZ(-7deg); color:var(--muted)}
+.e-crack{clip-path:polygon(0 0,58% 0,46% 42%,61% 55%,49% 100%,0 100%); transform:translateX(-5px)}
+.e-spinner{position:absolute; right:26px; top:67px; width:23px; height:23px; border:2px solid var(--line); border-top-color:var(--muted); border-radius:50%; animation:e-spin 2s linear infinite}
+.e-search{--pose:translate3d(55px,190px,45px) rotateZ(5deg); width:190px; height:72px; padding:10px 15px; background:var(--panel); border:1px dashed var(--muted); border-radius:8px; animation:e-jitter 4s infinite}
+.e-search .e-bar{height:3px; margin:7px 0}
+.e-layer{inset:100px 18px 22px; padding:12px; background:color-mix(in srgb,var(--panel) 85%,transparent); border:1px solid var(--line); border-radius:10px; --pose:translate3d(0,calc(var(--i) * -36px),calc(var(--i) * 12px)); --delay:calc(var(--i) * .08s)}
+
+.e-layer .e-caption{display:block; text-align:right; font-size:17px}
+.e-layer:last-child{background:var(--panel)}
+.e-layer .e-caption{position:absolute; left:12px; right:12px; bottom:8px; z-index:1; padding-top:6px; border-top:1px solid var(--line)}
+.esc3d--incluye .e-world{margin-top:-100px}
+.esc3d--webs .e-card{width:160px; height:190px; top:35px; left:60px}
+.e-one{--haze:.9; --pose:translate3d(-65px,12px,-35px) rotateZ(-18deg)}
+.e-corp{--pose:translate3d(0,0,65px); --delay:.15s}
+.e-corp::before,.e-corp::after{content:""; position:absolute; inset:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; transform:translate3d(10px,-10px,-15px); z-index:-1}
+.e-corp::after{transform:translate3d(20px,-20px,-30px)}
+.e-land{--haze:.95; --pose:translate3d(65px,12px,-15px) rotateZ(18deg); --delay:.3s}
+.e-land .e-cta{height:36px; width:100%}
+.e-step{width:62px; height:76px; left:10px; top:155px; padding:12px; border:1px solid var(--line); border-bottom:10px solid var(--line); border-radius:8px; background:var(--panel); --pose:translate3d(calc(var(--i) * 63px),calc(var(--i) * -43px),calc(var(--i) * 12px)); --delay:calc(var(--i) * .08s)}
+.e-step b{font-family:"Bricolage Grotesque",sans-serif; font-size:26px; color:var(--text)}
+.e-step .e-hero{height:15px; margin:4px 0; background:var(--lime); border:1px solid var(--text)}
+.e-marker{position:absolute; width:15px; height:15px; background:var(--lime); border:1px solid var(--text); border-radius:50%; left:30px; top:130px; animation:e-climb 5s ease-in-out infinite}
+.esc3d--conectada .e-card{--pose:translate3d(65px,85px,35px); width:150px; height:110px; padding:12px}
+.esc3d--conectada .e-hero{height:24px}
+.e-node{width:104px; height:62px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; background:var(--panel); border:1px solid var(--line); border-bottom:5px solid var(--line); border-radius:8px; font-size:17px; color:var(--text); --pose:translate3d(var(--x),var(--y),55px); --delay:.25s}
+.e-link{position:absolute; left:140px; top:140px; width:100px; border-top:2px dashed var(--lime); transform-origin:left; transform:rotate(var(--angle)); outline:1px solid var(--line)}
+:root[data-theme="light"] .e-link{outline-color:var(--text)}
+.e-link::after{content:""; position:absolute; top:-4px; width:7px; height:7px; border-radius:50%; background:var(--lime); border:1px solid var(--text); animation:e-pulse 3s linear infinite; animation-delay:var(--delay,0s)}
+.e-chat{width:180px; height:62px; padding:10px 14px; background:var(--panel); border:1px solid var(--line); border-radius:16px 16px 16px 2px; --pose:translate3d(var(--x),var(--y),var(--z)); --delay:calc(var(--i) * .08s)}
+.e-chat:nth-child(even){border-radius:16px 16px 2px 16px; border-color:var(--signal)}
+.e-dots{display:flex; gap:7px; padding-top:10px}
+.e-dots i{width:7px; height:7px; background:var(--muted); border-radius:50%; animation:e-dot 1.5s ease-in-out infinite}
+.e-dots i:nth-child(2){animation-delay:.2s}.e-dots i:nth-child(3){animation-delay:.4s}
+@keyframes e-float{from{transform:translateY(5px) rotateX(-1.5deg) rotateZ(-1deg)}to{transform:translateY(-10px) rotateX(2deg) rotateZ(2deg)}}
+@keyframes e-spin{to{transform:rotate(360deg)}}
+@keyframes e-jitter{0%,92%,100%{translate:0}94%{translate:2px -1px}96%{translate:-1px 1px}}
+@keyframes e-climb{0%,12%,100%{transform:translate3d(0,0,25px)}30%{transform:translate3d(63px,-43px,37px)}52%{transform:translate3d(126px,-86px,49px)}74%,88%{transform:translate3d(189px,-129px,61px)}}
+@keyframes e-pulse{0%{translate:0; opacity:0}15%,85%{opacity:1}100%{translate:95px; opacity:0}}
+@keyframes e-dot{50%{transform:translateY(-4px); opacity:.4}}
+@media(max-width:900px){
+  .esc3d,.side-r>.esc3d{position:relative; top:auto; width:100%; max-width:none; height:280px; margin:0 0 32px}
+  .e-world{scale:.88}
+  .esc3d{overflow:clip}
+}
+@media(prefers-reduced-motion:reduce){
+  .esc3d *{animation:none!important; transition:none!important}
+  .js .esc3d:not(.in) .e-part, .esc3d--incluye:not(.in) .e-layer{opacity:1; transform:var(--pose)}
+  .e-world{transform:rotateX(8deg) rotateY(-12deg)}
+  .e-marker{transform:translate3d(189px,-129px,61px)}
+}
+
+/* Bevelled surfaces share the site's theme tokens. */
+.esc3d::before{content:""; position:absolute; inset:2% -2%; background:radial-gradient(ellipse,color-mix(in srgb,var(--lime) 16%,transparent),transparent 67%); border-radius:50%; pointer-events:none}
+.e-card,.e-layer,.e-search,.e-step,.e-node,.e-chat{background:linear-gradient(145deg,color-mix(in srgb,var(--panel) 88%,var(--signal)),var(--panel) 55%,color-mix(in srgb,var(--panel) 94%,var(--lime))); border:1px solid color-mix(in srgb,var(--text) 24%,var(--panel)); border-top-color:color-mix(in srgb,var(--text) 58%,var(--panel)); box-shadow:0 2px 0 var(--line),0 18px 26px -12px color-mix(in srgb,var(--text) 24%,transparent),inset 0 1px 0 color-mix(in srgb,var(--text) 16%,transparent); color:var(--text)}
+.e-part{opacity:var(--haze,1)}
+.e-hero{background:linear-gradient(135deg,color-mix(in srgb,var(--lime) 68%,var(--panel)),color-mix(in srgb,var(--signal) 40%,var(--panel))); border:1px solid var(--accent); box-shadow:inset 0 1px 0 var(--soft)}
+.e-caption{line-height:1.25; white-space:nowrap}
+.e-nav{position:relative; height:18px; margin-bottom:10px; background:linear-gradient(90deg,var(--signal) 0 5px,transparent 5px 9px,var(--muted) 9px 14px,transparent 14px 18px,var(--accent) 18px 23px,transparent 23px); background-size:23px 5px; background-repeat:no-repeat; background-position:0 3px}
+.e-nav::after{content:""; position:absolute; left:33px; right:0; top:0; height:9px; border:1px solid var(--line); border-radius:4px; background:var(--ink)}
+.e-layer{border-bottom-width:4px}
+.e-layer .e-hero{height:35px}
+.e-layer .e-cta{margin-top:8px}
+:root[data-theme="light"] .e-hero{border-color:var(--text)}
+@media(min-width:901px){.esc3d--proceso .e-world{scale:1.6}}
+@media(min-width:901px) and (max-width:1150px){.e-world,.esc3d--proceso .e-world{scale:1.08}}
+@media(max-width:360px){.e-world{scale:.82}}
+
+/* Independent motion leaves each part's entrance intact. */
+.e-layer{animation:e-breathe 7s ease-in-out infinite; animation-delay:calc(var(--i) * .08s)}
+.e-one,.e-land{animation:e-fan 9s ease-in-out infinite alternate; transform-origin:50% 100%}
+.e-one{--fan:-4deg}.e-land{--fan:4deg}
+.e-chat:last-child .e-dots{animation:e-typing 7s linear infinite}
+.e-reply{position:absolute; inset:10px 14px; animation:e-reply 7s cubic-bezier(.23,1,.32,1) infinite}
+@keyframes e-breathe{0%,100%{translate:0 0 0}50%{translate:0 calc(var(--i) * -3px) calc(var(--i) * 4px)}}
+@keyframes e-fan{to{rotate:var(--fan); translate:0 -5px}}
+@keyframes e-typing{0%,44%{opacity:1}48%,95%{opacity:0}100%{opacity:1}}
+@keyframes e-reply{0%,44%{opacity:0; translate:0 10px}52%,92%{opacity:1; translate:0 0}98%,100%{opacity:0; translate:0 0}}
+@media(prefers-reduced-motion:reduce){
+  .esc3d .e-part{opacity:1; translate:none; rotate:none}
+  .esc3d .e-reply{opacity:1; translate:none}
+  .esc3d .e-chat:last-child .e-dots{opacity:0}
+}
+
+/* Small interface details make the silhouettes legible. */
+.e-loading{display:block; font-size:17px; font-weight:600; line-height:1.3}
+.e-stuck{height:5px; margin-top:5px; background:var(--track); border-radius:4px; overflow:hidden}
+.e-stuck i{display:block; width:30%; height:100%; background:var(--signal)}
+.esc3d--problema .e-world{margin-top:-153px}
+.esc3d--problema .e-card{height:205px}
+.esc3d--problema{--scene-error:color-mix(in srgb,var(--signal) 60%,#ff786f)}
+:root[data-theme="light"] .esc3d--problema{--scene-error:color-mix(in srgb,var(--signal) 45%,#b32b31)}
+.esc3d--problema .e-hero{height:42px; background:color-mix(in srgb,var(--signal) 20%,var(--panel)); position:relative}
+.esc3d--problema .e-bar{margin:7px 0}
+.e-offset{translate:24px 0}
+.e-broken{position:absolute; inset:9px auto auto 30px; width:28px; height:22px; border:2px solid var(--scene-error); background:color-mix(in srgb,var(--scene-error) 24%,var(--panel)); rotate:-8deg}
+.e-broken::before,.e-broken::after{content:""; position:absolute; width:17px; height:2px; background:var(--scene-error); left:3px; top:9px; rotate:38deg}
+.e-broken::after{rotate:-38deg}
+.e-spinner{top:70px; border-top-color:var(--signal)}
+.e-search{--pose:translate3d(55px,215px,45px) rotateZ(5deg); height:75px}
+.e-missing{position:absolute; width:21px; height:21px; right:14px; top:13px; border:2px solid var(--signal); border-radius:50%}
+.e-missing::after{content:""; position:absolute; top:8px; left:3px; width:11px; height:2px; background:var(--signal)}
+.e-phone{width:32px; height:58px; border:2px solid var(--text); border-radius:7px; padding:7px 4px; margin-top:10px; background:var(--ink)}
+.e-phone i{display:block; height:22px; background:var(--lime); border:1px solid var(--text); border-radius:2px}
+.e-result{padding:5px 10px; margin-top:10px; border:1px solid var(--line); border-radius:6px; background:var(--ink)}
+.e-speed{height:12px; margin-top:20px; border-radius:6px; background:var(--track); overflow:hidden}
+.e-speed i{display:block; height:100%; width:85%; background:var(--meter)}
+.esc3d--webs .e-card{height:218px; padding:12px}
+.esc3d--webs .e-caption{font-size:17px}
+.e-one .e-caption{position:absolute; top:-30px; left:-20px; padding:3px 7px; background:var(--panel); border:1px solid var(--line); border-radius:6px}
+.e-land .e-caption{position:absolute; bottom:-34px; right:-6px; padding:3px 7px; background:var(--panel); border:1px solid var(--line); border-radius:6px}
+.e-mini-grid{display:flex; gap:5px; margin-top:9px}
+.e-mini-grid i{height:20px; flex:1; border:1px solid var(--line); border-radius:3px; background:color-mix(in srgb,var(--signal) 18%,var(--panel))}
+.e-land .e-hero{height:66px}.e-one .e-hero{height:75px}
+.e-step{height:90px; padding:8px; border-bottom-width:8px}
+.e-step .e-bar{height:4px; margin:4px 0}
+.e-published{position:absolute; left:-12px; top:-60px; width:88px; height:52px; padding:10px; border:1px solid var(--accent); border-top-color:var(--soft); border-radius:7px; background:linear-gradient(135deg,var(--panel),color-mix(in srgb,var(--lime) 24%,var(--panel))); box-shadow:0 12px 20px -8px var(--line)}
+.e-published::before{content:""; display:block; height:5px; width:42px; margin-bottom:7px; background:var(--soft); border-radius:2px}
+.e-published i{display:block; height:17px; background:var(--lime); border:1px solid var(--text); border-radius:3px}
+.e-glyph{position:relative; display:block; width:22px; height:18px; border:1.5px solid var(--accent); border-radius:4px}
+.e-glyph::before,.e-glyph::after{content:""; position:absolute}
+.e-glyph--message::before{width:6px; height:6px; border-left:1.5px solid var(--accent); border-bottom:1.5px solid var(--accent); bottom:-4px; left:3px; background:var(--panel); transform:skewY(-35deg)}
+.e-glyph--calendar::before{inset:4px 0 auto; border-top:1.5px solid var(--accent)}
+.e-glyph--calendar::after{width:4px; height:4px; background:var(--accent); top:8px; left:5px; box-shadow:7px 0 var(--accent)}
+.e-glyph--mail::before{width:12px; height:12px; border-right:1.5px solid var(--accent); border-bottom:1.5px solid var(--accent); left:3px; top:-5px; rotate:45deg}
+.e-glyph--contacts::before{width:5px; height:5px; left:7px; top:2px; border:1.5px solid var(--accent); border-radius:50%}
+.e-glyph--contacts::after{width:12px; height:5px; left:3px; bottom:1px; border:1.5px solid var(--accent); border-radius:5px 5px 0 0}
+.e-chat:nth-child(2){background:linear-gradient(140deg,color-mix(in srgb,var(--signal) 22%,var(--panel)),var(--panel))}
+.e-chat:first-child{--haze:.9}.e-chat:nth-child(3){--haze:.95}
+
 /* sections */
 .sec{position:relative; z-index:2; background:transparent; padding:clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-right,0px)) clamp(88px,11vw,150px) max(clamp(20px,5vw,72px), env(safe-area-inset-left,0px)); transition:background-color .4s}
 .sec.alt{background:var(--panel); background:color-mix(in srgb, var(--panel) 62%, transparent)}
-/* the 3D website stays in view: content alternates sides and the window moves to the free side */
-@media (min-width: 601px){
-  .sec.side-l .wrap,.sec.side-r .wrap{max-width:min(820px,60%); margin-left:0; margin-right:auto}
-  .sec.side-r .wrap{margin-left:auto; margin-right:0}
+/* alternate the content and the local scenes */
+@media (min-width: 901px){
+  .sec.side-l,.sec.side-r{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); column-gap:32px; align-items:start}
+  .sec.side-r{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  .sec.side-l>.esc3d{grid-column:2; grid-row:1}
+  .sec.side-l .wrap,.sec.side-r .wrap{width:100%; min-width:0; max-width:none; margin:0; grid-row:1}
+  .sec.side-l .wrap{grid-column:1}
+  .sec.side-r .wrap{grid-column:2}
   .sec.side-l .bridge,.sec.side-r .bridge{grid-template-columns:minmax(0,1fr)}
 }
 .wrap{max-width:1320px; margin:0 auto}
@@ -597,6 +746,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="problema" class="sec side-l alt">
+    <div class="esc3d esc3d--problema" aria-hidden="true"><div class="e-world"><div class="e-float"><div class="e-part e-card"><div class="e-nav"></div><div class="e-hero e-crack"><i class="e-broken"></i></div><span class="e-loading">Cargando…</span><div class="e-stuck"><i></i></div><i class="e-bar"></i><i class="e-bar short e-offset"></i><i class="e-spinner"></i></div><div class="e-part e-search"><span class="e-caption">Google</span><i class="e-missing"></i><i class="e-bar"></i><i class="e-bar short"></i><i class="e-bar"></i></div></div></div></div>
     <div class="wrap">
       <div class="rv">
         <div class="label">Tu primera impresión</div>
@@ -615,6 +765,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="incluye" class="sec side-r">
+    <div class="esc3d esc3d--incluye" aria-hidden="true"><div class="e-world"><div class="e-float"><div class="e-part e-layer" style="--i:0"><span class="e-caption">Diseño</span><div class="e-nav"></div><div class="e-hero"></div><i class="e-bar"></i><i class="e-bar short"></i><i class="e-cta"></i></div><div class="e-part e-layer" style="--i:1"><span class="e-caption">Móvil</span><div class="e-phone"><i></i></div></div><div class="e-part e-layer" style="--i:2"><span class="e-caption">Google</span><div class="e-result"><i class="e-bar"></i><i class="e-bar short"></i></div></div><div class="e-part e-layer" style="--i:3"><span class="e-caption">Velocidad</span><div class="e-speed"><i></i></div></div><div class="e-part e-layer" style="--i:4"><span class="e-caption">Formularios</span><i class="e-bar"></i><i class="e-cta"></i></div></div></div></div>
     <div class="wrap">
       <div class="rv">
         <div class="label">Qué incluye</div>
@@ -632,6 +783,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="webs" class="sec side-l alt types">
+    <div class="esc3d esc3d--webs" aria-hidden="true"><div class="e-world"><div class="e-float"><div class="e-part e-card e-one"><span class="e-caption">One-page</span><div class="e-nav"></div><div class="e-hero"></div><i class="e-bar"></i><i class="e-bar short"></i><i class="e-cta"></i><div class="e-mini-grid"><i></i><i></i><i></i></div></div><div class="e-part e-card e-land"><span class="e-caption">Landing</span><div class="e-nav"></div><div class="e-hero"></div><i class="e-bar"></i><i class="e-bar short"></i><i class="e-cta"></i><div class="e-mini-grid"><i></i><i></i><i></i></div></div><div class="e-part e-card e-corp"><span class="e-caption">Corporativa</span><div class="e-nav"></div><div class="e-hero"></div><i class="e-bar"></i><i class="e-bar short"></i><i class="e-cta"></i><div class="e-mini-grid"><i></i><i></i><i></i></div></div></div></div></div>
     <div class="wrap">
       <div class="rv">
         <div class="label">Tipos de web</div>
@@ -646,6 +798,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="proceso" class="sec side-r">
+    <div class="esc3d esc3d--proceso" aria-hidden="true"><div class="e-world"><div class="e-float"><div class="e-part e-step" style="--i:0"><b>1</b><i class="e-bar"></i></div><div class="e-part e-step" style="--i:1"><b>2</b><i class="e-bar"></i></div><div class="e-part e-step" style="--i:2"><b>3</b><i class="e-bar"></i></div><div class="e-part e-step" style="--i:3"><b>4</b><i class="e-bar"></i><div class="e-hero"></div><div class="e-published"><i></i></div></div><i class="e-marker"></i></div></div></div>
     <div class="wrap">
       <div class="rv">
         <div class="label">Cómo trabajamos</div>
@@ -662,6 +815,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="conectada" class="sec side-l alt">
+    <div class="esc3d esc3d--conectada" aria-hidden="true"><div class="e-world"><div class="e-float"><i class="e-link" style="--angle:-135deg;--delay:0.0s"></i><i class="e-link" style="--angle:-45deg;--delay:0.5s"></i><i class="e-link" style="--angle:135deg;--delay:1.0s"></i><i class="e-link" style="--angle:45deg;--delay:1.5s"></i><div class="e-part e-card"><div class="e-nav"></div><div class="e-hero"></div><i class="e-bar"></i><i class="e-bar short"></i><i class="e-cta"></i></div><div class="e-part e-node" style="--x:0px;--y:12px"><i class="e-glyph e-glyph--message"></i><span>WhatsApp</span></div><div class="e-part e-node" style="--x:186px;--y:12px"><i class="e-glyph e-glyph--calendar"></i><span>Calendario</span></div><div class="e-part e-node" style="--x:0px;--y:220px"><i class="e-glyph e-glyph--mail"></i><span>Email</span></div><div class="e-part e-node" style="--x:186px;--y:220px"><i class="e-glyph e-glyph--contacts"></i><span>CRM</span></div></div></div></div>
     <div class="wrap bridge">
       <div class="rv">
         <div class="label">Más que una web</div>
@@ -678,6 +832,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   </section>
 
   <section id="faq" class="sec side-r faq">
+    <div class="esc3d esc3d--faq" aria-hidden="true"><div class="e-world"><div class="e-float"><div class="e-part e-chat" style="--i:0;--x:15px;--y:5px;--z:-25px"><i class="e-bar"></i><i class="e-bar short"></i></div><div class="e-part e-chat" style="--i:1;--x:80px;--y:75px;--z:35px"><i class="e-bar"></i><i class="e-bar short"></i></div><div class="e-part e-chat" style="--i:2;--x:5px;--y:145px;--z:5px"><i class="e-bar"></i><i class="e-bar short"></i></div><div class="e-part e-chat" style="--i:3;--x:85px;--y:210px;--z:55px"><span class="e-dots"><i></i><i></i><i></i></span><span class="e-reply"><i class="e-bar"></i><i class="e-bar short"></i></span></div></div></div></div>
     <div class="wrap">
       <div class="rv">
         <div class="label">Preguntas frecuentes</div>
@@ -918,7 +1073,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   // the website keeps building while people read: almost half in the hero, the rest across the page, finished at "Contacto"
   var hero=$('inicio'), contact=$('contacto');
   function clamp01(x){ return Math.min(Math.max(x,0),1); }
-  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh*1.05,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:contact.offsetTop-vh*.95, fade1:contact.offsetTop-vh*.6}; }
+  function marks(){ var vh=window.innerHeight, heroEnd=Math.max(hero.offsetTop+hero.offsetHeight-vh,1), done=Math.max(contact.offsetTop-vh*1.05,heroEnd+vh); return {vh:vh, heroEnd:heroEnd, done:done, sides:sideEls.map(function(el){ return {b:el.offsetTop+el.offsetHeight, s:el.classList.contains('side-r')?-1:1}; }), fade0:$('tu-web').offsetTop+$('tu-web').offsetHeight-vh*.95, fade1:$('tu-web').offsetTop+$('tu-web').offsetHeight-vh*.6}; }
   function pageP(y,m){ return y<=m.heroEnd ? .45*y/m.heroEnd : .45+.55*clamp01((y-m.heroEnd)/(m.done-m.heroEnd)); }
 
   // frame the window inside the free area: right of the headline on wide screens, between header and text on phones
@@ -971,7 +1126,7 @@ footer{background:var(--ink); border-top:1px solid var(--line); padding:56px max
   document.addEventListener('visibilitychange',function(){ visible=!document.hidden; });
 
   // near «Pide tu demo» the window breaks apart: every part comes loose and drifts out from the centre, turning,
-  // while the request scene takes its place; further down (or back up) the parts fly back and it is whole again
+  // while the request scene takes its place; scrolling back up restores the window
   var twSec=$('tu-web'), parts=[];
   function looseDir(x,y){ var d=new THREE.Vector3(x*.55+(Math.random()-.5)*1.6, y*.55+(Math.random()-.5)*1.6, .8+Math.random()*1.6); return d.normalize(); }
   fixed.forEach(function(m){ parts.push({m:m, base:m.position.clone(), dir:looseDir(m.position.x,m.position.y), spin:[(Math.random()-.5)*3,(Math.random()-.5)*3,(Math.random()-.5)*2]}); });
@@ -1077,7 +1232,7 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
 <script>
 // «Pide tu demo en segundos»: the request flow in 3D (form → confirmation email → the new website), looping
 // while the section is on screen; the steps light up with it and choose it. The page-build window (#capa3d)
-// crossfades with it as the section scrolls in and out. With reduced motion: the finished state, still.
+// crossfades with it on entry; below the demo the WebGL window stays hidden. Reduced motion: still.
 (function(){
   var esc=document.getElementById('tw-escena'), sec=document.getElementById('tu-web'); if(!esc||!sec) return;
   var root=document.documentElement, pasos=[].slice.call(document.querySelectorAll('#tw-pasos li'));
@@ -1104,17 +1259,31 @@ var WEB3FORMS_KEY = '2f8afda4-31ad-48ea-a194-9ce01cd2e7e9';
   pasos.forEach(function(li){ li.addEventListener('click',function(){ var n=+li.getAttribute('data-paso'); if(reduce) marcar(n); else ir[n](); }); });
   if(reduce){ lleno(); esc.classList.add('abierto'); marcar(3); min.textContent='10:00'; }
   // crossfade tied to the scroll: as the section rises the page-build window fades out and the scene fades in
-  // (and the other way round further down), so hero → section is one continuous move, also when scrolling back
+  // scrolling back above the demo restores the window; below it the window stays hidden
   var capa=document.getElementById('capa3d'), pend=false;
   function mezcla(){ pend=false; var vh=window.innerHeight, b=sec.getBoundingClientRect();
     var entra=Math.min(1,Math.max(0,(vh*.95-b.top)/(vh*.55))), sale=Math.min(1,Math.max(0,(b.bottom-vh*.25)/(vh*.45))), v=Math.min(entra,sale);
-    v=v*v*(3-2*v); esc.style.setProperty('--tw',v.toFixed(3)); if(capa) capa.style.setProperty('--capa',(1-v).toFixed(3)); }
+    v=v*v*(3-2*v); esc.style.setProperty('--tw',v.toFixed(3)); if(capa) capa.style.setProperty('--capa',(b.bottom<=vh*.7?0:1-entra*entra*(3-2*entra)).toFixed(3)); }
   function pedir(){ if(!pend){ pend=true; requestAnimationFrame(mezcla); } }
   window.addEventListener('scroll',pedir,{passive:true}); window.addEventListener('resize',pedir); mezcla();
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){ es.forEach(function(e){ if(reduce) return;
       if(e.isIntersecting&&!activo){ activo=true; uno(); } else if(!e.isIntersecting&&activo){ activo=false; limpiar(); } }); },{threshold:.15}).observe(esc);
   } else if(!reduce) uno();
+})();
+</script>
+<script>
+/* local scenes: one visibility observer and one scroll frame */
+(function(){
+  var scenes=[].slice.call(document.querySelectorAll('.esc3d')), motion=window.matchMedia('(prefers-reduced-motion: reduce)'), pending=false;
+  scenes.forEach(function(el){ el.querySelectorAll('.e-part').forEach(function(part,i){ part.style.setProperty('--delay',(i * .08).toFixed(2)+'s'); }); });
+  function tilt(){ pending=false; if(motion.matches) return;
+    scenes.forEach(function(el){ if(!el.classList.contains('visible')) return; el.style.setProperty('--tilt',(Math.max(-1,Math.min(1,(el.parentElement.getBoundingClientRect().top+el.parentElement.offsetHeight/2-window.innerHeight/2)/window.innerHeight))*5).toFixed(2)+'deg'); }); }
+  function queue(){ if(!pending){ pending=true; requestAnimationFrame(tilt); } }
+  if('IntersectionObserver' in window){ var observer=new IntersectionObserver(function(entries){ entries.forEach(function(e){ e.target.classList.toggle('visible',e.isIntersecting); if(e.isIntersecting) e.target.classList.add('in'); }); queue(); },{threshold:.12}); scenes.forEach(function(el){ observer.observe(el); }); }
+  else scenes.forEach(function(el){ el.classList.add('in','visible'); });
+  motion.addEventListener('change',function(){ scenes.forEach(function(el){ el.style.setProperty('--tilt','0deg'); }); queue(); });
+  window.addEventListener('scroll',queue,{passive:true}); window.addEventListener('resize',queue);
 })();
 </script>
 <script src="/consent.js" defer></script>
