@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://autom8.es/</loc>
     <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/"/>
   </url>
   <url>
     <loc>https://autom8.es/precios</loc>
     <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/precios"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/precios"/>
   </url>
   <url>
     <loc>https://autom8.es/diseno-web-barcelona</loc>
@@ -15,13 +21,57 @@
   <url>
     <loc>https://autom8.es/aviso-legal</loc>
     <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/aviso-legal"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/aviso-legal"/>
   </url>
   <url>
     <loc>https://autom8.es/privacidad</loc>
     <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/privacidad"/>
   </url>
   <url>
     <loc>https://autom8.es/cookies</loc>
     <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/cookies"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/cookies"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/cookies"/>
+  </url>
+  <url>
+    <loc>https://autom8.es/en</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/"/>
+  </url>
+  <url>
+    <loc>https://autom8.es/en/pricing</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/precios"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/precios"/>
+  </url>
+  <url>
+    <loc>https://autom8.es/en/terms</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/aviso-legal"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/aviso-legal"/>
+  </url>
+  <url>
+    <loc>https://autom8.es/en/privacy</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/privacidad"/>
+  </url>
+  <url>
+    <loc>https://autom8.es/en/cookies</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://autom8.es/cookies"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://autom8.es/en/cookies"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://autom8.es/cookies"/>
   </url>
 </urlset>

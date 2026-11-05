@@ -15,6 +15,8 @@
     metaPixel: ''       // píxel de Meta, p. ej. '123456789012345'
   };
 
+  var EN = /^en/i.test(document.documentElement.lang);
+
   var KEY = 'autom8-consent', VERSION = 1, MAX_AGE = 395 * 24 * 3600 * 1000;
   var ADS = /^AW-\d{6,14}$/, LABEL = /^[A-Za-z0-9_-]{4,40}$/, GA4 = /^G-[A-Z0-9]{4,14}$/, PIXEL = /^\d{6,20}$/;
   var ads = ADS.test(CONFIG.googleAds) ? CONFIG.googleAds : '';
@@ -23,16 +25,16 @@
   var pixel = PIXEL.test(CONFIG.metaPixel) ? CONFIG.metaPixel : '';
 
   var SERVICES = [];
-  if (ga4) SERVICES.push({cat:'analytics', name:'Google Analytics', provider:'Google Ireland Ltd.', policy:'https://policies.google.com/technologies/cookies?hl=es',
-    rows:[['_ga','Distingue visitantes de forma anónima','2 años'],['_ga_<ID>','Mantiene el estado de la sesión','2 años']]});
-  if (ads) SERVICES.push({cat:'marketing', name:'Google Ads', provider:'Google Ireland Ltd.', policy:'https://policies.google.com/technologies/cookies?hl=es',
-    rows:[['_gcl_au, _gcl_aw','Mide qué anuncios de Google acaban en una solicitud de contacto','3 meses']]});
-  if (pixel) SERVICES.push({cat:'marketing', name:'Píxel de Meta', provider:'Meta Platforms Ireland Ltd.', policy:'https://www.facebook.com/policies/cookies/',
-    rows:[['_fbp, _fbc','Mide la eficacia de los anuncios en Facebook e Instagram','3 meses']]});
+  if (ga4) SERVICES.push({cat:'analytics', name:'Google Analytics', provider:'Google Ireland Ltd.', policy:'https://policies.google.com/technologies/cookies?hl=' + (EN ? 'en' : 'es'),
+    rows:[['_ga',(EN ? "Distinguishes visitors anonymously" : "Distingue visitantes de forma anónima"),(EN ? "2 years" : "2 años")],['_ga_<ID>',(EN ? "Maintains session state" : "Mantiene el estado de la sesión"),(EN ? "2 years" : "2 años")]]});
+  if (ads) SERVICES.push({cat:'marketing', name:'Google Ads', provider:'Google Ireland Ltd.', policy:'https://policies.google.com/technologies/cookies?hl=' + (EN ? 'en' : 'es'),
+    rows:[['_gcl_au, _gcl_aw',(EN ? "Measures which Google ads lead to a contact request" : "Mide qué anuncios de Google acaban en una solicitud de contacto"),(EN ? "3 months" : "3 meses")]]});
+  if (pixel) SERVICES.push({cat:'marketing', name:(EN ? "Meta Pixel" : "Píxel de Meta"), provider:'Meta Platforms Ireland Ltd.', policy:'https://www.facebook.com/policies/cookies/',
+    rows:[['_fbp, _fbc',(EN ? "Measures the effectiveness of ads on Facebook and Instagram" : "Mide la eficacia de los anuncios en Facebook e Instagram"),(EN ? "3 months" : "3 meses")]]});
 
   var CATS = {
-    analytics:{label:'Analítica', text:'Nos ayudan a saber cuántas personas visitan la web y qué páginas consultan, de forma agregada.'},
-    marketing:{label:'Publicidad', text:'Permiten medir nuestras campañas en Google, Facebook e Instagram y saber qué anuncios funcionan.'}
+    analytics:{label:(EN ? "Analytics" : "Analítica"), text:(EN ? "Help us understand how many people visit the website and which pages they view, using aggregated data." : "Nos ayudan a saber cuántas personas visitan la web y qué páginas consultan, de forma agregada.")},
+    marketing:{label:(EN ? "Advertising" : "Publicidad"), text:(EN ? "Allow us to measure our campaigns on Google, Facebook and Instagram and see which ads work." : "Permiten medir nuestras campañas en Google, Facebook e Instagram y saber qué anuncios funcionan.")}
   };
   var cats = [];
   SERVICES.forEach(function(s){ if (cats.indexOf(s.cat) < 0) cats.push(s.cat); });
@@ -152,18 +154,18 @@
   function who(){
     var names = [];
     SERVICES.forEach(function(s){ var p = s.provider.split(' ')[0]; if (names.indexOf(p) < 0) names.push(p); });
-    return names.join(' y ');
+    return names.join(EN ? ' and ' : ' y ');
   }
   function show(panel){
     close();
     css();
     var saved = read();
     box = el('div', {'class':'ck', role:'dialog', 'aria-modal':'false', 'aria-labelledby':'ck-t', 'aria-describedby':'ck-d'});
-    box.appendChild(el('h2', {id:'ck-t'}, panel ? 'Configurar cookies' : 'Cookies'));
+    box.appendChild(el('h2', {id:'ck-t'}, panel ? (EN ? "Cookie settings" : "Configurar cookies") : (EN ? "Cookies" : "Cookies")));
     var p = el('p', {id:'ck-d'});
-    var uses = cats.map(function(k){ return k === 'analytics' ? 'analizar las visitas' : 'medir nuestras campañas de publicidad'; }).join(' y ');
-    p.appendChild(document.createTextNode('Usamos cookies de terceros (' + who() + ') para ' + uses + '. Solo se activan si aceptas, y puedes cambiar de opinión cuando quieras. '));
-    var more = el('a', {href:'/cookies'}, 'Más información');
+    var uses = cats.map(function(k){ return k === 'analytics' ? (EN ? "analyze visits" : "analizar las visitas") : (EN ? "measure our advertising campaigns" : "medir nuestras campañas de publicidad"); }).join(EN ? ' and ' : ' y ');
+    p.appendChild(document.createTextNode((EN ? 'We use third-party cookies (' + who() + ') to ' + uses + '. They are only enabled if you accept, and you can change your mind at any time. ' : 'Usamos cookies de terceros (' + who() + ') para ' + uses + '. Solo se activan si aceptas, y puedes cambiar de opinión cuando quieras. ')));
+    var more = el('a', {href:EN ? '/en/cookies' : '/cookies'}, (EN ? "Learn more" : "Más información"));
     p.appendChild(more); p.appendChild(document.createTextNode('.'));
     box.appendChild(p);
     var row = el('div', {'class':'ck-row'});
@@ -177,16 +179,16 @@
         list.appendChild(c);
       });
       var nec = el('div', {'class':'ck-cat'});
-      nec.appendChild(el('p', {}, 'Técnicas (siempre activas): guardan tu tema claro u oscuro y esta elección en tu navegador. No son cookies ni se envían a ningún servidor.'));
+      nec.appendChild(el('p', {}, (EN ? "Essential (always on): they store your light or dark theme, your language and this choice in your browser. They are never used to track you or for ads." : "Técnicas (siempre activas): guardan en tu navegador tu tema claro u oscuro, tu idioma y esta elección. No se usan para seguirte ni para publicidad.")));
       list.appendChild(nec);
       box.appendChild(list);
-      row.appendChild(button('Guardar mi elección', function(){ var o = {}; cats.forEach(function(k){ o[k] = boxes[k].checked; }); decide(o); }));
-      row.appendChild(button('Rechazar todo', function(){ decide(all(false)); }));
-      row.appendChild(button('Aceptar todo', function(){ decide(all(true)); }));
+      row.appendChild(button((EN ? "Save my preferences" : "Guardar mi elección"), function(){ var o = {}; cats.forEach(function(k){ o[k] = boxes[k].checked; }); decide(o); }));
+      row.appendChild(button((EN ? "Reject all" : "Rechazar todo"), function(){ decide(all(false)); }));
+      row.appendChild(button((EN ? "Accept all" : "Aceptar todo"), function(){ decide(all(true)); }));
     } else {
-      row.appendChild(button('Rechazar', function(){ decide(all(false)); }));
-      row.appendChild(button('Aceptar', function(){ decide(all(true)); }));
-      row.appendChild(button('Configurar', function(){ opener = null; show(true); box.querySelector('input').focus(); }, 'ck-link'));
+      row.appendChild(button((EN ? "Reject" : "Rechazar"), function(){ decide(all(false)); }));
+      row.appendChild(button((EN ? "Accept" : "Aceptar"), function(){ decide(all(true)); }));
+      row.appendChild(button((EN ? "Settings" : "Configurar"), function(){ opener = null; show(true); box.querySelector('input').focus(); }, 'ck-link'));
     }
     box.appendChild(row);
     box.addEventListener('keydown', function(e){ if (e.key === 'Escape' && read()) close(); });
@@ -199,18 +201,18 @@
     if (!host) return;
     host.textContent = '';
     if (!SERVICES.length) {
-      host.appendChild(el('p', {}, 'Ahora mismo no usamos ninguna cookie de analítica ni de publicidad, por eso no verás ningún aviso de cookies.'));
+      host.appendChild(el('p', {}, (EN ? "We currently use no analytics or advertising cookies, so you will not see a cookie banner." : "Ahora mismo no usamos ninguna cookie de analítica ni de publicidad, por eso no verás ningún aviso de cookies.")));
       return;
     }
-    host.appendChild(el('p', {}, 'Estas cookies solo se instalan si las aceptas en el aviso de cookies, y puedes retirar el consentimiento en cualquier momento con el botón «Configurar cookies».'));
+    host.appendChild(el('p', {}, (EN ? "These cookies are only set if you accept them in the cookie banner. You can withdraw your consent at any time using the “Cookie settings” button." : "Estas cookies solo se instalan si las aceptas en el aviso de cookies, y puedes retirar el consentimiento en cualquier momento con el botón «Configurar cookies».")));
     var t = el('table', {}), head = el('tr', {});
-    ['Cookie', 'Servicio y titular', 'Finalidad', 'Duración', 'Tipo'].forEach(function(h){ head.appendChild(el('th', {scope:'col'}, h)); });
+    ['Cookie', (EN ? "Service and provider" : "Servicio y titular"), (EN ? "Purpose" : "Finalidad"), (EN ? "Duration" : "Duración"), (EN ? "Type" : "Tipo")].forEach(function(h){ head.appendChild(el('th', {scope:'col'}, h)); });
     var th = el('thead', {}); th.appendChild(head); t.appendChild(th);
     var tb = el('tbody', {});
     SERVICES.forEach(function(s){ s.rows.forEach(function(r){
       var tr = el('tr', {});
       tr.appendChild(el('td', {}, r[0]));
-      var td = el('td', {}, s.name + ' (' + s.provider + ') · '); td.appendChild(el('a', {href:s.policy, rel:'noopener'}, 'su política')); tr.appendChild(td);
+      var td = el('td', {}, s.name + ' (' + s.provider + ') · '); td.appendChild(el('a', {href:s.policy, rel:'noopener'}, (EN ? "their policy" : "su política"))); tr.appendChild(td);
       tr.appendChild(el('td', {}, r[1])); tr.appendChild(el('td', {}, r[2])); tr.appendChild(el('td', {}, CATS[s.cat].label));
       tb.appendChild(tr);
     }); });
@@ -229,6 +231,7 @@
     var links = document.querySelectorAll('[data-cookie-settings]');
     for (var i = 0; i < links.length; i++) {
       if (!SERVICES.length) continue;
+      if (EN) links[i].textContent = 'Cookie settings';
       links[i].hidden = false;
       links[i].addEventListener('click', function(){ opener = this; show(true); box.querySelector('input').focus(); });
     }

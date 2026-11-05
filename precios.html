@@ -6,10 +6,14 @@
 <title>Cuánto cuesta una página web en 2026: precios cerrados — Autom8</title>
 <meta name="description" content="¿Cuánto cuesta una página web? En Autom8, desde 590 € + IVA con precio cerrado: tres planes, qué incluye cada uno, plazos de entrega y qué no está incluido.">
 <link rel="canonical" href="https://autom8.es/precios">
+<link rel="alternate" hreflang="es" href="https://autom8.es/precios">
+<link rel="alternate" hreflang="en" href="https://autom8.es/en/pricing">
+<link rel="alternate" hreflang="x-default" href="https://autom8.es/precios">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#07090C">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="Autom8">
 <meta property="og:title" content="Cuánto cuesta una página web en 2026 — Autom8">
 <meta property="og:description" content="Webs para empresas desde 590 € + IVA, con precio cerrado y entrega en días. Tres planes y todo lo que incluye cada uno.">
@@ -102,6 +106,12 @@ footer{border-top:1px solid var(--line);padding:32px 20px;color:var(--muted);fon
 footer .in{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
 footer a{color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
 @media (max-width:560px){.nav .btn{display:none}.ctas .btn{width:100%}}
+.nav-right{display:flex;gap:10px;align-items:center}
+.lang-switch{box-sizing:border-box;height:46px;border:1px solid var(--line);border-radius:999px;padding:3px;display:inline-flex;flex-shrink:0}
+.lang-switch a{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:100%;border-radius:999px;font-weight:600;font-size:14px;color:#F5F7FA;text-decoration:none}
+.lang-switch a:hover{color:#D4F57A}
+.lang-switch a[aria-current]{background:#F5F7FA;color:#07090C}
+.lang-switch a:focus-visible{outline:3px solid #D4F57A;outline-offset:3px}
 </style>
 <!-- Vercel Web Analytics: cookieless, served from this domain -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
@@ -112,7 +122,7 @@ footer a{color:var(--muted);display:inline-flex;align-items:center;min-height:44
 <header>
   <nav class="nav" aria-label="Principal">
     <a class="logo" href="/" aria-label="Autom8, inicio">Autom<span>8</span></a>
-    <a class="btn" href="/#contacto">Pedir presupuesto</a>
+    <div class="nav-right"><div class="lang-switch" role="group" aria-label="Idioma"><a href="/precios" lang="es" hreflang="es" data-lang="es" aria-current="true">ES</a><a href="/en/pricing" lang="en" hreflang="en" data-lang="en">EN</a></div><a class="btn" href="/#contacto">Pedir presupuesto</a></div>
   </nav>
 </header>
 
@@ -255,5 +265,6 @@ footer a{color:var(--muted);display:inline-flex;align-items:center;min-height:44
   </div>
 </footer>
 <script src="/consent.js" defer></script>
+<script src="/lang.js" defer></script>
 </body>
 </html>

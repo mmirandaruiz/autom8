@@ -6,6 +6,9 @@
 <title>Cookies — Autom8</title>
 <meta name="description" content="Qué cookies usa autom8.es, para qué y cómo aceptarlas, rechazarlas o retirar el consentimiento.">
 <link rel="canonical" href="https://autom8.es/cookies">
+<link rel="alternate" hreflang="es" href="https://autom8.es/cookies">
+<link rel="alternate" hreflang="en" href="https://autom8.es/en/cookies">
+<link rel="alternate" hreflang="x-default" href="https://autom8.es/cookies">
 <meta name="theme-color" content="#07090C">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -13,6 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Autom8">
 <meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:title" content="Cookies — Autom8">
 <meta property="og:url" content="https://autom8.es/cookies">
 <meta property="og:image" content="https://autom8.es/og-image.png">
@@ -27,6 +31,11 @@ h2{font-size:1.4rem;letter-spacing:-.02em;margin:2rem 0 .5rem}
 table{border-collapse:collapse;width:100%;font-size:15px;margin-top:1rem}
 th,td{text-align:left;vertical-align:top;border-bottom:1px solid #2E3845;padding:10px 8px;color:#D5DCE4}
 th{color:#F5F7FA}
+.top{display:flex;justify-content:space-between;align-items:center}
+.lang-switch{display:inline-flex;border:1px solid #2E3845;border-radius:999px;padding:3px}
+.lang-switch a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:999px;font-weight:600;font-size:14px;color:#D4F57A;text-decoration:none}
+.lang-switch a[aria-current]{background:#F5F7FA;color:#07090C}
+.lang-switch a:focus-visible{outline:3px solid #D4F57A;outline-offset:3px}
 </style>
 <!-- Vercel Web Analytics: cookieless, served from this domain -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
@@ -34,17 +43,18 @@ th{color:#F5F7FA}
 </head>
 <body>
 <main>
-<p><a href="index.html">Autom8</a></p>
+<p class="top"><a href="/">Autom8</a><span class="lang-switch" role="group" aria-label="Idioma"><a href="/cookies" lang="es" hreflang="es" data-lang="es" aria-current="true">ES</a><a href="/en/cookies" lang="en" hreflang="en" data-lang="en">EN</a></span></p>
 <h1>Cookies</h1>
 <h2>Cookies de analítica y de publicidad</h2>
 <div id="cookie-policy"><p>Si usamos cookies de analítica o de publicidad, solo se instalan cuando las aceptas en el aviso de cookies. Puedes aceptarlas, rechazarlas o cambiar tu elección en cualquier momento con el botón «Configurar cookies».</p></div>
 <h2>Lo que es técnico</h2>
 <p>El alojamiento puede registrar, de forma técnica, la dirección IP y la petición para servir la página y proteger el servicio. Eso no se usa para elaborar un perfil.</p>
-<p>Si eliges el modo claro u oscuro, tu navegador guarda esa preferencia (<code>localStorage</code>, clave <code>autom8-theme</code>) para recordarla en tu próxima visita. Tu elección sobre las cookies se guarda igual (clave <code>autom8-consent</code>) durante 13 meses. Ninguna de las dos se envía a ningún servidor y puedes borrarlas desde los ajustes de tu navegador.</p>
+<p>Si eliges el modo claro u oscuro, tu navegador guarda esa preferencia (<code>localStorage</code>, clave <code>autom8-theme</code>) para recordarla en tu próxima visita. Tu elección sobre las cookies se guarda igual (clave <code>autom8-consent</code>) durante 13 meses. Si cambias de idioma con el selector ES/EN, guardamos esa elección en una cookie técnica (<code>autom8-lang</code>, 12 meses) para mostrarte la web en ese idioma la próxima vez; solo se usa para eso. La cookie de idioma se envía a nuestro servidor; las preferencias <code>autom8-theme</code> y <code>autom8-consent</code> no se envían a ningún servidor. Puedes borrarlas desde los ajustes de tu navegador.</p>
 <p>Si añadimos un servicio nuevo, esta página se actualiza y volvemos a pedirte permiso antes de activarlo. Al retirar el consentimiento borramos las cookies de esos servicios en este sitio.</p>
 <p>Contacto: <a href="mailto:marcos@autom8.es">marcos@autom8.es</a>.</p>
 <p><button type="button" data-cookie-settings hidden>Configurar cookies</button></p>
 </main>
 <script src="/consent.js" defer></script>
+<script src="/lang.js" defer></script>
 </body>
 </html>
