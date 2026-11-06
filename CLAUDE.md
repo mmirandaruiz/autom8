@@ -87,7 +87,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - No inventar cifras ni testimonios; usar marcadores tipo [LOGO CLIENTE].
 
 ## Versión en inglés (EE. UU.)
-- Páginas en `en/`: `index.html`, `pricing.html`, `terms.html`, `privacy.html` y `cookies.html`, para visitantes de EE. UU.; precios en USD.
+- Páginas en `en/`: `index.html`, `pricing.html`, `terms.html`, `privacy.html` y `cookies.html`, para visitantes de EE. UU.; precios en USD redondeados desde los de euros (≈1,15 $/€, nov. 2026): Essential 700 $, Business 1.000 $, Professional 1.600 $.
 - Pares de URL: `/` ↔ `/en`, `/precios` ↔ `/en/pricing`, `/aviso-legal` ↔ `/en/terms`, `/privacidad` ↔ `/en/privacy`, `/cookies` ↔ `/en/cookies`. `/diseno-web-barcelona` no tiene pareja inglesa. URLs sin barra final ni `.html` (salvo `/`).
 - Cada pareja usa `hreflang` es/en y `x-default` a la URL española, también en el sitemap.
 - `middleware.js` redirige solo `/` a `/en`: primero `Accept-Language`, con `x-vercel-ip-country` US/ES para desempatar; la cookie `autom8-lang` del selector ES/EN, guardada por `lang.js`, tiene prioridad. Los rastreadores nunca se redirigen.
