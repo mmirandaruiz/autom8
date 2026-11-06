@@ -6,6 +6,9 @@
 <title>Privacidad — Autom8</title>
 <meta name="description" content="Cómo trata Autom8 los datos que envías desde el formulario de contacto.">
 <link rel="canonical" href="https://autom8.es/privacidad">
+<link rel="alternate" hreflang="es" href="https://autom8.es/privacidad">
+<link rel="alternate" hreflang="en" href="https://autom8.es/en/privacy">
+<link rel="alternate" hreflang="x-default" href="https://autom8.es/privacidad">
 <meta name="theme-color" content="#07090C">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -13,6 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Autom8">
 <meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:title" content="Privacidad — Autom8">
 <meta property="og:url" content="https://autom8.es/privacidad">
 <meta property="og:image" content="https://autom8.es/og-image.png">
@@ -23,6 +27,11 @@ a{color:#D4F57A}
 h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.04em;line-height:1.05}
 h2{font-size:1.35rem;margin-top:2rem}
 p,li{color:#D5DCE4}
+.top{display:flex;justify-content:space-between;align-items:center}
+.lang-switch{display:inline-flex;border:1px solid #2E3845;border-radius:999px;padding:3px}
+.lang-switch a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:999px;font-weight:600;font-size:14px;color:#D4F57A;text-decoration:none}
+.lang-switch a[aria-current]{background:#F5F7FA;color:#07090C}
+.lang-switch a:focus-visible{outline:3px solid #D4F57A;outline-offset:3px}
 </style>
 <!-- Vercel Web Analytics: cookieless, served from this domain -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
@@ -30,7 +39,7 @@ p,li{color:#D5DCE4}
 </head>
 <body>
 <main>
-<p><a href="index.html">Autom8</a></p>
+<p class="top"><a href="/">Autom8</a><span class="lang-switch" role="group" aria-label="Idioma"><a href="/privacidad" lang="es" hreflang="es" data-lang="es" aria-current="true">ES</a><a href="/en/privacy" lang="en" hreflang="en" data-lang="en">EN</a></span></p>
 <h1>Privacidad</h1>
 <h2>Responsable del tratamiento</h2>
 <ul>
@@ -72,5 +81,6 @@ p,li{color:#D5DCE4}
 <p><button type="button" data-cookie-settings hidden>Configurar cookies</button></p>
 </main>
 <script src="/consent.js" defer></script>
+<script src="/lang.js" defer></script>
 </body>
 </html>

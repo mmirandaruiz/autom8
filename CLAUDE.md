@@ -1,11 +1,11 @@
 # Autom8 — web (contexto para Claude Code)
 
-Web de una sola página para **Autom8**. **Producto actual: diseño y creación de páginas web a medida para empresas**, hechas para el cliente y entregadas publicadas. No mencionar IA en la web. Todo el contenido está en **español (España)**.
+Web de una sola página para **Autom8**. **Producto actual: diseño y creación de páginas web a medida para empresas**, hechas para el cliente y entregadas publicadas. No mencionar IA en la web. Contenido principal en **español (España)**, con versión en **inglés (EE. UU.)** en `en/`.
 
 La versión anterior, centrada en automatización de procesos (historia 3D de papeles, calculadora, página `/automatizacion-de-procesos`), está guardada en la rama `backup/automatizacion` y la etiqueta `v1-automatizacion`. La sección "Más que una web" (`#conectada`) es el puente para volver a ofrecer automatización más adelante.
 
 ## Estructura
-- `index.html` — todo el sitio (HTML + CSS + JS en un archivo).
+- `index.html` — inicio en español (HTML + CSS + JS en un archivo); versión en inglés en `en/`.
 - `vendor/three.min.js` — Three.js r128 alojado en el propio sitio (no usar CDN).
 - `fonts/` — Bricolage Grotesque e Instrument Sans en woff2, cargadas con `@font-face` y `preload` (no usar Google Fonts: privacidad/RGPD y rendimiento).
 - `aviso-legal.html`, `privacidad.html`, `cookies.html` — páginas legales enlazadas desde el pie.
@@ -18,7 +18,7 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - `404.html` — página de error que Vercel sirve automáticamente.
 - Páginas de servicio para SEO (una por búsqueda objetivo): `precios.html` («cuánto cuesta una página web»; los planes salen literalmente de la oferta, sin inventar precios ni condiciones) y `diseno-web-barcelona.html` («diseño web barcelona»). Comparten el mismo CSS en línea, solo modo oscuro. Cada una con title/H1 propio, JSON-LD (Service, BreadcrumbList, FAQPage), enlace desde el inicio y entrada en `sitemap.xml`. Enlazar con URL limpia (sin `.html`). `vercel.json` redirige temporalmente `/automatizacion-de-procesos` al inicio.
 - El titular es autónomo (no hay sociedad): el aviso legal necesita nombre completo, NIF y domicilio.
-- Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `python3 -m http.server 4173`.
+- Sitio estático: se despliega en Vercel sin build (Framework preset: Other). Vista previa local: `node scripts/dev-server.mjs`.
 
 ## Formulario de contacto
 - Envía a **marcos@autom8.es** vía Web3Forms (`fetch` a `https://api.web3forms.com/submit`).
@@ -85,3 +85,12 @@ La versión anterior, centrada en automatización de procesos (historia 3D de pa
 - Tiene que funcionar en móvil (3D arriba, texto debajo). Probar al menos 320×568, 375×667, 390×844, 430×932 y horizontal 667×375 / 844×390: sin scroll lateral y ningún texto tapado por la cabecera.
 - Campos de formulario con texto ≥ 16px (si no, iOS hace zoom) y zonas táctiles ≥ 44px.
 - No inventar cifras ni testimonios; usar marcadores tipo [LOGO CLIENTE].
+
+## Versión en inglés (EE. UU.)
+- Páginas en `en/`: `index.html`, `pricing.html`, `terms.html`, `privacy.html` y `cookies.html`, para visitantes de EE. UU.; precios en USD redondeados desde los de euros (≈1,15 $/€, nov. 2026): Essential 700 $, Business 1.000 $, Professional 1.600 $.
+- Pares de URL: `/` ↔ `/en`, `/precios` ↔ `/en/pricing`, `/aviso-legal` ↔ `/en/terms`, `/privacidad` ↔ `/en/privacy`, `/cookies` ↔ `/en/cookies`. `/diseno-web-barcelona` no tiene pareja inglesa. URLs sin barra final ni `.html` (salvo `/`).
+- Cada pareja usa `hreflang` es/en y `x-default` a la URL española, también en el sitemap.
+- `middleware.js` redirige solo `/` a `/en`: primero `Accept-Language`, con `x-vercel-ip-country` US/ES para desempatar; la cookie `autom8-lang` del selector ES/EN, guardada por `lang.js`, tiene prioridad. Los rastreadores nunca se redirigen.
+- `consent.js` toma el idioma de `<html lang>`.
+- Cada nueva página necesita su pareja, hreflang, selector de idioma y entrada en el sitemap.
+- Vista previa: `node scripts/dev-server.mjs` ejecuta el middleware; `python http.server` no. Pruebas: `node --test tests/`.
